@@ -1,0 +1,7 @@
+{
+  "client": {
+    "name": "{{grains['fqdn']}}",
+    "address": "{{grains['fqdn_ip4']}}",
+    "subscriptions": [ "all", "{{grains['roles']|join('", "') }}" ]
+  }
+}

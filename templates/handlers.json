@@ -1,0 +1,19 @@
+{% from "sensu/map.jinja" import sensu with context %}
+{
+  "handlers": {
+    "default": {
+      "type": "set",
+      "handlers": [
+        "stdout"
+      ]
+    },
+    "stdout": {
+      "type": "pipe",
+      "command": "cat"
+    }
+    "email": {
+      "type": "pipe",
+      "command": "mail -s '[sensu] alert' {{sensu.email}}"
+    }
+  }
+}

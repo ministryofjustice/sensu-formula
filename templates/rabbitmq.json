@@ -1,0 +1,10 @@
+{% from "sensu/map.jinja" import sensu with context %}
+{
+  "rabbitmq": {
+    "host": "{{sensu.rabbitmq.host}}",
+    "port": {{sensu.rabbitmq.port}},
+    "vhost": "{{sensu.rabbitmq.vhost}}",
+    "user": "{{sensu.rabbitmq.user}}",
+    "password": "{{sensu.rabbitmq.password}}"
+  }
+}

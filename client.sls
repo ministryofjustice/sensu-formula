@@ -1,5 +1,5 @@
 {% from "sensu/map.jinja" import sensu with context %}
-{% from 'monitoring/logs/lib.sls' import logship2 with context %}
+{% from 'logging/lib.sls' import logship with context %}
 include:
   - .common
 
@@ -27,4 +27,4 @@ sensu-client:
       - file: /etc/sensu/conf.d/rabbitmq.json
 
 
-{{ logship2('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}
+{{ logship('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}

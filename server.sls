@@ -1,6 +1,6 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "sensu/lib.sls" import sensu_check_procs with context %}
-{% from 'monitoring/logs/lib.sls' import logship2 with context %}
+{% from 'logging/lib.sls' import logship with context %}
 
 include:
   - nginx
@@ -8,7 +8,7 @@ include:
   - rabbitmq
   - .client
   - .common
-  - common.packages
+  - .deps
 # for git
 
 
@@ -93,7 +93,7 @@ https://github.com/sensu/sensu-community-plugins.git:
     - latest
     - target: /etc/sensu/community
     - require:
-      - pkg: git
+      - pkg: sensu_deps
 
 
 /etc/sensu/plugins:
@@ -107,9 +107,9 @@ https://github.com/sensu/sensu-community-plugins.git:
 {{ sensu_check_procs("cron") }}
 
 
-{{ logship2('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
-{{ logship2('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
-{{ logship2('sensu-dashboard.log',  '/var/log/sensu/sensu-dashboard.log', 'sensu', ['sensu', 'sensu-dashboard', 'log'],  'rawjson') }}
+{{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
+{{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
+{{ logship('sensu-dashboard.log',  '/var/log/sensu/sensu-dashboard.log', 'sensu', ['sensu', 'sensu-dashboard', 'log'],  'rawjson') }}
 
 
 /etc/nginx/conf.d/sensu.conf:
@@ -121,7 +121,7 @@ https://github.com/sensu/sensu-community-plugins.git:
     - group: root
     - mode: 644
     - context:
-        service_name: sensu
+        appslug: sensu
         server_name: sensu.*
         proxy_to: localhost:9876
         is_default: False
@@ -129,5 +129,5 @@ https://github.com/sensu/sensu-community-plugins.git:
       - service: nginx
 
 
-{{ logship2('sensu-access',  '/var/log/nginx/sensu.access.json', 'nginx', ['nginx', 'sensu', 'access'],  'rawjson') }}
-{{ logship2('sensu-error',  '/var/log/nginx/sensu.error.json', 'nginx', ['nginx', 'sensu', 'error'],  'json') }}
+{{ logship('sensu-access',  '/var/log/nginx/sensu.access.json', 'nginx', ['nginx', 'sensu', 'access'],  'rawjson') }}
+{{ logship('sensu-error',  '/var/log/nginx/sensu.error.json', 'nginx', ['nginx', 'sensu', 'error'],  'json') }}

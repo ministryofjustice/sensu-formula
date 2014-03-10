@@ -10,7 +10,7 @@
     "stdout": {
       "type": "pipe",
       "command": "cat"
-    }
+    },
     "email": {
       "type": "pipe",
       "command": "mail -s '[sensu] alert' {{sensu.email}}"

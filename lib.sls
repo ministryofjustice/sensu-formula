@@ -14,8 +14,6 @@ execute check is process exists
 
 {% macro sensu_check(name, command, handlers=['default'], interval=60, subscribers=['all']) %}
 
-{% if 'shipper' in grains['roles'] or 'aggregator' in grains['roles'] %}
-
 /etc/sensu/conf.d/checks/{{name}}.json:
   file:
     - managed
@@ -30,10 +28,9 @@ execute check is process exists
     - require:
       - file: /etc/sensu/conf.d/checks
     - watch_in:
-      - service: sensu-server
-      - service: sensu-api
-
-{% endif %}
+        - service: sensu-client
+        - service: sensu-server
+        - service: sensu-api
 
 {% endmacro %}
 

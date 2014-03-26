@@ -1,5 +1,5 @@
 {% from "sensu/map.jinja" import sensu with context %}
-{% from 'logging/lib.sls' import logship with context %} 
+{% from "logstash/lib.sls" import logship with context %}
 {% from "sensu/lib.sls" import sensu_check with context %}
 include:
   - .common

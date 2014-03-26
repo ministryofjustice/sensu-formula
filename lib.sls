@@ -29,8 +29,6 @@ execute check is process exists
       - file: /etc/sensu/conf.d/checks
     - watch_in:
         - service: sensu-client
-        - service: sensu-server
-        - service: sensu-api
 
 {% endmacro %}
 

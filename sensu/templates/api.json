@@ -1,0 +1,9 @@
+{
+  "api": {
+    "host": "localhost",
+    "port": 4567,
+    "user": "admin",
+    "password": "admin",
+    "bind": "0.0.0.0"
+  }
+}

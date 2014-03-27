@@ -1,0 +1,8 @@
+{% from "sensu/map.jinja" import sensu with context %}
+{
+  "redis": {
+    "host": "{{sensu.redis.host}}",
+    "port": {{sensu.redis.port}},
+    "db": {{sensu.redis.db}}
+  }
+}

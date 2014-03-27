@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "{{name}}": {
+      "handlers": ["{{'", "'.join(handlers)}}"],
+      "command": "{{command}}",
+      "interval": {{interval}},
+      "subscribers": ["{{'", "'.join(subscribers)}}"]
+    }
+  }
+}

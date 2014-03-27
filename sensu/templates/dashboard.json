@@ -1,0 +1,7 @@
+{
+  "dashboard": {
+    "port": 9876,
+    "user": "admin",
+    "password": "admin"
+  }
+}

@@ -38,6 +38,11 @@ https://github.com/sensu/sensu-community-plugins.git:
       - git: https://github.com/sensu/sensu-community-plugins.git
 
 
+sensu-plugin:
+  gem:
+    - installed
+
+
 sensu-client:
   service:
     - running

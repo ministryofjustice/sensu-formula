@@ -22,6 +22,21 @@ include:
 {{ sensu_check('check_load', '/etc/sensu/plugins/system/check-load.rb -w 1,2,3 -c 2,3,4') }}
 {{ sensu_check('check_swap', '/etc/sensu/plugins/system/check-swap-percentage.sh -w 5 -c 25') }}
 
+https://github.com/sensu/sensu-community-plugins.git:
+  git:
+    - latest
+    - target: /etc/sensu/community
+    - require:
+      - pkg: sensu_deps
+
+
+/etc/sensu/plugins:
+  file.symlink:
+    - target: /etc/sensu/community/plugins
+    - force: True
+    - require:
+      - git: https://github.com/sensu/sensu-community-plugins.git
+
 
 sensu-client:
   service:

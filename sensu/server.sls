@@ -88,20 +88,6 @@ sensu_rabbitmq_vhost:
     - owner: {{ sensu.rabbitmq.user }}
 
 
-https://github.com/sensu/sensu-community-plugins.git:
-  git:
-    - latest
-    - target: /etc/sensu/community
-    - require:
-      - pkg: sensu_deps
-
-
-/etc/sensu/plugins:
-  file.symlink:
-    - target: /etc/sensu/community/plugins
-    - force: True
-    - require:
-      - git: https://github.com/sensu/sensu-community-plugins.git
 
 
 {{ sensu_check_procs("cron") }}

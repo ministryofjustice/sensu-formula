@@ -1,3 +1,6 @@
+include:
+  - .deps
+
 sensu:
   pkg:
     - installed
@@ -16,4 +19,3 @@ sensu:
     - directory
     - require:
       - pkg: sensu
-

@@ -4,7 +4,11 @@
       "handlers": ["{{'", "'.join(handlers)}}"],
       "command": "{{command}}",
       "interval": {{interval}},
+{% if standalone %}
+      "standalone": true
+{% else %}
       "subscribers": ["{{'", "'.join(subscribers)}}"]
+{% endif %}
     }
   }
 }

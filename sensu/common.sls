@@ -14,8 +14,18 @@ sensu:
       - pkg: sensu
 
 
+/etc/sensu:
+  file:
+    - directory
+    - user: sensu
+    - group: sensu
+    - mode: 700
+    - require:
+      - pkg: sensu
+
 /etc/sensu/conf.d/checks:
   file:
     - directory
     - require:
       - pkg: sensu
+

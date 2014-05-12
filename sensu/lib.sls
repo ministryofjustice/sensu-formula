@@ -15,8 +15,7 @@ execute check is process exists
 {% macro sensu_check(name, command, handlers=['default'], interval=60, subscribers=['all'], standalone=False) %}
 
 /etc/sensu/conf.d/checks/{{name}}.json:
-  file:
-    - managed
+  file.managed:
     - source: salt://sensu/templates/checks.json
     - template: jinja
     - context:

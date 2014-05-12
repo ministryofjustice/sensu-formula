@@ -13,36 +13,31 @@ include:
 
 
 /etc/sensu/conf.d/redis.json:
-  file:
-    - managed
+  file.managed:
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
 
 /etc/sensu/conf.d/api.json:
-  file:
-    - managed
+  file.managed:
     - source: salt://sensu/templates/api.json
     - template: 'jinja'
 
 
 /etc/sensu/conf.d/dashboard.json:
-  file:
-    - managed
+  file.managed:
     - source: salt://sensu/templates/dashboard.json
     - template: 'jinja'
 
 
 /etc/sensu/conf.d/handlers.json:
-  file:
-    - managed
+  file.managed:
     - source: salt://sensu/templates/handlers.json
     - template: 'jinja'
 
 
 sensu-server:
-  service:
-    - running
+  service.running:
     - enable: True
     - watch:
       - file: /etc/default/sensu
@@ -52,8 +47,7 @@ sensu-server:
 
 
 sensu-api:
-  service:
-    - running
+  service.running:
     - enable: True
     - watch:
       - file: /etc/default/sensu
@@ -62,8 +56,7 @@ sensu-api:
 
 
 sensu-dashboard:
-  service:
-    - running
+  service.running:
     - enable: True
     - watch:
       - file: /etc/default/sensu
@@ -72,8 +65,7 @@ sensu-dashboard:
 
 
 sensu_rabbitmq_user:
-  rabbitmq_user:
-    - present
+  rabbitmq_user.present:
     - name: {{ sensu.rabbitmq.user }}
     - password: {{ sensu.rabbitmq.password }}
     - require:
@@ -82,8 +74,7 @@ sensu_rabbitmq_user:
 
 
 sensu_rabbitmq_vhost:
-  rabbitmq_vhost:
-    - present
+  rabbitmq_vhost.present:
     - name: {{ sensu.rabbitmq.vhost }}
     - owner: {{ sensu.rabbitmq.user }}
 
@@ -99,8 +90,7 @@ sensu_rabbitmq_vhost:
 
 
 /etc/nginx/conf.d/sensu.conf:
-  file:
-    - managed
+  file.managed:
     - source: salt://nginx/templates/vhost-proxy.conf
     - template: jinja
     - user: root

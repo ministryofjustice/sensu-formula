@@ -47,4 +47,9 @@ sensu-client:
       - file: /etc/sensu/conf.d/*
     - order: last
 
+# order last as a hask workaround for sensu: Client exits on failure to connect #680
+# https://github.com/sensu/sensu/issues/680
+
+
+
 {{ logship('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}

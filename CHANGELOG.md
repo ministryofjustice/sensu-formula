@@ -1,3 +1,7 @@
+## Version 1.0.3
+
+* Cleanup from PVB codebase
+
 ## Version 1.0.2
 
 * Ensure /etc/sensu is owned by sensu and mode 700

@@ -1,6 +1,6 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "logstash/lib.sls" import logship with context %}
-{% from "sensu/lib.sls" import sensu_check with context %}
+{% from "sensu/lib.sls" import sensu_check,sensu_check_host_graphite with context %}
 include:
   - .common
 
@@ -38,6 +38,8 @@ https://github.com/sensu/sensu-community-plugins.git:
 sensu-plugin:
   gem.installed
 
+
+{{ sensu_check_host_graphite("cpu_idle", "cpu.0.cpu.idle", "-w 7000000 -a 600") }}
 
 sensu-client:
   service.running:

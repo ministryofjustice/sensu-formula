@@ -1,6 +1,7 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "logstash/lib.sls" import logship with context %}
-{% from "sensu/lib.sls" import sensu_check,sensu_check_host_graphite with context %}
+{% from "sensu/lib.sls" import sensu_check,sensu_check_host_graphite,sensu_check_procs with context %}
+
 include:
   - .common
 
@@ -39,7 +40,9 @@ sensu-plugin:
   gem.installed
 
 
-{{ sensu_check_host_graphite("cpu_idle", "cpu.0.cpu.idle", "-w 7000000 -a 600") }}
+{{ sensu_check_host_graphite("free_root_disk", "df.root.df_complex.free", "-w 70000 -a 600") }}
+{{ sensu_check_procs("cron") }}
+{{ sensu_check_procs("collectd") }}
 
 sensu-client:
   service.running:

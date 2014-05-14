@@ -41,3 +41,13 @@ execute check is process exists
 {% set standalone = kwargs.standalone|default(False) %}
 {{ sensu_check(name="process-"+name, command=check_cmd, standalone=standalone) }}
 {% endmacro %}
+
+{% macro sensu_check_host_graphite(name, metric_suffix, params) %}
+{% set metric_id =  grains['fqdn'].split('.')|reverse| join('.') %}
+{% set metric =  metric_id + "." + metric_suffix %}
+{% set check_cmd = "/etc/sensu/plugins/graphite/check-data.rb -s graphite.local:80 -t "+metric+" " + params %}
+{% set standalone = kwargs.standalone|default(False) %}
+{{ sensu_check(name="host-graphite-"+name, command=check_cmd, standalone=standalone) }}
+{% endmacro %}
+
+

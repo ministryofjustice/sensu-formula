@@ -82,8 +82,6 @@ sensu_rabbitmq_vhost:
 
 
 {{ sensu_check_procs("cron") }}
-{{ sensu_check_host_graphite("cpu_idle", "cpu.0.cpu.idle", "-w 7000000 -a 600") }}
-
 
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}

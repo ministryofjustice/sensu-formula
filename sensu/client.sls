@@ -1,6 +1,6 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "logstash/lib.sls" import logship with context %}
-{% from "sensu/lib.sls" import sensu_check,sensu_check_host_graphite,sensu_check_procs with context %}
+{% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
 include:
   - .common
@@ -16,10 +16,57 @@ include:
     - source: salt://sensu/templates/client.json
     - template: jinja
 
+###
+### CHECKS --- Root Disk Free Space
+### 
+
+# Old Sensu Check - replaced with graphite to ensure aligned reporting
+## {{ sensu_check('check_disk', '/etc/sensu/plugins/system/check-disk.rb') }}
+
+# Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
+# Warning at 10Gb free space, Critical at 5Gb
+{{ sensu_check_graphite("free-root-disk", 
+                        "metrics.:::metric_prefix:::.df.root.df_complex.free", 
+                        "-w 10737418240 -c 5368709120 -a 600") }}
+
+###
+### CHECKS --- Load 
+###
+
+# Old Sensu Check - replaced with graphite to ensure aligned reporting
+# {{ sensu_check('check_load', '/etc/sensu/plugins/system/check-load.rb -w 1,2,3 -c 2,3,4') }}
+
+# shortterm - warning=1 critical=2
+{{ sensu_check_graphite("load-shortterm", 
+                        "metrics.:::metric_prefix:::.load.load.shortterm", 
+                        "-w 1 -c 2 -a 600") }}
+
+# midterm - warning=2 critical=3
+{{ sensu_check_graphite("load-midterm", 
+                        "metrics.:::metric_prefix:::.load.load.midterm", 
+                        "-w 2 -c 3 -a 600") }}
+
+# longterm - warning=2 critical=3
+{{ sensu_check_graphite("load-longterm", 
+                        "metrics.:::metric_prefix:::.load.load.longterm", 
+                        "-w 3 -c 4 -a 600") }}
+
+
+
 {{ sensu_check('check_mem', '/etc/sensu/plugins/system/check-memory-pcnt.sh -w 70 -c 85') }}
-{{ sensu_check('check_disk', '/etc/sensu/plugins/system/check-disk.rb') }}
-{{ sensu_check('check_load', '/etc/sensu/plugins/system/check-load.rb -w 1,2,3 -c 2,3,4') }}
-{{ sensu_check('check_swap', '/etc/sensu/plugins/system/check-swap-percentage.sh -w 5 -c 25') }}
+
+###
+### CHECKS --- Swap
+###
+
+# Old Sensu Check - replaced with graphite to ensure aligned reporting
+#{{ sensu_check('check_swap', '/etc/sensu/plugins/system/check-swap-percentage.sh -w 5 -c 25') }}
+
+# We should never be in swap so percentages are not required. 
+# swap-used - warning=20M critical=100M
+{{ sensu_check_graphite("swap-used", 
+                        "metrics.:::metric_prefix:::.swap.swap.used", 
+                        "-w 20971520 -c 104857600 -a 600") }}
 
 https://github.com/sensu/sensu-community-plugins.git:
   git.latest:
@@ -40,7 +87,6 @@ sensu-plugin:
   gem.installed
 
 
-{{ sensu_check_host_graphite("free_root_disk", "df.root.df_complex.free", "-w 70000 -a 600") }}
 {{ sensu_check_procs("cron") }}
 {{ sensu_check_procs("collectd") }}
 

@@ -84,7 +84,8 @@ https://github.com/sensu/sensu-community-plugins.git:
     - include_empty: True
     - user: sensu
     - group: sensu
-    - mode: 700
+    - file_mode: 700
+    - dir_mode: 700
 
 
 sensu-plugin:

@@ -2,21 +2,18 @@ include:
   - .deps
 
 sensu:
-  pkg:
-    - installed
+  pkg.installed
 
 
 /etc/default/sensu:
-  file:
-    - managed
+  file.managed:
     - source: salt://sensu/files/default_sensu
     - require:
       - pkg: sensu
 
 
 /etc/sensu:
-  file:
-    - directory
+  file.directory:
     - user: sensu
     - group: sensu
     - mode: 700
@@ -24,8 +21,7 @@ sensu:
       - pkg: sensu
 
 /etc/sensu/conf.d/checks:
-  file:
-    - directory
+  file.directory:
     - require:
       - pkg: sensu
 

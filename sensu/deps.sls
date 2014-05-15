@@ -1,6 +1,5 @@
 sensu_deps:
-  pkg:
-    - installed
+  pkg.installed:
     - pkgs:
       - gcc
       - git

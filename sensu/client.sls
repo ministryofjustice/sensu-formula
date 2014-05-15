@@ -21,7 +21,7 @@ include:
 ### 
 
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
-## {{ sensu_check('check_disk', '/etc/sensu/plugins/system/check-disk.rb') }}
+## - sensu_check('check_disk', '/etc/sensu/community/system/check-disk.rb') 
 
 # Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
 # Warning at 10Gb free space, Critical at 5Gb
@@ -34,7 +34,7 @@ include:
 ###
 
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
-# {{ sensu_check('check_load', '/etc/sensu/plugins/system/check-load.rb -w 1,2,3 -c 2,3,4') }}
+# - sensu_check('check_load', '/etc/sensu/community/system/check-load.rb -w 1,2,3 -c 2,3,4') 
 
 # shortterm - warning=1 critical=2
 {{ sensu_check_graphite("load-shortterm", 
@@ -53,14 +53,14 @@ include:
 
 
 
-{{ sensu_check('check_mem', '/etc/sensu/plugins/system/check-memory-pcnt.sh -w 70 -c 85') }}
+{{ sensu_check('check_mem', '/etc/sensu/community/system/check-memory-pcnt.sh -w 70 -c 85') }}
 
 ###
 ### CHECKS --- Swap
 ###
 
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
-#{{ sensu_check('check_swap', '/etc/sensu/plugins/system/check-swap-percentage.sh -w 5 -c 25') }}
+# - sensu_check('check_swap', '/etc/sensu/community/system/check-swap-percentage.sh -w 5 -c 25') 
 
 # We should never be in swap so percentages are not required. 
 # swap-used - warning=20M critical=100M
@@ -68,6 +68,8 @@ include:
                         "metrics.:::metric_prefix:::.swap.swap.used", 
                         "-w 20971520 -c 104857600 -a 600") }}
 
+
+# Sensu Community Plugins
 https://github.com/sensu/sensu-community-plugins.git:
   git.latest:
     - target: /etc/sensu/community
@@ -75,12 +77,14 @@ https://github.com/sensu/sensu-community-plugins.git:
       - pkg: sensu_deps
 
 
+# Locally created plugins
 /etc/sensu/plugins:
-  file.symlink:
-    - target: /etc/sensu/community/plugins
-    - force: True
-    - require:
-      - git: https://github.com/sensu/sensu-community-plugins.git
+  file.recurse:
+    - source: salt://sensu/files/plugins
+    - include_empty: True
+    - user: sensu
+    - group: sensu
+    - mode: 700
 
 
 sensu-plugin:

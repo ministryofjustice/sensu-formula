@@ -33,7 +33,7 @@ execute check is process exists
 {% endmacro %}
 
 {% macro sensu_check_procs(name, critical_under=1) %}
-{% set check_cmd =  "/etc/sensu/plugins/processes/check-procs.rb -p "+name+" -C " + critical_under|string %}
+{% set check_cmd =  "/etc/sensu/community/processes/check-procs.rb -p "+name+" -C " + critical_under|string %}
 {% if 'critical_over' in kwargs %}
   {% set check_cmd = check_cmd + " -c " + kwargs.critical_over|string %}
 {% endif %}
@@ -42,7 +42,7 @@ execute check is process exists
 {% endmacro %}
 
 {% macro sensu_check_graphite(name, metric_name, params) %}
-{% set check_cmd = "/etc/sensu/plugins/graphite/check-data.rb -s graphite.local:80 -t "+metric_name+" " + params %}
+{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s graphite.local:80 -t "+metric_name+" " + params %}
 {% set standalone = kwargs.standalone|default(False) %}
 {{ sensu_check(name="graphite-"+name, command=check_cmd, standalone=standalone) }}
 {% endmacro %}

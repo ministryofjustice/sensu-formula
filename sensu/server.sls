@@ -36,6 +36,16 @@ include:
     - template: 'jinja'
 
 
+{% if salt['pillar.get']('pagerduty:apikey', False) %}
+/etc/sensu/conf.d/pagerduty.json:
+  file.managed:
+    - source: salt://sensu/templates/pagerduty.json
+    - template: 'jinja'
+{% else %}
+/etc/sensu/conf.d/pagerduty.json:
+  file.absent
+{% endif %}
+
 sensu-server:
   service.running:
     - enable: True

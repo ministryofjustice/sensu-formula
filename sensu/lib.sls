@@ -41,8 +41,8 @@ execute check is process exists
 {{ sensu_check(name="process-"+name, command=check_cmd, standalone=standalone) }}
 {% endmacro %}
 
-{% macro sensu_check_graphite(name, metric_name, params) %}
-{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s graphite.local:80 -t "+metric_name+" " + params %}
+{% macro sensu_check_graphite(name, metric_name, params, description) %}
+{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s graphite.local:80 -t "+metric_name+" -n '" + description + "' " + params %}
 {% set standalone = kwargs.standalone|default(False) %}
 {{ sensu_check(name="graphite-"+name, command=check_cmd, standalone=standalone) }}
 {% endmacro %}

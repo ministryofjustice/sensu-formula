@@ -17,6 +17,12 @@ include:
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
+{%- if salt['pillar.get']('sensu:pagerduty_apikey', False) %}
+redphone:
+  gem.installed:
+    - watch_in:
+      - service: sensu-server
+{% endif %}
 
 /etc/sensu/conf.d/api.json:
   file.managed:

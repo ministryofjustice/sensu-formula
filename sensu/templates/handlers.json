@@ -18,7 +18,7 @@
     "default": {
       "type": "set",
       "handlers": [
-{% if salt['pillar.get']('sensu:hipchat_apikey', False) -%}
+{%- if salt['pillar.get']('sensu:hipchat_apikey', False) %}
         "hipchat",
 {% endif -%}
 {% if salt['pillar.get']('sensu:pagerduty_apikey', False) -%}

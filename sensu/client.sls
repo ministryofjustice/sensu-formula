@@ -81,16 +81,26 @@ https://github.com/sensu/sensu-community-plugins.git:
     - require:
       - pkg: sensu_deps
 
+sensu_plugins_remove_symlink:
+  cmd.run:
+    # We used to have the community plugins installed in /etc/sensu/community
+    # and symlinked to /etc/sensu/plugins. We don't want that anymore but need
+    # to remove the symlink first
+    - name: rm /etc/sensu/plugins
+    - onlyif: '[ -L /etc/sensu/plugins ]'
 
 # Locally created plugins
 /etc/sensu/plugins:
   file.recurse:
     - source: salt://sensu/files/plugins
     - include_empty: True
+    - clean: True
     - user: sensu
     - group: sensu
     - file_mode: 700
     - dir_mode: 700
+    - require:
+      - cmd: sensu_plugins_remove_symlink
 
 
 sensu-plugin:

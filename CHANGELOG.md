@@ -1,4 +1,4 @@
-##
+## Version 2.0.0
 
 * Moved sensu community plugins so they are only available from
   `/etc/sensu/community` (previously was in `/etc/sensu/plugins`). **Breaking

@@ -21,7 +21,7 @@ include:
 ### 
 
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
-## - sensu_check('check_disk', '/etc/sensu/community/system/check-disk.rb') 
+## - sensu_check('check_disk', '/etc/sensu/community/plugins/system/check-disk.rb') 
 
 # Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
 # Warning at 10Gb free space, Critical at 5Gb
@@ -34,7 +34,7 @@ include:
 ###
 
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
-# - sensu_check('check_load', '/etc/sensu/community/system/check-load.rb -w 1,2,3 -c 2,3,4') 
+# - sensu_check('check_load', '/etc/sensu/community/plugins/system/check-load.rb -w 1,2,3 -c 2,3,4') 
 
 # shortterm - warning=1 critical=2
 {{ sensu_check_graphite("load-shortterm", 
@@ -53,7 +53,7 @@ include:
 
 
 
-{{ sensu_check('check_mem', '/etc/sensu/community/system/check-memory-pcnt.sh -w 70 -c 85') }}
+{{ sensu_check('check_mem', '/etc/sensu/community/plugins/system/check-memory-pcnt.sh -w 70 -c 85') }}
 
 ###
 ### CHECKS --- Swap

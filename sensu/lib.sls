@@ -33,7 +33,7 @@ execute check is process exists
 {% endmacro %}
 
 {% macro sensu_check_procs(name, critical_under=1) %}
-{% set check_cmd =  "/etc/sensu/community/processes/check-procs.rb -p "+name+" -C " + critical_under|string %}
+{% set check_cmd =  "/etc/sensu/community/plugins/processes/check-procs.rb -p "+name+" -C " + critical_under|string %}
 {% if 'critical_over' in kwargs %}
   {% set check_cmd = check_cmd + " -c " + kwargs.critical_over|string %}
 {% endif %}

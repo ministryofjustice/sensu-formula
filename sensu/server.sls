@@ -36,6 +36,16 @@ include:
     - template: 'jinja'
 
 
+{% if salt['pillar.get']('pagerduty:apikey', False) %}
+/etc/sensu/conf.d/pagerduty.json:
+  file.managed:
+    - source: salt://sensu/templates/pagerduty.json
+    - template: 'jinja'
+{% else %}
+/etc/sensu/conf.d/pagerduty.json:
+  file.absent
+{% endif %}
+
 sensu-server:
   service.running:
     - enable: True
@@ -79,9 +89,6 @@ sensu_rabbitmq_vhost:
     - owner: {{ sensu.rabbitmq.user }}
 
 
-
-
-{{ sensu_check_procs("cron") }}
 
 
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}

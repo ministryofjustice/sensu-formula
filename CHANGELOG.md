@@ -1,3 +1,19 @@
+##
+
+* Moved sensu community plugins so they are only available from
+  `/etc/sensu/community` (previously was in `/etc/sensu/plugins`). **Breaking
+  Change**
+* Plugins are installed from `sensu/files/plugins/` in this formula into
+  `/etc/sensu/plugins` directory.
+* Added custom graphite plugin based on original community plugin
+* Modified most of the existing checks to use graphite metrics to ensure alerts
+  and metrics are drawing data from the same source
+* Added client checks for cron and collectd processes are running
+
+## Version 1.0.3
+
+* Cleanup from PVB codebase
+
 ## Version 1.0.2
 
 * Ensure /etc/sensu is owned by sensu and mode 700

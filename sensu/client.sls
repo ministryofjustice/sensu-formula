@@ -27,7 +27,7 @@ include:
 # Warning at 10Gb free space, Critical at 5Gb
 {{ sensu_check_graphite("free-root-disk", 
                         "metrics.:::metric_prefix:::.df.root.df_complex.free", 
-                        "-w 10737418240 -c 5368709120 -a 600",
+                        "--below -w 10737418240 -c 5368709120 -a 600",
                         "Root Disk Full") }}
 
 ###

@@ -27,8 +27,8 @@ include:
 # Warning at 10Gb free space, Critical at 5Gb
 {{ sensu_check_graphite("free-root-disk", 
                         "metrics.:::metric_prefix:::.df.root.df_complex.free", 
-                        "-w 10737418240 -c 5368709120 -a 600",
-                        "RootDisk Free") }}
+                        "--below -w 10737418240 -c 5368709120 -a 600",
+                        "Root Disk Full") }}
 
 ###
 ### CHECKS --- Load 
@@ -41,19 +41,19 @@ include:
 {{ sensu_check_graphite("load-shortterm", 
                         "metrics.:::metric_prefix:::.load.load.shortterm", 
                         "-w 1 -c 2 -a 600",
-                        "ShortTerm Load") }}
+                        "Short Term LoadAve") }}
 
 # midterm - warning=2 critical=3
 {{ sensu_check_graphite("load-midterm", 
                         "metrics.:::metric_prefix:::.load.load.midterm", 
                         "-w 2 -c 3 -a 600",
-                        "MidTerm Load") }}
+                        "Mid Term LoadAve") }}
 
 # longterm - warning=2 critical=3
 {{ sensu_check_graphite("load-longterm", 
                         "metrics.:::metric_prefix:::.load.load.longterm", 
                         "-w 3 -c 4 -a 600",
-                        "LongTerm Load") }}
+                        "Long Term LoadAve") }}
 
 
 
@@ -64,14 +64,14 @@ include:
 ###
 
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
-# - sensu_check('check_swap', '/etc/sensu/community/system/check-swap-percentage.sh -w 5 -c 25') 
+# - sensu_check('check_swap', '/etc/sensu/community/plugins/system/check-swap-percentage.sh -w 5 -c 25') 
 
 # We should never be in swap so percentages are not required. 
 # swap-used - warning=20M critical=100M
 {{ sensu_check_graphite("swap-used", 
                         "metrics.:::metric_prefix:::.swap.swap.used", 
                         "-w 20971520 -c 104857600 -a 600",
-                        "Swap Used") }}
+                        "Swap In Used") }}
 
 
 # Sensu Community Plugins
@@ -81,16 +81,26 @@ https://github.com/sensu/sensu-community-plugins.git:
     - require:
       - pkg: sensu_deps
 
+sensu_plugins_remove_symlink:
+  cmd.run:
+    # We used to have the community plugins installed in /etc/sensu/community
+    # and symlinked to /etc/sensu/plugins. We don't want that anymore but need
+    # to remove the symlink first
+    - name: rm /etc/sensu/plugins
+    - onlyif: '[ -L /etc/sensu/plugins ]'
 
 # Locally created plugins
 /etc/sensu/plugins:
   file.recurse:
     - source: salt://sensu/files/plugins
     - include_empty: True
+    - clean: True
     - user: sensu
     - group: sensu
     - file_mode: 700
     - dir_mode: 700
+    - require:
+      - cmd: sensu_plugins_remove_symlink
 
 
 sensu-plugin:
@@ -107,5 +117,10 @@ sensu-client:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/*
     - order: last
+
+# order last as a hask workaround for sensu: Client exits on failure to connect #680
+# https://github.com/sensu/sensu/issues/680
+
+
 
 {{ logship('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}

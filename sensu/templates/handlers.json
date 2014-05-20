@@ -4,6 +4,7 @@
 {%- if salt['pillar.get']('sensu:hipchat_apikey', False) %}
   "hipchat": {
     "apikey": "{{ sensu.hipchat_apikey }}",
+    "apiversion": "v2",
     "room": "{{ sensu.hipchat_roomname }}"
   },
 {%- endif %}

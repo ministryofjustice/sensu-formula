@@ -20,6 +20,19 @@ include:
 {%- if salt['pillar.get']('sensu:pagerduty_apikey', False) %}
 redphone:
   gem.installed:
+    - ruby: /opt/sensu/embedded/bin/ruby
+    - require:
+      - pkg: sensu
+    - watch_in:
+      - service: sensu-server
+{% endif %}
+
+{%- if salt['pillar.get']('sensu:hipchat_apikey', False) %}
+hipchat:
+  gem.installed:
+    - ruby: /opt/sensu/embedded/bin/ruby
+    - require:
+      - pkg: sensu
     - watch_in:
       - service: sensu-server
 {% endif %}

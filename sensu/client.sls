@@ -27,7 +27,8 @@ include:
 # Warning at 10Gb free space, Critical at 5Gb
 {{ sensu_check_graphite("free-root-disk", 
                         "metrics.:::metric_prefix:::.df.root.df_complex.free", 
-                        "-w 10737418240 -c 5368709120 -a 600") }}
+                        "-w 10737418240 -c 5368709120 -a 600",
+                        "RootDisk Free") }}
 
 ###
 ### CHECKS --- Load 
@@ -39,17 +40,20 @@ include:
 # shortterm - warning=1 critical=2
 {{ sensu_check_graphite("load-shortterm", 
                         "metrics.:::metric_prefix:::.load.load.shortterm", 
-                        "-w 1 -c 2 -a 600") }}
+                        "-w 1 -c 2 -a 600",
+                        "ShortTerm Load") }}
 
 # midterm - warning=2 critical=3
 {{ sensu_check_graphite("load-midterm", 
                         "metrics.:::metric_prefix:::.load.load.midterm", 
-                        "-w 2 -c 3 -a 600") }}
+                        "-w 2 -c 3 -a 600",
+                        "MidTerm Load") }}
 
 # longterm - warning=2 critical=3
 {{ sensu_check_graphite("load-longterm", 
                         "metrics.:::metric_prefix:::.load.load.longterm", 
-                        "-w 3 -c 4 -a 600") }}
+                        "-w 3 -c 4 -a 600",
+                        "LongTerm Load") }}
 
 
 
@@ -66,7 +70,8 @@ include:
 # swap-used - warning=20M critical=100M
 {{ sensu_check_graphite("swap-used", 
                         "metrics.:::metric_prefix:::.swap.swap.used", 
-                        "-w 20971520 -c 104857600 -a 600") }}
+                        "-w 20971520 -c 104857600 -a 600",
+                        "Swap Used") }}
 
 
 # Sensu Community Plugins

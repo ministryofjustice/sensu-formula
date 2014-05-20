@@ -76,6 +76,10 @@ sensu_rabbitmq_user:
     - password: {{ sensu.rabbitmq.password }}
     - require:
       - pkg: rabbitmq-server
+    - require_in:
+      - service: sensu-api
+      - service: sensu-server
+
 #perms are not working so we fall back to owner
 
 
@@ -83,6 +87,9 @@ sensu_rabbitmq_vhost:
   rabbitmq_vhost.present:
     - name: {{ sensu.rabbitmq.vhost }}
     - owner: {{ sensu.rabbitmq.user }}
+    - require_in:
+      - service: sensu-api
+      - service: sensu-server
 
 
 

@@ -1,7 +1,7 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {
 
-{%- if salt['pillar.get']('sensu:hipchat_apikey', False) %}
+{%- if sensu.hipchat_apikey %}
   "hipchat": {
     "apikey": "{{ sensu.hipchat_apikey }}",
     "apiversion": "v2",
@@ -9,7 +9,7 @@
   },
 {%- endif %}
  
-{%- if salt['pillar.get']('sensu:pagerduty_apikey', False) %}
+{%- if sensu.pagerduty_apikey %}
   "pagerduty": {
     "api_key": "{{ sensu.pagerduty_apikey }}"
   },
@@ -19,31 +19,31 @@
     "default": {
       "type": "set",
       "handlers": [
-{%- if salt['pillar.get']('sensu:hipchat_apikey', False) %}
+{%- if sensu.hipchat_apikey %}
         "hipchat",
 {%- endif %}
-{%- if salt['pillar.get']('sensu:pagerduty_apikey', False) %}
+{%- if sensu.pagerduty_apikey %}
         "pagerduty",
 {%- endif %}
-{%- if salt['pillar.get']('sensu:email', False) %}
+{%- if sensu.email %}
         "email",
 {%- endif %}
         "stdout"
       ]
     },
-{%- if salt['pillar.get']('sensu:pagerduty_apikey', False) %}
+{%- if sensu.pagerduty_apikey %}
     "pagerduty": {
       "command": "/etc/sensu/community/handlers/notification/pagerduty.rb",
       "type": "pipe"
     },
 {%- endif %}
-{%- if salt['pillar.get']('sensu:hipchat_apikey', False) %}
+{%- if sensu.hipchat_apikey %}
     "hipchat": {
       "command": "/etc/sensu/community/handlers/notification/hipchat.rb",
       "type": "pipe"
     },
 {%- endif %}
-{%- if salt['pillar.get']('sensu:email', False) %}
+{%- if sensu.email %}
     "email": {
       "type": "pipe",
       "command": "mail -s '[sensu] alert' {{sensu.email}}"

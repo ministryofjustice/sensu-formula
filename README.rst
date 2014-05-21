@@ -85,7 +85,7 @@ name
 metric_name
   The name of the metric/target to pull from graphite. This can be any standard graphite target
   and can therefore include any of the default graphite functions. If the test is host-specific
-  the test can also refer to the hostpath by using the 
+  the test can also refer to the hostpath by using the :::metric_prefix::: sensu variable.
 
 params
   The set of additional parameters for this check, which should include the critical and warning

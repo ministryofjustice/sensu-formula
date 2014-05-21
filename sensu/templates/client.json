@@ -3,6 +3,6 @@
     "name": "{{grains['fqdn']}}",
     "address": "{{grains['fqdn_ip4']}}",
     "metric_prefix": "{{ grains['fqdn'].split('.')|reverse| join('.') }}",
-    "subscriptions": [ "all", "{{grains['roles']|join('", "') }}" ]
+    "subscriptions": [ "all" ]
   }
 }

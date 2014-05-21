@@ -17,6 +17,33 @@ include:
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
+{%- if sensu.notify.email %}
+sensu-mailutils:
+  pkg.installed:
+    - name: mailutils
+    - watch_in:
+      - service: sensu-server
+{% endif %}
+
+{%- if sensu.notify.pagerduty_apikey %}
+redphone:
+  gem.installed:
+    - ruby: /opt/sensu/embedded/bin/ruby
+    - require:
+      - pkg: sensu
+    - watch_in:
+      - service: sensu-server
+{% endif %}
+
+{%- if sensu.notify.hipchat_apikey %}
+hipchat:
+  gem.installed:
+    - ruby: /opt/sensu/embedded/bin/ruby
+    - require:
+      - pkg: sensu
+    - watch_in:
+      - service: sensu-server
+{% endif %}
 
 /etc/sensu/conf.d/api.json:
   file.managed:
@@ -35,16 +62,6 @@ include:
     - source: salt://sensu/templates/handlers.json
     - template: 'jinja'
 
-
-{% if salt['pillar.get']('pagerduty:apikey', False) %}
-/etc/sensu/conf.d/pagerduty.json:
-  file.managed:
-    - source: salt://sensu/templates/pagerduty.json
-    - template: 'jinja'
-{% else %}
-/etc/sensu/conf.d/pagerduty.json:
-  file.absent
-{% endif %}
 
 sensu-server:
   service.running:
@@ -80,6 +97,10 @@ sensu_rabbitmq_user:
     - password: {{ sensu.rabbitmq.password }}
     - require:
       - pkg: rabbitmq-server
+    - require_in:
+      - service: sensu-api
+      - service: sensu-server
+
 #perms are not working so we fall back to owner
 
 
@@ -87,6 +108,9 @@ sensu_rabbitmq_vhost:
   rabbitmq_vhost.present:
     - name: {{ sensu.rabbitmq.vhost }}
     - owner: {{ sensu.rabbitmq.user }}
+    - require_in:
+      - service: sensu-api
+      - service: sensu-server
 
 
 

@@ -1,19 +1,58 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {
+
+{%- if sensu.notify.hipchat_apikey %}
+  "hipchat": {
+    "apikey": "{{ sensu.notify.hipchat_apikey }}",
+    "apiversion": "v2",
+    "room": "{{ sensu.notify.hipchat_roomname }}"
+  },
+{%- endif %}
+ 
+{%- if sensu.notify.pagerduty_apikey %}
+  "pagerduty": {
+    "api_key": "{{ sensu.notify.pagerduty_apikey }}"
+  },
+{%- endif %}
+ 
   "handlers": {
     "default": {
       "type": "set",
       "handlers": [
+{%- if sensu.notify.hipchat_apikey %}
+        "hipchat",
+{%- endif %}
+{%- if sensu.notify.pagerduty_apikey %}
+        "pagerduty",
+{%- endif %}
+{%- if sensu.notify.email %}
+        "email",
+{%- endif %}
         "stdout"
       ]
     },
+{%- if sensu.notify.pagerduty_apikey %}
+    "pagerduty": {
+      "command": "/etc/sensu/community/handlers/notification/pagerduty.rb",
+      "type": "pipe"
+    },
+{%- endif %}
+{%- if sensu.notify.hipchat_apikey %}
+    "hipchat": {
+      "command": "/etc/sensu/community/handlers/notification/hipchat.rb",
+      "type": "pipe"
+    },
+{%- endif %}
+{%- if sensu.notify.email %}
+    "email": {
+      "type": "pipe",
+      "command": "mail -s '[sensu] alert' {{sensu.notify.email}}"
+    },
+{%- endif %}
     "stdout": {
       "type": "pipe",
       "command": "cat"
-    },
-    "email": {
-      "type": "pipe",
-      "command": "mail -s '[sensu] alert' {{sensu.email}}"
     }
   }
 }
+

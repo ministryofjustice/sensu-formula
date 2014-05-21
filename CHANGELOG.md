@@ -1,3 +1,9 @@
+## Next Release
+
+* Added support for email, hipchat and pagerduty notification (see README)
+* Moved notification pillar values to sensu.notify.* 
+* Tidied up require/watch logic on server/client setup
+
 ## Version 2.0.0
 
 * Moved sensu community plugins so they are only available from

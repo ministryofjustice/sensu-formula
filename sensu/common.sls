@@ -22,6 +22,7 @@ sensu:
 
 /etc/sensu/conf.d/checks:
   file.directory:
+    - clean: True
     - require:
       - pkg: sensu
 

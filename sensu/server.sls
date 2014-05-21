@@ -29,7 +29,7 @@ sensu-mailutils:
 sensu_redphone:
   cmd.run:
     - name: /opt/sensu/embedded/bin/gem install redphone
-    - onlyif: /opt/sensu/embedded/bin/gem list -i redphone
+    - unless: /opt/sensu/embedded/bin/gem list -i redphone
     - require:
       - pkg: sensu
     - watch_in:
@@ -40,7 +40,7 @@ sensu_redphone:
 sensu_hipchat:
   cmd.run:
     - name: /opt/sensu/embedded/bin/gem install hipchat
-    - onlyif: /opt/sensu/embedded/bin/gem list -i hipchat
+    - unless: /opt/sensu/embedded/bin/gem list -i hipchat
     - require:
       - pkg: sensu
     - watch_in:

@@ -149,7 +149,7 @@ Example::
     sensu:
       notify:
         hipchat_apikey: c5wzTko0O59Xb6wlIKRstaQLbcsJJJFAANaEoD3
-        hipchat_room: 'My Project Alerts'
+        hipchat_roomname: 'My Project Alerts'
 
 
 Pagerduty

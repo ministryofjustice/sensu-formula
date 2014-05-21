@@ -1,3 +1,12 @@
+## Version 2.1.2
+
+* Fix: redphone and hipchat gems are now correctly installed in embedded
+  ruby when pagerduty/hipchat integration is enabled
+* Changed the Hipchat API to v1 to avoid the API key being associated
+  with a person
+* Removed additional subscriptions based on roles. This is not used at 
+  present and causes a failure on machines where roles are not defined
+
 ## Version 2.1.1
 
 * Ensure all old checks get deleted by setting 'clean:True' on directory

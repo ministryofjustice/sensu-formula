@@ -1,4 +1,4 @@
-## Next Release
+## Version 2.1.0
 
 * Added support for email, hipchat and pagerduty notification (see README)
 * Moved notification pillar values to sensu.notify.* 

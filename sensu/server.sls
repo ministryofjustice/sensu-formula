@@ -17,6 +17,14 @@ include:
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
+{%- if sensu.notify.email %}
+sensu-mailutils:
+  pkg.installed:
+    - name: mailutils
+    - watch_in:
+      - service: sensu-server
+{% endif %}
+
 {%- if sensu.notify.pagerduty_apikey %}
 redphone:
   gem.installed:

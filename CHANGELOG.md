@@ -1,3 +1,7 @@
+## Version 2.1.1
+
+* Ensure all old checks get deleted by setting 'clean:True' on directory
+
 ## Version 2.1.0
 
 * Added support for email, hipchat and pagerduty notification (see README)

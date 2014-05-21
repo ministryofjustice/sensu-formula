@@ -17,7 +17,7 @@ include:
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
-{%- if sensu.pagerduty_apikey %}
+{%- if sensu.notify.pagerduty_apikey %}
 redphone:
   gem.installed:
     - ruby: /opt/sensu/embedded/bin/ruby
@@ -27,7 +27,7 @@ redphone:
       - service: sensu-server
 {% endif %}
 
-{%- if sensu.hipchat_apikey %}
+{%- if sensu.notify.hipchat_apikey %}
 hipchat:
   gem.installed:
     - ruby: /opt/sensu/embedded/bin/ruby
@@ -54,16 +54,6 @@ hipchat:
     - source: salt://sensu/templates/handlers.json
     - template: 'jinja'
 
-
-{% if salt['pillar.get']('pagerduty:apikey', False) %}
-/etc/sensu/conf.d/pagerduty.json:
-  file.managed:
-    - source: salt://sensu/templates/pagerduty.json
-    - template: 'jinja'
-{% else %}
-/etc/sensu/conf.d/pagerduty.json:
-  file.absent
-{% endif %}
 
 sensu-server:
   service.running:

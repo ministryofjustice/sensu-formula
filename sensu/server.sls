@@ -26,9 +26,10 @@ sensu-mailutils:
 {% endif %}
 
 {%- if sensu.notify.pagerduty_apikey %}
-redphone:
-  gem.installed:
-    - ruby: /opt/sensu/embedded/bin/ruby
+sensu_redphone:
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install redphone
+    - unless: /opt/sensu/embedded/bin/gem list -i redphone
     - require:
       - pkg: sensu
     - watch_in:
@@ -36,9 +37,10 @@ redphone:
 {% endif %}
 
 {%- if sensu.notify.hipchat_apikey %}
-hipchat:
-  gem.installed:
-    - ruby: /opt/sensu/embedded/bin/ruby
+sensu_hipchat:
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install hipchat
+    - unless: /opt/sensu/embedded/bin/gem list -i hipchat
     - require:
       - pkg: sensu
     - watch_in:

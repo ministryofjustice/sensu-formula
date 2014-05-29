@@ -1,3 +1,10 @@
+## Master
+
+* Ensure that /etc/salt/conf.d/checks is managed idempotently. Incremental
+  runs of highstate will not incorrectly mark all files as changed.
+* Pin community-plugins to a git commit instead of just master. This can
+  be overridden by pillar var defined in map.jinja
+
 ## Version 2.1.2
 
 * Fix: redphone and hipchat gems are now correctly installed in embedded

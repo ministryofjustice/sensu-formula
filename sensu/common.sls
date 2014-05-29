@@ -31,9 +31,10 @@ sensu-confd-checks-clean:
     - clean: True
     - require:
       - pkg: sensu
-      - file: /etc/sensu/conf.d/checks
+      - file: sensu-confd-checks-dir
 
-/etc/sensu/conf.d/checks:
+sensu-confd-checks-dir:
   file.directory:
+    - name: /etc/sensu/conf.d/checks
     - require:
       - pkg: sensu

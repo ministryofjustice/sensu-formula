@@ -26,7 +26,7 @@ execute check is process exists
         standalone: {{standalone}}
         subscribers: {{subscribers}}
     - require:
-      - file: /etc/sensu/conf.d/checks
+      - file: sensu-confd-checks-dir
     - require_in:
       - file: sensu-confd-checks-clean
     - watch_in:

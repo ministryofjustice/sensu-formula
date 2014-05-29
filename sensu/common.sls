@@ -20,12 +20,6 @@ sensu:
     - require:
       - pkg: sensu
 
-/etc/sensu/conf.d/checks:
-  file.directory:
-    - clean: True
-    - require:
-      - pkg: sensu
-
 
 # The logic below is pretty warped but it seems like the only way
 # for salt to treat a managed directory as idempotent to ensure

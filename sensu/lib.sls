@@ -27,6 +27,8 @@ execute check is process exists
         subscribers: {{subscribers}}
     - require:
       - file: /etc/sensu/conf.d/checks
+    - require_in:
+      - file: sensu-confd-checks-clean
     - watch_in:
         - service: sensu-client
 

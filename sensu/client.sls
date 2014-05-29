@@ -3,6 +3,7 @@
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
 include:
+  - logstash.client
   - .common
 
 /etc/sensu/conf.d/rabbitmq.json:
@@ -78,6 +79,7 @@ include:
 https://github.com/sensu/sensu-community-plugins.git:
   git.latest:
     - target: /etc/sensu/community
+    - rev: {{ sensu.community_plugins_rev }}
     - require:
       - pkg: sensu_deps
 

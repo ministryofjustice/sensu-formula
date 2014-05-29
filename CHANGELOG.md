@@ -1,4 +1,4 @@
-## Master
+## Version 2.1.3
 
 * Ensure that /etc/salt/conf.d/checks is managed idempotently. Incremental
   runs of highstate will not incorrectly mark all files as changed.

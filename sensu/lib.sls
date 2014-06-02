@@ -11,6 +11,7 @@ execute check is process exists
 
 #}
 
+{% from "sensu/map.jinja" import sensu with context %}
 
 {% macro sensu_check(name, command, handlers=['default'], interval=60, subscribers=['all'], standalone=False) %}
 
@@ -47,7 +48,7 @@ execute check is process exists
 {% endmacro %}
 
 {% macro sensu_check_graphite(name, metric_name, params, desc) %}
-{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s graphite.local:80 -t "+metric_name+" -n '"+desc+"' " + params %}
+{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s " + sensu.graphite.host + ":" ~ sensu.graphite.port ~ " -t "+metric_name+" -n '"+desc+"' " + params %}
 {% set standalone = kwargs.standalone|default(False) %}
 {{ sensu_check(name="graphite-"+name, command=check_cmd, standalone=standalone) }}
 {% endmacro %}

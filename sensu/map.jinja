@@ -12,13 +12,17 @@
             'port': 6379,
             'db': 1,
         },
+        'graphite': {
+            'host': 'graphite.local',
+            'port': 80,
+        },
         'notify': {
             'email': False,
             'pagerduty_apikey': False,
             'hipchat_apikey': False,
             'hipchat_roomname': 'Alerts'
         },
-        'community_plugins_rev': '474e375c3f'
+        'community_plugins_rev': '474e375c3f',
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('sensu',{})) %}

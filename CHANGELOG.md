@@ -1,3 +1,10 @@
+## Version 2.1.4
+
+* Be explicit about the permissions of the files we managed.
+
+  Without this you could end up with a broken configuration depending on the
+  umask of the user you run `salt-call` as.
+
 ## Version 2.1.3
 
 * Ensure that /etc/salt/conf.d/checks is managed idempotently. Incremental

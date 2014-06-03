@@ -19,7 +19,7 @@ execute check is process exists
     - source: salt://sensu/templates/checks.json
     - template: jinja
     - mode: 600
-    - onwer: sensu
+    - owner: sensu
     - group: sensu
     - context:
         name: {{name}}

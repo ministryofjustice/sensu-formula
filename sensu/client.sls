@@ -10,12 +10,14 @@ include:
   file.managed:
     - source: salt://sensu/templates/rabbitmq.json
     - template: jinja
+    - mode: 644
 
 
 /etc/sensu/conf.d/client.json:
   file.managed:
     - source: salt://sensu/templates/client.json
     - template: jinja
+    - mode: 644
 
 ###
 ### CHECKS --- Root Disk Free Space

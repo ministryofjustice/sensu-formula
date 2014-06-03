@@ -1,3 +1,7 @@
+## Version 2.1.5
+
+* Fix typo introduced in v2.1.4
+
 ## Version 2.1.4
 
 * Be explicit about the permissions of the files we managed.

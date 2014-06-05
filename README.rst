@@ -33,14 +33,14 @@ Available states
     :local:
 
 ``sensu_check`` macro
------------
+---------------------
 
-Macro to ship a given log file with beaver to central logstash server.
+Macro to create a new check instance.
 
 The macro has the following arguments:
 
 name
-  A for the check name. Must be unique on the box
+  A for the check name. Must be unique on the enviornment
 
 command
   The command to run for the check
@@ -57,6 +57,7 @@ interval
   **Default:** 60
 
 subscribers
+  Which clients should perform this check
 
   **Default:** [``all``]
 
@@ -72,10 +73,9 @@ Example usage::
 
 
 ``sensu_check_graphite`` macro
------------
+------------------------------
 
-sensu_check_graphite(name, metric_name, params, desc
-Macro to perform a check against a graphite target
+Macro to perform a check against a graphite metric target
 
 The macro has the following arguments:
 
@@ -85,17 +85,26 @@ name
 metric_name
   The name of the metric/target to pull from graphite. This can be any standard graphite target
   and can therefore include any of the default graphite functions. If the test is host-specific
-  the test can also refer to the hostpath by using the :::metric_prefix::: sensu variable.
-
-params
-  The set of additional parameters for this check, which should include the critical and warning
-  thresholds. For more details on the available options please consult the graphite check at
-  ``./sensu/files/plugins/graphite-data.rb``.
-
+  the test can also refer to the hostpath by using the ``:::metric_prefix:::`` sensu variable.
 
 desc
   The description of the check. This is used when generating alerts.
 
+params
+  The set of additional command line parameters for this check. This should
+  either include the warning and critical levels, or the levels must be defined
+  in the pillar - but not both.  For more details on the available options
+  please consult the graphite check at
+  ``./sensu/files/plugins/graphite-data.rb``.
+
+
+Configuring thresholds
+~~~~~~~~~~~~~~~~~~~~~~
+
+This macro will look in the pillar under ``sensu:checks`` for a dictionary that
+matches the check name (``free-root-disk`` in this example) and if that
+contains ``warning`` or ``critical`` keys it will use those values and append
+``-w`` and ``-c`` options to the params automatically.
 
 Example usage::
 
@@ -105,8 +114,16 @@ Example usage::
     {% from 'sensu.sls' import sensu_check_graphite with context %}
     {{ sensu_check_graphite("free-root-disk",
                         "metrics.:::metric_prefix:::.df.root.df_complex.free",
-                        "--below -w 10737418240 -c 5368709120 -a 600",
+                        "--below -a 600",
                         "Root Disk Full") }}
+
+With the following pillar (which is the default)::
+
+    sensu:
+      checks:
+        free-root-disk:
+            warning: 10737418240
+            critical: 5368709120
 
 
 ``sensu_check_procs`` macro
@@ -130,7 +147,7 @@ visible in the dashboard and in sensu-server.log. To enable additional notificat
 enable them in the pillar. You can enable as many as you like of the additional notifications.
 
 Email
-~~~~~
+-----
 
 Example::
 
@@ -139,7 +156,7 @@ Example::
         email: 'alerts@mydomain.com'
 
 HipChat
-~~~~~~~
+-------
 
 You need to obtain an APIkey from Hipchat Admin. By default, if a roomname isn't specified it will sent Alerts
 to the 'Alerts' room.
@@ -153,7 +170,7 @@ Example::
 
 
 Pagerduty
-~~~~~~~~~
+---------
 
 To integrate with Pagerduty, you must first create a Service definition which is driven by an API key. 
 Once you have this, you should add the generated API key to the default pillar.

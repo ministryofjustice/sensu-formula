@@ -1,3 +1,8 @@
+## Version 2.2.0
+
+* Allow graphite host to be specified in the pillar
+* Allow check limits for graphite checks to be specified from pillar values
+
 ## Version 2.1.5
 
 * Fix typo introduced in v2.1.4

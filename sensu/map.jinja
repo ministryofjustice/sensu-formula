@@ -23,6 +23,28 @@
             'hipchat_roomname': 'Alerts'
         },
         'community_plugins_rev': '474e375c3f',
+        'checks': {
+            'free-root-disk': {
+                'warning': 10737418240,
+                'critical': 5368709120,
+            },
+            'load-shortterm': {
+                'warning': 1,
+                'critical', 2,
+            },
+            'load-midterm': {
+                'warning': 2,
+                'critical': 3,
+            },
+            'load-longterm': {
+                'warning': 3,
+                'critical': 4,
+            },
+            'swap-used': {
+                'warning': 20971520,
+                'critical': 104857600,
+            },
+        },
     },
     'default': 'Debian',
 }, merge=salt['pillar.get']('sensu',{})) %}

@@ -3,6 +3,7 @@
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
 include:
+  - apparmor
   - logstash.client
   - .common
 
@@ -122,6 +123,15 @@ sensu-client:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/*
     - order: last
+
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-client:
+  file.managed:
+    - source: salt://sensu/files/client_apparmor_profile
+    - template: 'jinja'
+    - watch_in:
+       - command: reload-profiles
+       - service: sensu-client
+
 
 # order last as a hask workaround for sensu: Client exits on failure to connect #680
 # https://github.com/sensu/sensu/issues/680

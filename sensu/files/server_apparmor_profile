@@ -1,0 +1,22 @@
+#include <tunables/global>
+
+/opt/sensu/embedded/bin/sensu-server {
+  #include <abstractions/apache2-common>
+  #include <abstractions/base>
+  #include <abstractions/ruby>
+
+
+
+  /bin/cat rix,
+  /bin/dash rix,
+  /etc/sensu/** r,
+  /opt/sensu/embedded/bin/ruby ix,
+  /opt/sensu/embedded/bin/sensu-server r,
+  /opt/sensu/embedded/lib/lib*so* mr,
+  /opt/sensu/embedded/lib/ruby/** mr,
+  /opt/sensu/embedded/ssl/cert.pem r,
+  /proc/*/status r,
+  /run/sensu/sensu-server.pid w,
+  /var/log/sensu/sensu-server.log w,
+
+}

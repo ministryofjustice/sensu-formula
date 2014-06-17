@@ -6,6 +6,7 @@ include:
   - nginx
   - redis
   - rabbitmq
+  - apparmor
   - .client
   - .common
   - .deps
@@ -74,6 +75,14 @@ sensu-server:
       - file: /etc/sensu/conf.d/rabbitmq.json
       - file: /etc/sensu/conf.d/handlers.json
 
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-server:
+  file.managed:
+    - source: salt://sensu/files/server_apparmor_profile
+    - template: 'jinja'
+    - watch_in:
+       - command: reload-profiles
+       - service: sensu-server
+
 
 sensu-api:
   service.running:
@@ -82,6 +91,14 @@ sensu-api:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/api.json
       - file: /etc/sensu/conf.d/redis.json
+
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-api:
+  file.managed:
+    - source: salt://sensu/files/api_apparmor_profile
+    - template: 'jinja'
+    - watch_in:
+       - command: reload-profiles
+       - service: sensu-api
 
 
 sensu-dashboard:
@@ -92,6 +109,13 @@ sensu-dashboard:
       - file: /etc/sensu/conf.d/api.json
       - file: /etc/sensu/conf.d/dashboard.json
 
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-dashboard:
+  file.managed:
+    - source: salt://sensu/files/dashboard_apparmor_profile
+    - template: 'jinja'
+    - watch_in:
+       - command: reload-profiles
+       - service: sensu-dashboard
 
 sensu_rabbitmq_user:
   rabbitmq_user.present:

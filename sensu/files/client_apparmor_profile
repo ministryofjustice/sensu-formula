@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/opt/sensu/embedded/bin/sensu-client {
+/opt/sensu/embedded/bin/sensu-client flags=(complain) {
   #include <abstractions/base>
   #include <abstractions/bash>
   #include <abstractions/nameservice>

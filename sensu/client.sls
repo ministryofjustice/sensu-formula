@@ -129,7 +129,7 @@ sensu-client:
     - source: salt://sensu/files/client_apparmor_profile
     - template: 'jinja'
     - watch_in:
-       - command: reload-profiles
+       - cmd: reload-profiles
        - service: sensu-client
 
 

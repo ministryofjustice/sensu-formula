@@ -80,7 +80,7 @@ sensu-server:
     - source: salt://sensu/files/server_apparmor_profile
     - template: 'jinja'
     - watch_in:
-       - command: reload-profiles
+       - cmd: reload-profiles
        - service: sensu-server
 
 
@@ -97,7 +97,7 @@ sensu-api:
     - source: salt://sensu/files/api_apparmor_profile
     - template: 'jinja'
     - watch_in:
-       - command: reload-profiles
+       - cmd: reload-profiles
        - service: sensu-api
 
 
@@ -114,7 +114,7 @@ sensu-dashboard:
     - source: salt://sensu/files/dashboard_apparmor_profile
     - template: 'jinja'
     - watch_in:
-       - command: reload-profiles
+       - cmd: reload-profiles
        - service: sensu-dashboard
 
 sensu_rabbitmq_user:

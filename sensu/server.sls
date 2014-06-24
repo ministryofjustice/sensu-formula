@@ -77,10 +77,9 @@ sensu-server:
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-server:
   file.managed:
-    - source: salt://sensu/files/server_apparmor_profile
-    - template: 'jinja'
+    - source: salt://sensu/templates/server_apparmor_profile
+    - template: jinja
     - watch_in:
-       - cmd: reload-profiles
        - service: sensu-server
 
 
@@ -94,10 +93,9 @@ sensu-api:
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-api:
   file.managed:
-    - source: salt://sensu/files/api_apparmor_profile
-    - template: 'jinja'
+    - source: salt://sensu/templates/api_apparmor_profile
+    - template: jinja
     - watch_in:
-       - cmd: reload-profiles
        - service: sensu-api
 
 
@@ -111,10 +109,9 @@ sensu-dashboard:
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-dashboard:
   file.managed:
-    - source: salt://sensu/files/dashboard_apparmor_profile
-    - template: 'jinja'
+    - source: salt://sensu/templates/dashboard_apparmor_profile
+    - template: jinja
     - watch_in:
-       - cmd: reload-profiles
        - service: sensu-dashboard
 
 sensu_rabbitmq_user:

@@ -126,10 +126,9 @@ sensu-client:
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-client:
   file.managed:
-    - source: salt://sensu/files/client_apparmor_profile
-    - template: 'jinja'
+    - source: salt://sensu/templates/client_apparmor_profile
+    - template: jinja
     - watch_in:
-       - cmd: reload-profiles
        - service: sensu-client
 
 

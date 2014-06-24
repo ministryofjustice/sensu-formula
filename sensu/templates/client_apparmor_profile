@@ -1,0 +1,46 @@
+#include <tunables/global>
+
+/opt/sensu/embedded/bin/sensu-client {{salt['pillar.get']('apparmor:profiles:sensu_client', '')}} {
+  #include <abstractions/base>
+  #include <abstractions/bash>
+  #include <abstractions/nameservice>
+  #include <abstractions/ruby>
+  #include <abstractions/ubuntu-konsole>
+
+  capability sys_ptrace,
+
+
+
+  /bin/bash rix,
+  /bin/dash rix,
+  /bin/grep rix,
+  /bin/ps rix,
+  /bin/uname rix,
+
+  /etc/sensu/*/ r,
+  /etc/sensu/plugins/** rix,
+  /etc/sensu/community/plugins/** rix,
+  /etc/sensu/conf.d/** r,
+  /opt/sensu/** mr,
+  /opt/sensu/embedded/bin/ruby ix,
+
+  /proc/ r,
+  /proc/*/cmdline r,
+  /proc/*/maps r,
+  /proc/*/stat r,
+  /proc/*/status r,
+  /proc/meminfo r,
+  /proc/sys/kernel/pid_max r,
+  /proc/uptime r,
+  /proc/version r,
+  /run/sensu/sensu-client.pid w,
+
+  /usr/bin/bc rix,
+  /usr/bin/cut rix,
+  /usr/bin/env r,
+  /usr/bin/free rix,
+  /usr/bin/mawk rix,
+  /usr/lib{,32,64}/** mr,
+  /var/log/sensu/* w,
+
+}

@@ -1,5 +1,6 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "sensu/lib.sls" import sensu_check_procs with context %}
+{% from "sensu/lib.sls" import sensu_check with context %}
 {% from 'logstash/lib.sls' import logship with context %}
 
 include:
@@ -134,9 +135,6 @@ sensu_rabbitmq_vhost:
     - require_in:
       - service: sensu-api
       - service: sensu-server
-
-
-
 
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}

@@ -3,6 +3,11 @@
     "name": "{{grains['fqdn']}}",
     "address": "{{grains['fqdn_ip4']}}",
     "metric_prefix": "{{ grains['fqdn'].split('.')|reverse| join('.') }}",
+{% if 'monitoring.server' in grains['roles']%}
+    "subscriptions": [ "all", "monitoring_server" ]
+{% else %}
     "subscriptions": [ "all" ]
+{% endif %}
+
   }
 }

@@ -61,5 +61,3 @@ execute check is process exists
 {% set standalone = kwargs.standalone|default(False) %}
 {{ sensu_check(name="graphite-"+name, command=check_cmd, standalone=standalone) }}
 {% endmacro %}
-
-

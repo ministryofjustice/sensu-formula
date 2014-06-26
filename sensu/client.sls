@@ -108,10 +108,18 @@ sensu_plugins_remove_symlink:
     - require:
       - cmd: sensu_plugins_remove_symlink
 
-
 sensu-plugin:
   gem.installed
 
+rest-client:
+  gem.installed
+
+/etc/sensu/plugins/check-logstash.rb:
+  file.managed:
+    - source: salt://sensu/files/plugins/check-logstash.rb
+    - require:
+      - gem: sensu-plugin
+      - gem: rest-client
 
 {{ sensu_check_procs("cron") }}
 {{ sensu_check_procs("collectd") }}
@@ -131,10 +139,10 @@ sensu-client:
     - watch_in:
        - service: sensu-client
 
+{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-logstash.rb', subscribers=['all'])}}
 
 # order last as a hask workaround for sensu: Client exits on failure to connect #680
 # https://github.com/sensu/sensu/issues/680
-
 
 
 {{ logship('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}

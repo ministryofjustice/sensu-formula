@@ -41,6 +41,8 @@
   /usr/bin/free rix,
   /usr/bin/mawk rix,
   /usr/lib{,32,64}/** mr,
+  /usr/local/lib/ruby/2.0.0/** mr,
+  /usr/local/lib/ruby/gems/2.0.0/** r,
   /var/log/sensu/* w,
 
 }

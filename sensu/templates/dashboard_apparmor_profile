@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/opt/sensu/embedded/bin/sensu-dashboard {{ salt['pillar.get']('apparmor:profiles:sensu_dashboard', '') }} {
+/opt/sensu/embedded/bin/sensu-dashboard {{ salt['pillar.get']('apparmor:profiles:sensu_dashboard:enforce', 'flags=(complain)') }} {
   #include <abstractions/apache2-common>
   #include <abstractions/base>
   #include <abstractions/ruby>

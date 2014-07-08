@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/opt/sensu/embedded/bin/sensu-server {{ salt['pillar.get']('apparmor:profiles:sensu_server') }} {
+/opt/sensu/embedded/bin/sensu-server {{ salt['pillar.get']('apparmor:profiles:sensu_server:enforce', 'flags=(complain)')}} {
   #include <abstractions/apache2-common>
   #include <abstractions/base>
   #include <abstractions/ruby>

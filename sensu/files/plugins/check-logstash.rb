@@ -6,7 +6,7 @@ require 'rest-client'
 require 'sensu-plugin/check/cli'
 require 'socket'
 
-class ElasticSearchApparmorCheck < Sensu::Plugin::Check::CLI
+class LogStashApparmorCheck < Sensu::Plugin::Check::CLI
   option  :es_proto, :short => '-o HTTP(S)', :long => '--es-proto HTTP(S)',
           :default => 'http'
   option  :es_host, :short => '-h ES_HOST', :long => '--es-host ES_HOST', 

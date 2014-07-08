@@ -108,11 +108,13 @@ sensu_plugins_remove_symlink:
     - require:
       - cmd: sensu_plugins_remove_symlink
 
+{% if 'monitoring.server' in grains['roles']%}
 sensu-plugin:
   gem.installed
 
 rest-client:
   gem.installed
+{% endif %}
 
 /etc/sensu/plugins/check-logstash.rb:
   file.managed:

@@ -116,9 +116,9 @@ rest-client:
   gem.installed
 {% endif %}
 
-/etc/sensu/plugins/check-logstash.rb:
+/etc/sensu/plugins/check-apparmor.rb:
   file.managed:
-    - source: salt://sensu/files/plugins/check-logstash.rb
+    - source: salt://sensu/files/plugins/check-apparmor.rb
     - require:
       - gem: sensu-plugin
       - gem: rest-client
@@ -141,7 +141,7 @@ sensu-client:
     - watch_in:
        - service: sensu-client
 
-{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-logstash.rb', subscribers=['monitoring_server'])}}
+{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-apparmor.rb', subscribers=['monitoring_server'])}}
 
 # order last as a hask workaround for sensu: Client exits on failure to connect #680
 # https://github.com/sensu/sensu/issues/680

@@ -141,7 +141,7 @@ sensu-client:
     - watch_in:
        - service: sensu-client
 
-{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-logstash.rb', subscribers=['all'])}}
+{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-logstash.rb', subscribers=['monitoring_server'])}}
 
 # order last as a hask workaround for sensu: Client exits on failure to connect #680
 # https://github.com/sensu/sensu/issues/680

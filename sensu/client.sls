@@ -30,7 +30,7 @@ include:
 # Warning at 75% used crit at 90%
 {{ sensu_check_graphite("used-root-disk", 
                         "'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))'",
-                        "--below -a 600",
+                        "-a 600",
                         "Root Disk Used Percentage") }}
 
 ###

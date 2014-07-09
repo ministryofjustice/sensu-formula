@@ -29,7 +29,7 @@ include:
 # Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
 # Warning at 75% used crit at 90%
 {{ sensu_check_graphite("used-root-disk", 
-                        "'aliasByNode(asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,metrics.:::metric_prefix:::.df.root.df_complex.free))'",
+                        "'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))'",
                         "--below -a 600",
                         "Root Disk Used Percentage") }}
 
@@ -72,7 +72,7 @@ include:
 # We should never be in swap so percentages are not required. 
 # swap-used - warning 30% critical 50%
 {{ sensu_check_graphite("swap-used", 
-                        "'aliasByNode(asPercent(metrics.:::metric_prefix:::.swap.swap.used,metrics.:::metric_prefix:::.swap.swap.free))'",
+                        "'asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))'",
                         "-a 600",
                         "Swap Used Percentage") }}
 

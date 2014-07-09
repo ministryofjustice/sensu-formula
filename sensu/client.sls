@@ -27,11 +27,11 @@ include:
 ## - sensu_check('check_disk', '/etc/sensu/community/plugins/system/check-disk.rb') 
 
 # Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
-# Warning at 10Gb free space, Critical at 5Gb
-{{ sensu_check_graphite("free-root-disk", 
-                        "metrics.:::metric_prefix:::.df.root.df_complex.free", 
+# Warning at 75% used crit at 90%
+{{ sensu_check_graphite("used-root-disk", 
+                        "'aliasByNode(asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,metrics.:::metric_prefix:::.df.root.df_complex.free))'"
                         "--below -a 600",
-                        "Root Disk Full") }}
+                        "Root Disk Used Percentage") }}
 
 ###
 ### CHECKS --- Load 
@@ -70,11 +70,11 @@ include:
 # - sensu_check('check_swap', '/etc/sensu/community/plugins/system/check-swap-percentage.sh -w 5 -c 25') 
 
 # We should never be in swap so percentages are not required. 
-# swap-used - warning=20M critical=100M
+# swap-used - warning 30% critical 50%
 {{ sensu_check_graphite("swap-used", 
-                        "metrics.:::metric_prefix:::.swap.swap.used", 
-                        "-w 20971520 -c 104857600 -a 600",
-                        "Swap In Used") }}
+                        "'aliasByNode(asPercent(metrics.:::metric_prefix:::.swap.swap.used,metrics.:::metric_prefix:::.swap.swap.free))'"
+                        "-a 600",
+                        "Swap Used Percentage") }}
 
 
 # Sensu Community Plugins

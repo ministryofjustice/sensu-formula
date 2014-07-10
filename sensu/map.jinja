@@ -24,9 +24,9 @@
         },
         'community_plugins_rev': '474e375c3f',
         'checks': {
-            'free-root-disk': {
-                'warning': 10737418240,
-                'critical': 5368709120,
+            'used-root-disk': {
+                'warning': 75,
+                'critical': 90,
             },
             'load-shortterm': {
                 'warning': 1,
@@ -41,8 +41,12 @@
                 'critical': 4,
             },
             'swap-used': {
-                'warning': 20971520,
-                'critical': 104857600,
+                'warning': 30,
+                'critical': 50,
+            },
+            'memory-used': {
+                'warning': 70,
+                'critical': 85,
             },
         },
     },

@@ -26,19 +26,16 @@ include:
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
 ## - sensu_check('check_disk', '/etc/sensu/community/plugins/system/check-disk.rb') 
 
-# Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
-# Warning at 10Gb free space, Critical at 5Gb
-{{ sensu_check_graphite("free-root-disk", 
-                        "metrics.:::metric_prefix:::.df.root.df_complex.free", 
-                        "--below -a 600",
-                        "Root Disk Full") }}
+# Warning at 75% of disk in use (only 25% left free), critical at 90% in use (i.e. only 10% space
+# left unreserved)
+{{ sensu_check_graphite("used-root-disk", 
+                        "'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))'",
+                        "-a 600",
+                        "Root Disk Used Percentage") }}
 
 ###
-### CHECKS --- Load 
+### CHECKS --- Load
 ###
-
-# Old Sensu Check - replaced with graphite to ensure aligned reporting
-# - sensu_check('check_load', '/etc/sensu/community/plugins/system/check-load.rb -w 1,2,3 -c 2,3,4') 
 
 # shortterm - warning=1 critical=2
 {{ sensu_check_graphite("load-shortterm", 
@@ -59,22 +56,26 @@ include:
                         "Long Term LoadAve") }}
 
 
+###
+### CHECKS --- Memory
+###
 
-{{ sensu_check('check_mem', '/etc/sensu/community/plugins/system/check-memory-pcnt.sh -w 70 -c 85') }}
+# mem-used - warning 70% critical 85%
+{{ sensu_check_graphite("memory-used",
+                        "'asPercent(metrics.:::metric_prefix:::.memory.memory.used,sum(metrics.:::metric_prefix:::.memory.memory.*))'",
+                        "-a 600",
+                        "Memory Used Percentage") }}
 
 ###
 ### CHECKS --- Swap
 ###
 
-# Old Sensu Check - replaced with graphite to ensure aligned reporting
-# - sensu_check('check_swap', '/etc/sensu/community/plugins/system/check-swap-percentage.sh -w 5 -c 25') 
-
-# We should never be in swap so percentages are not required. 
-# swap-used - warning=20M critical=100M
+# Linux can swap even when there's free mem, so %ages do need to be used, not absolute values
+# swap-used - warning 30% critical 50%
 {{ sensu_check_graphite("swap-used", 
-                        "metrics.:::metric_prefix:::.swap.swap.used", 
-                        "-w 20971520 -c 104857600 -a 600",
-                        "Swap In Used") }}
+                        "'asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))'",
+                        "-a 600",
+                        "Swap Used Percentage") }}
 
 
 # Sensu Community Plugins

@@ -111,7 +111,8 @@ sensu_plugins_remove_symlink:
 {% if 'monitoring.server' in grains['roles']%}
 rest-client:
   cmd.run:
-    - name: /opt/sensu/embedded/bin/gem install rest-client
+    - name: /opt/sensu/embedded/bin/gem install rest-client --no-rdoc --no-ri
+    - unless: /opt/sensu/embedded/bin/gem which rest-client >/dev/null 2>/dev/null
 
 /etc/sensu/plugins/check-apparmor.rb:
   file.managed:

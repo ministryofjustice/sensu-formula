@@ -1,3 +1,8 @@
+## Version 3.x.x
+
+* Replace absolute disk space free check with one that checks percent in use
+* Replace absolute swap check with one that checks percent used.
+
 ## Version 2.2.0
 
 * Allow graphite host to be specified in the pillar

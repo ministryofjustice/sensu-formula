@@ -1,11 +1,13 @@
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "sensu/lib.sls" import sensu_check_procs with context %}
+{% from "sensu/lib.sls" import sensu_check with context %}
 {% from 'logstash/lib.sls' import logship with context %}
 
 include:
   - nginx
   - redis
   - rabbitmq
+  - apparmor
   - .client
   - .common
   - .deps
@@ -74,6 +76,13 @@ sensu-server:
       - file: /etc/sensu/conf.d/rabbitmq.json
       - file: /etc/sensu/conf.d/handlers.json
 
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-server:
+  file.managed:
+    - source: salt://sensu/templates/server_apparmor_profile
+    - template: jinja
+    - watch_in:
+       - service: sensu-server
+
 
 sensu-api:
   service.running:
@@ -82,6 +91,13 @@ sensu-api:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/api.json
       - file: /etc/sensu/conf.d/redis.json
+
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-api:
+  file.managed:
+    - source: salt://sensu/templates/api_apparmor_profile
+    - template: jinja
+    - watch_in:
+       - service: sensu-api
 
 
 sensu-dashboard:
@@ -92,6 +108,12 @@ sensu-dashboard:
       - file: /etc/sensu/conf.d/api.json
       - file: /etc/sensu/conf.d/dashboard.json
 
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-dashboard:
+  file.managed:
+    - source: salt://sensu/templates/dashboard_apparmor_profile
+    - template: jinja
+    - watch_in:
+       - service: sensu-dashboard
 
 sensu_rabbitmq_user:
   rabbitmq_user.present:
@@ -113,9 +135,6 @@ sensu_rabbitmq_vhost:
     - require_in:
       - service: sensu-api
       - service: sensu-server
-
-
-
 
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}

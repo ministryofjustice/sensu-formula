@@ -182,3 +182,20 @@ Example::
         pagerduty_apikey: 9e880a23f5ab1103bb7279896804e8a0
 
 
+apparmor
+========
+
+This formula includes profiles for all the sensu components. Apparmor is by
+default in complain mode which means it allows the action and logs. To make it
+deny actions that the beaver profile doesn't cover set the following pillar::
+
+    apparmor:
+      profiles:
+        sensu_api:
+          enforce: ''
+        sensu_client
+          encorce: ''
+        sensu_dashboard:
+          encorce: ''
+        sensu_server:
+          encorce: ''

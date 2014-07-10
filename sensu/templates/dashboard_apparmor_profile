@@ -1,0 +1,19 @@
+#include <tunables/global>
+
+/opt/sensu/embedded/bin/sensu-dashboard {{ salt['pillar.get']('apparmor:profiles:sensu_dashboard:enforce', 'flags=(complain)') }} {
+  #include <abstractions/apache2-common>
+  #include <abstractions/base>
+  #include <abstractions/ruby>
+
+
+
+  /etc/sensu/** r,
+  /opt/sensu/embedded/bin/ruby ix,
+  /opt/sensu/embedded/bin/sensu-dashboard r,
+  /opt/sensu/embedded/lib/lib*so* mr,
+  /opt/sensu/embedded/lib/ruby/** mr,
+  /opt/sensu/embedded/ssl/cert.pem r,
+  /run/sensu/sensu-dashboard.pid w,
+  /var/log/sensu/* w,
+
+}

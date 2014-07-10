@@ -3,6 +3,7 @@
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
 include:
+  - apparmor
   - logstash.client
   - .common
 
@@ -107,10 +108,18 @@ sensu_plugins_remove_symlink:
     - require:
       - cmd: sensu_plugins_remove_symlink
 
+{% if 'monitoring.server' in grains['roles']%}
+rest-client:
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install rest-client --no-rdoc --no-ri
+    - unless: /opt/sensu/embedded/bin/gem which rest-client >/dev/null 2>/dev/null
 
-sensu-plugin:
-  gem.installed
-
+/etc/sensu/plugins/check-apparmor.rb:
+  file.managed:
+    - source: salt://sensu/files/plugins/check-apparmor.rb
+    - require:
+      - cmd: rest-client
+{% endif %}
 
 {{ sensu_check_procs("cron") }}
 {{ sensu_check_procs("collectd") }}
@@ -123,9 +132,17 @@ sensu-client:
       - file: /etc/sensu/conf.d/*
     - order: last
 
+/etc/apparmor.d/opt.sensu.embedded.bin.sensu-client:
+  file.managed:
+    - source: salt://sensu/templates/client_apparmor_profile
+    - template: jinja
+    - watch_in:
+       - service: sensu-client
+
+{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-apparmor.rb', subscribers=['monitoring_server'])}}
+
 # order last as a hask workaround for sensu: Client exits on failure to connect #680
 # https://github.com/sensu/sensu/issues/680
-
 
 
 {{ logship('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}

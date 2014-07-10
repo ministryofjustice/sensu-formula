@@ -1,0 +1,16 @@
+#include <tunables/global>
+
+/opt/sensu/embedded/bin/sensu-api {{ salt['pillar.get']('apparmor:profiles:sensu_api:enforce', 'flags=(complain)') }} {
+  #include <abstractions/apache2-common>
+  #include <abstractions/base>
+  #include <abstractions/ruby>
+
+  /etc/sensu/** r,
+  /opt/sensu/embedded/bin/ruby ix,
+  /opt/sensu/embedded/bin/sensu-api r,
+  /opt/sensu/embedded/lib/** mr,
+  /opt/sensu/embedded/ssl/cert.pem r,
+  /run/sensu/sensu-api.pid w,
+  /var/log/sensu/sensu-api.log w,
+
+}

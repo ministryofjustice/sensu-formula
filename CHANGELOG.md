@@ -2,6 +2,7 @@
 
 * Replace absolute disk space free check with one that checks percent in use
 * Replace absolute swap check with one that checks percent used.
+* Add apparmor profiles for sensu processes (client,api,dashboard and server)
 
 ## Version 2.2.0
 

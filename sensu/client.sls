@@ -109,19 +109,16 @@ sensu_plugins_remove_symlink:
       - cmd: sensu_plugins_remove_symlink
 
 {% if 'monitoring.server' in grains['roles']%}
-sensu-plugin:
-  gem.installed
-
 rest-client:
-  gem.installed
-{% endif %}
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install rest-client
 
 /etc/sensu/plugins/check-apparmor.rb:
   file.managed:
     - source: salt://sensu/files/plugins/check-apparmor.rb
     - require:
-      - gem: sensu-plugin
-      - gem: rest-client
+      - cmd: rest-client
+{% endif %}
 
 {{ sensu_check_procs("cron") }}
 {{ sensu_check_procs("collectd") }}

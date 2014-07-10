@@ -26,8 +26,8 @@ include:
 # Old Sensu Check - replaced with graphite to ensure aligned reporting
 ## - sensu_check('check_disk', '/etc/sensu/community/plugins/system/check-disk.rb') 
 
-# Collectd generates disk free metrics per byte so need to multiply by 1024*1024*1024
-# Warning at 75% used crit at 90%
+# Warning at 75% of disk in use (only 25% left free), critical at 90% in use (i.e. only 10% space
+# left unreserved)
 {{ sensu_check_graphite("used-root-disk", 
                         "'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))'",
                         "-a 600",

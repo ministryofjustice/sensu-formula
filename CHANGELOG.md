@@ -1,4 +1,4 @@
-## Version 3.x.x
+## Version 3.0.0
 
 * Replace absolute disk space free check with one that checks percent in use
 * Replace absolute swap check with one that checks percent used.

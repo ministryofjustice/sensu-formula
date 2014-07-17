@@ -121,6 +121,7 @@ sensu_rabbitmq_user:
     - password: {{ sensu.rabbitmq.password }}
     - require:
       - pkg: rabbitmq-server
+      - service: rabbitmq-server
     - require_in:
       - service: sensu-api
       - service: sensu-server

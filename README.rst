@@ -32,6 +32,20 @@ Available states
 .. contents::
     :local:
 
+``server``
+----------
+
+Install sensu server, dashboard and api components talking against a local
+rabbitmq cluster and local redis server
+
+Will install redis and rabbitmq servers, and assert the rabbitmq vhost and
+user.
+
+Example usage::
+
+    include:
+      - sensu.server
+
 ``sensu_check`` macro
 ---------------------
 

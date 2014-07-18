@@ -11,6 +11,7 @@ include:
   - .client
   - .common
   - .deps
+  - .checks
 # for git
 
 

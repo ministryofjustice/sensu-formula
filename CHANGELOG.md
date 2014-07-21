@@ -1,3 +1,7 @@
+## Version 3.0.1
+
+* Fix RabbitMQ start ordering
+
 ## Version 3.0.0
 
 * Replace absolute disk space free check with one that checks percent in use

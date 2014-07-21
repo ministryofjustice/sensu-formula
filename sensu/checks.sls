@@ -2,19 +2,6 @@
 {% from "logstash/lib.sls" import logship with context %}
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
-{% if 'monitoring.server' in grains['roles']%}
-rest-client:
-  cmd.run:
-    - name: /opt/sensu/embedded/bin/gem install rest-client --no-rdoc --no-ri
-    - unless: /opt/sensu/embedded/bin/gem which rest-client >/dev/null 2>/dev/null
-
-/etc/sensu/plugins/check-apparmor.rb:
-  file.managed:
-    - source: salt://sensu/files/plugins/check-apparmor.rb
-    - require:
-      - cmd: rest-client
-{% endif %}
-
 {{sensu_check('apparmor_check', '/etc/sensu/plugins/check-apparmor.rb', subscribers=['monitoring_server'])}}
 {{ sensu_check_procs("cron") }}
 {{ sensu_check_procs("collectd") }}

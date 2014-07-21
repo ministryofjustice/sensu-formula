@@ -48,6 +48,18 @@ sensu_plugins_remove_symlink:
     - dir_mode: 700
     - require:
       - cmd: sensu_plugins_remove_symlink
+      - cmd: rest-client
+      - cmd: raindrops
+
+raindrops:
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install raindrops --no-rdoc --no-ri
+    - unless: /opt/sensu/embedded/bin/gem which raindrops >/dev/null 2>/dev/null
+
+rest-client:
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install rest-client --no-rdoc --no-ri
+    - unless: /opt/sensu/embedded/bin/gem which rest-client >/dev/null 2>/dev/null
 
 sensu-client:
   service.running:

@@ -1,4 +1,4 @@
-## Version 3.x.0
+## Version 3.1.0
 
 * Check JSON definitions only get installed on the server, no longer the
   client.

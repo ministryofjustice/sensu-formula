@@ -1,3 +1,9 @@
+## Version 3.x.0
+
+* Move checks so that they only get installed on the server.
+* Set subscriptions based on salt roles. Note your roles must be in a list!
+* Included a new plugin to check backlog on unix sockets.
+
 ## Version 3.0.1
 
 * Fix RabbitMQ start ordering

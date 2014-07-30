@@ -2,7 +2,7 @@
 {% from "logstash/lib.sls" import logship with context %}
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
-{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-apparmor.rb', subscribers=['monitoring_server'])}}
+{{sensu_check('apparmor_check', '/etc/sensu/plugins/check-apparmor.rb', subscribers=['monitoring.server'])}}
 {{ sensu_check_procs("cron") }}
 {{ sensu_check_procs("collectd") }}
 

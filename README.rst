@@ -213,3 +213,15 @@ deny actions that the beaver profile doesn't cover set the following pillar::
           encorce: ''
         sensu_server:
           encorce: ''
+
+
+unix-socket-backlog
+========
+
+This check will find connections to a unix socket that are still connecting.
+
+Example::
+
+    {% from 'sensu/lib.sls' import sensu_check with context %}
+    {{ sensu_check('unix-socket-backlog', '/etc/sensu/plugins/unix-socket-backlog.rb -s /var/run/unicorn.sock -w 1 -c 5', subscribers=['www']) }}
+    

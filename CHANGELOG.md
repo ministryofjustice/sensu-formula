@@ -1,3 +1,10 @@
+## Version 3.x.0
+
+* Check JSON definitions only get installed on the server, no longer the
+  client.
+* Set subscriptions based on salt roles. Note your roles must be in a list!
+* Included a new plugin to check backlog on unix sockets.
+
 ## Version 3.0.1
 
 * Fix RabbitMQ start ordering

@@ -9,10 +9,10 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 require 'raindrops'
 
-class CheckUnicornData < Sensu::Plugin::Check::CLI
+class CheckUnixSocketData < Sensu::Plugin::Check::CLI
 
   option :socket,
-    :description => 'Unicorn unix socket e.g. /var/run/unicorn.sock',
+    :description => 'Unix socket e.g. /var/run/unicorn.sock',
     :short => '-s SOCKET',
     :long => '--socket SOCKET',
     :required => true
@@ -54,14 +54,14 @@ class CheckUnicornData < Sensu::Plugin::Check::CLI
 
     @data = measure
     check(:critical) || check(:warning)
-    ok("Unicorn backlog value (#{@data})")
+    ok("Unix socket backlog value (#{@data})")
   end
 
   # type:: :warning or :critical
   # Return alert if required
   def check(type)
     if config[type]
-      send(type, "Unicorn backlog value (#{@data}) [#{config[:socket]}]") if (below?(type) || above?(type))
+      send(type, "Unix socket backlog value (#{@data}) [#{config[:socket]}]") if (below?(type) || above?(type))
     end
   end
 
@@ -72,10 +72,6 @@ class CheckUnicornData < Sensu::Plugin::Check::CLI
 
   # Check is value is above defined threshold
   def above?(type)
-    print @data
-    print "\n"
-    print config[type]
-    print "\n"
     (!config[:below]) && (@data > config[type])
   end
 

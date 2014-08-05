@@ -1,8 +1,11 @@
 include:
   - .deps
 
+# last sensu version with old dashboard (why can't ubuntu support semver)
+# temporally pinning
 sensu:
-  pkg.installed
+  pkg.installed:
+    - version: 0.12.6-5
 
 
 /etc/default/sensu:

@@ -1,3 +1,7 @@
+## Version 3.1.1
+
+* Pin sensu version for old dashboard service to work. (temp fix)
+
 ## Version 3.1.0
 
 * Check JSON definitions only get installed on the server, no longer the

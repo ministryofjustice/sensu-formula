@@ -175,12 +175,15 @@ HipChat
 You need to obtain an APIkey from Hipchat Admin. By default, if a roomname isn't specified it will sent Alerts
 to the 'Alerts' room.
 
+Or you can use your own api key if you bump the apiversion to v2 (it defaults to v1).
+
 Example::
 
     sensu:
       notify:
         hipchat_apikey: c5wzTko0O59Xb6wlIKRstaQLbcsJJJFAANaEoD3
         hipchat_roomname: 'My Project Alerts'
+        hipchat_apiversion: v1
 
 
 Pagerduty

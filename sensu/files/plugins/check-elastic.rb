@@ -79,7 +79,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
         data = get_data(hits)
       end
       for result in data['hits']['hits']
-        hostname = result['_source']['logsource']
+        hostname = result['_source']['host']
         details = result['_source'][config[:result_key]]
         msg = JSON.generate({ 'name' => "#{config[:tag]}_#{hostname}",
           'status' => 2, 'output' => "Check host for ES query string: #{config[:query]} ",

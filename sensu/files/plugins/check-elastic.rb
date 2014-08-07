@@ -23,6 +23,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           :default => 'message'
   option  :query, :short => '-q query', :long => '--query query',
           :default => 'tags: rails'
+  option  :out_string, :short => '-s out_string', :long => '--out-string out_string'
 
   DEFAULT_SIZE=1
 
@@ -81,8 +82,13 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
       for result in data['hits']['hits']
         hostname = result['_source']['host']
         details = result['_source'][config[:result_key]]
+        if config[:out_string]
+          out = config[:out_string]
+        else
+          out = "Check host for ES query string: #{config[:query]}"
+        end
         msg = JSON.generate({ 'name' => "#{config[:tag]}_#{hostname}",
-          'status' => 2, 'output' => "Check host for ES query string: #{config[:query]} ",
+          'status' => 2, 'output' => out,
           'handler' => config[:handler] })
         res = submit_alert(msg)
 

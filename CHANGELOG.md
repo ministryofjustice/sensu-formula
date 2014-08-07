@@ -1,8 +1,12 @@
-## Version 3.1.x
+## Version 3.2.0
 
-* New plugin to check elastic search
+* New plugin to check elastic search for user specified query.
+
+  This lets us raise alerts based on log lines. See help in
+  sensu/files/plugins/check-elastic.rb for usage
+
 * Fix apparmor profile for sensu-server
-* Add pillar entry to change hipchat api version
+* Add pillar entry to change hipchat api version used in sending notifications
 
 ## Version 3.1.1
 

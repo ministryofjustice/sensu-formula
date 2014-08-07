@@ -1,3 +1,9 @@
+## Version 3.1.x
+
+* New plugin to check elastic search
+* Fix apparmor profile for sensu-server
+* Add pillar entry to change hipchat api version
+
 ## Version 3.1.1
 
 * Pin sensu version for old dashboard service to work. (temp fix)

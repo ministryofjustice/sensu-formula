@@ -1,3 +1,7 @@
+## Version 3.2.x
+
+* Fix apparmor profile for various new checks.
+
 ## Version 3.2.0
 
 * New plugin to check elastic search for user specified query.

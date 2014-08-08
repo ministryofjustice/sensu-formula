@@ -1,3 +1,7 @@
+## Version 3.2.x
+
+* Pagerduty should only send critical alerts
+
 ## Version 3.2.1
 
 * Fix apparmor profile for various new checks.

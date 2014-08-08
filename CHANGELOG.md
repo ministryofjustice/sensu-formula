@@ -1,6 +1,7 @@
 ## Version 3.2.x
 
 * Fix apparmor profile for various new checks.
+* Change apparmor to use generic elastic search check
 
 ## Version 3.2.0
 

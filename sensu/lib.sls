@@ -23,8 +23,8 @@ execute check is process exists
   {% set handlers =  ["default"] %}
 {% endif %}
 {% if 'check-elastic' in command %}
-  {% set handlers = ','.join(handlers) %}
-  {% set command = command + " -l '" + handlers + "'" %}
+  {% set str_handlers = ','.join(handlers) %}
+  {% set command = command + " -l '" + str_handlers + "'" %}
 {% endif %}
 
 /etc/sensu/conf.d/checks/{{name}}.json:

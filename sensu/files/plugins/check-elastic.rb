@@ -89,7 +89,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
         end
         msg = JSON.generate({ 'name' => "#{config[:tag]}_#{hostname}",
           'status' => 2, 'output' => out,
-          'handler' => config[:handler] })
+          'handler' => JSON.parse(config[:handler]) })
         res = submit_alert(msg)
 
         if res == true

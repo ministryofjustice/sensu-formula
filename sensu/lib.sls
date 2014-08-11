@@ -13,7 +13,18 @@ execute check is process exists
 
 {% from "sensu/map.jinja" import sensu with context %}
 
-{% macro sensu_check(name, command, handlers=['default'], interval=60, subscribers=['all'], standalone=False, occurrences=1) %}
+{% macro sensu_check(name, command, handlers=None, interval=60, subscribers=['all'], standalone=False, occurrences=1) %}
+
+{% set p_data = sensu.checks.get(name, {}) %}
+{% if handlers %}
+{% elif "handlers" in p_data %}
+  {% set handlers =  p_data.handlers %}
+{% else %}
+  {% set handlers =  ['default'] %}
+{% endif %}
+{% if 'check-elastic' in command %}
+  {% set command = command + '-l ' + handlers|string %}
+{% endif %}
 
 /etc/sensu/conf.d/checks/{{name}}.json:
   file.managed:

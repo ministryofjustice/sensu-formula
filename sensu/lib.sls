@@ -20,10 +20,11 @@ execute check is process exists
 {% elif "handlers" in p_data %}
   {% set handlers =  p_data.handlers %}
 {% else %}
-  {% set handlers =  ['default'] %}
+  {% set handlers =  ["default"] %}
 {% endif %}
 {% if 'check-elastic' in command %}
-  {% set command = command + '-l ' + handlers|string %}
+  {% set handlers = ','.join(handlers) %}
+  {% set command = command + " -l '" + handlers + "'" %}
 {% endif %}
 
 {# This means we can pass extra values that make sense to a subject and have

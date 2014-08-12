@@ -6,6 +6,7 @@
 include:
   - nginx
   - redis
+  - logstash.client
   - rabbitmq
   - apparmor
   - .client

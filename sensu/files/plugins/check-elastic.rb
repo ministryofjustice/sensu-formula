@@ -87,9 +87,10 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
         else
           out = "Check host for ES query string: #{config[:query]}"
         end
+        handler = config[:handler].to_s.split(',')
         msg = JSON.generate({ 'name' => "#{config[:tag]}_#{hostname}",
           'status' => 2, 'output' => out,
-          'handler' => JSON.parse(config[:handler]) })
+          'handler' => handler })
         res = submit_alert(msg)
 
         if res == true

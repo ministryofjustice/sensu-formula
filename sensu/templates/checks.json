@@ -4,6 +4,7 @@
       "handlers": ["{{'", "'.join(handlers)}}"],
       "command": "{{command}}",
       "interval": {{interval}},
+      "occurrences": {{occurrences}},
 {% if standalone %}
       "standalone": true
 {% else %}

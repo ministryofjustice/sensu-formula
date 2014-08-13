@@ -34,7 +34,11 @@
 {%- if sensu.notify.pagerduty_apikey %}
     "pagerduty": {
       "command": "/etc/sensu/community/handlers/notification/pagerduty.rb",
-      "type": "pipe"
+      "type": "pipe",
+      "severities": [
+        "critical",
+        "ok"
+      ]
     },
 {%- endif %}
 {%- if sensu.notify.hipchat_apikey %}

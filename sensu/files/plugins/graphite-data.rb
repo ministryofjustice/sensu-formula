@@ -107,7 +107,7 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
       @data = value['data']
       check_age || check(:critical) || check(:warning)
     end
-    ok("#{name} value okay (#{@data.last})")
+    ok("#{name} value okay (#{median(@data)})")
   end
 
   # name used in responses
@@ -129,6 +129,7 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
       begin
 
         url = "http://#{config[:server]}/render?format=json&target=#{formatted_target}&from=#{config[:from]}"
+
         if (config[:username] && (config[:password] || config[:passfile]))
           if config[:passfile]
             pass = File.open(config[:passfile]).readline
@@ -173,18 +174,18 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
   # Return alert if required
   def check(type)
     if config[type]
-      send(type, "#{name} (#{@data.last}) [#{@value['target']}]") if (below?(type) || above?(type))
+      send(type, "#{name} (#{median(@data)}) [#{@value['target']}]") if (below?(type) || above?(type))
     end
   end
 
   # Check if value is below defined threshold
   def below?(type)
-    config[:below] && @data.last < config[type]
+    config[:below] && median(@data) < config[type]
   end
 
   # Check is value is above defined threshold
   def above?(type)
-    (!config[:below]) && (@data.last > config[type]) && (!decreased?)
+    (!config[:below]) && (median(@data) > config[type]) && (!decreased?)
   end
 
   # Check if values have decreased within interval if given
@@ -207,6 +208,13 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     else
       URI.escape config[:target]
     end
+  end
+
+  def median(array)
+    return nil if array.empty?
+    sorted = array.sort
+    len = sorted.length
+    return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
   end
 
 end

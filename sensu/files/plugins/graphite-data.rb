@@ -89,6 +89,12 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     :short => '-b',
     :long => '--below'
 
+  option :method,
+    :description => "Method to use to aggregate the data returned from Graphite into a value to check: median(default), mean, max, min, last, penultimate",
+    :short => '-m METHOD',
+    :long => '--method METHOD',
+    :default => 'median'
+
   option :help,
     :description => 'Show this message',
     :short => '-h',
@@ -101,13 +107,19 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
       exit
     end
 
+    if config[:method]
+      unless self.methods.include?("method_#{config[:method]}".to_sym)
+        unknown("#{name}: unsupported check method '#{config[:method]}', valid values are median(default), mean, max, min, last, penultimate")
+      end
+    end
+
     data = retrieve_data
     data.each_pair do |key, value|
       @value = value
       @data = value['data']
       check_age || check(:critical) || check(:warning)
     end
-    ok("#{name} value okay (#{median(@data)})")
+    ok("#{name} value okay (#{value_to_check(@data)})")
   end
 
   # name used in responses
@@ -174,18 +186,18 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
   # Return alert if required
   def check(type)
     if config[type]
-      send(type, "#{name} (#{median(@data)}) [#{@value['target']}]") if (below?(type) || above?(type))
+      send(type, "#{name} (#{value_to_check(@data)}) [#{@value['target']}]") if (below?(type) || above?(type))
     end
   end
 
   # Check if value is below defined threshold
   def below?(type)
-    config[:below] && median(@data) < config[type]
+    config[:below] && value_to_check(@data) < config[type]
   end
 
   # Check is value is above defined threshold
   def above?(type)
-    (!config[:below]) && (median(@data) > config[type]) && (!decreased?)
+    (!config[:below]) && (value_to_check(@data) > config[type]) && (!decreased?)
   end
 
   # Check if values have decreased within interval if given
@@ -210,11 +222,41 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     end
   end
 
-  def median(array)
+  def value_to_check(array)
+    eval("method_#{config[:method]}(array)")
+  end
+
+  def method_median(array)
     return nil if array.empty?
     sorted = array.sort
     len = sorted.length
-    return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+    (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+  end
+
+  def method_mean(array)
+    return nil if array.empty?
+    array.inject(:+) / Float(array.size)
+  end
+
+  def method_last(array)
+    return nil if array.empty?
+    array.last
+  end
+
+  def method_penultimate(array)
+    array.pop
+    return nil if array.empty?
+    array.last
+  end
+
+  def method_min(array)
+    return nil if array.empty?
+    array.sort.first
+  end
+
+  def method_max(array)
+    return nil if array.empty?
+    array.sort.last
   end
 
 end

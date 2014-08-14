@@ -147,7 +147,7 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
           raw['datapoints'].delete_if{|v| v.first.nil? }
           next if raw['datapoints'].empty?
           target = raw['target']
-          data = raw['datapoints'].map(&:first)
+          data = raw['datapoints'].map {|dp| Float(dp.first) }
           start = raw['datapoints'].first.last
           dend = raw['datapoints'].last.last
           step = ((dend - start) / raw['datapoints'].size.to_f).ceil

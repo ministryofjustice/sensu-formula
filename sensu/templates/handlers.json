@@ -5,6 +5,9 @@
   "hipchat": {
     "apikey": "{{ sensu.notify.hipchat_apikey }}",
     "room": "{{ sensu.notify.hipchat_roomname }}",
+{%-   if sensu.notify.hipchat_from %}
+    "from": "{{ sensu.notify.hipchat_from }}",
+{%-   endif %}
     "apiversion": "{{ sensu.notify.hipchat_apiversion }}"
   },
 {%- endif %}

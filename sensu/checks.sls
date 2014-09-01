@@ -18,7 +18,8 @@
 {{ sensu_check_graphite("used-root-disk", 
                         "'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))'",
                         "-a 600",
-                        "Root Disk Used Percentage") }}
+                        "Root Disk Used Percentage",
+                        occurrences=2) }}
 
 ###
 ### CHECKS --- Load
@@ -28,19 +29,22 @@
 {{ sensu_check_graphite("load-shortterm", 
                         "metrics.:::metric_prefix:::.load.load.shortterm", 
                         "-a 600",
-                        "Short Term LoadAve") }}
+                        "Short Term LoadAve",
+                        occurrences=2) }}
 
 # midterm - warning=2 critical=3
 {{ sensu_check_graphite("load-midterm", 
                         "metrics.:::metric_prefix:::.load.load.midterm", 
                         "-a 600",
-                        "Mid Term LoadAve") }}
+                        "Mid Term LoadAve",
+                        occurrences=2) }}
 
 # longterm - warning=2 critical=3
 {{ sensu_check_graphite("load-longterm", 
                         "metrics.:::metric_prefix:::.load.load.longterm", 
                         "-a 600",
-                        "Long Term LoadAve") }}
+                        "Long Term LoadAve",
+                        occurrences=2) }}
 
 
 ###
@@ -51,7 +55,8 @@
 {{ sensu_check_graphite("memory-used",
                         "'asPercent(metrics.:::metric_prefix:::.memory.memory.used,sum(metrics.:::metric_prefix:::.memory.memory.*))'",
                         "-a 600",
-                        "Memory Used Percentage") }}
+                        "Memory Used Percentage",
+                        occurrences=2) }}
 
 ###
 ### CHECKS --- Swap
@@ -62,4 +67,5 @@
 {{ sensu_check_graphite("swap-used", 
                         "'asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))'",
                         "-a 600",
-                        "Swap Used Percentage") }}
+                        "Swap Used Percentage",
+                        occurrences=2) }}

@@ -5,6 +5,9 @@
   "hipchat": {
     "apikey": "{{ sensu.notify.hipchat_apikey }}",
     "room": "{{ sensu.notify.hipchat_roomname }}",
+{%-   if sensu.notify.hipchat_from %}
+    "from": "{{ sensu.notify.hipchat_from }}",
+{%-   endif %}
     "apiversion": "{{ sensu.notify.hipchat_apiversion }}"
   },
 {%- endif %}
@@ -34,7 +37,11 @@
 {%- if sensu.notify.pagerduty_apikey %}
     "pagerduty": {
       "command": "/etc/sensu/community/handlers/notification/pagerduty.rb",
-      "type": "pipe"
+      "type": "pipe",
+      "severities": [
+        "critical",
+        "ok"
+      ]
     },
 {%- endif %}
 {%- if sensu.notify.hipchat_apikey %}

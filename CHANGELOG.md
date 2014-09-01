@@ -1,3 +1,8 @@
+## Version 3.2.2
+
+* Pagerduty should only send critical alerts
+* Add occurences to check macro, set graphite checks to 2 occurrences.
+
 ## Version 3.2.1
 
 * Fix apparmor profile for various new checks.

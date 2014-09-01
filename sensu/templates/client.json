@@ -1,4 +1,4 @@
-{% set roles=grains['roles'] %}
+{% set roles = grains['roles'] or [] %}
 {
   "client": {
     "name": "{{grains['fqdn']}}",

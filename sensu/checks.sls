@@ -69,3 +69,12 @@
                         "-a 600",
                         "Swap Used Percentage",
                         occurrences=2) }}
+
+# A better check for memory pressure is swap_io.swap-out -- actual paging activity.
+# Look at last 30 mins so we don't flap the alert too quickly.
+# Report the integral -- the total amount of paging in the period.
+{{ sensu_check_graphite("swap-out",
+                        "'integral(metrics.:::metric_prefix:::.swap.swap_io.out)'",
+                        "-a 600 --from -30mins",
+                        "Swap Out",
+                        occurrences=2) }}

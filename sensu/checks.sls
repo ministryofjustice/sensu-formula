@@ -70,7 +70,9 @@
                         "'asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))'",
                         "-a 600",
                         "Swap Used Percentage",
-                        occurrences=2) }}
+                        occurrences=2,
+                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbook/swap-used.md',
+                        ) }}
 
 # A better check for memory pressure is swap_io.swap-out -- actual paging activity.
 # Look at last 15 mins so we don't flap the alert too quickly, but get quick feedback if it
@@ -80,4 +82,6 @@
                         "'integral(metrics.:::metric_prefix:::.swap.swap_io.out)'",
                         "-a 600 --from -15mins --method max",
                         "Swap Out Total",
-                        occurrences=2) }}
+                        occurrences=2,
+                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbook/swap-out.md',
+                        ) }}

@@ -1,4 +1,8 @@
-{% set roles = grains['roles'] or [] %}
+{% if 'roles' in grains -%}
+{%   set roles = grains['roles'] -%}
+{% else -%}
+{%   set roles = [] -%}
+{% endif -%}
 {
   "client": {
     "name": "{{grains['fqdn']}}",

@@ -3,6 +3,7 @@
 * Fixes to ensure sensu-server/sensu-client restarted on update
 * Add swap-out graphite check
 * Increase thesholds for swap-used check to reflect addition of swap-out
+* Add Playbooks for swap-used and swap-out checks
 
 ## Version 3.2.2
 

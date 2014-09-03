@@ -71,7 +71,7 @@
                         "-a 600",
                         "Swap Used Percentage",
                         occurrences=2,
-                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbook/swap-used.md',
+                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/swap-used.md'
                         ) }}
 
 # A better check for memory pressure is swap_io.swap-out -- actual paging activity.
@@ -83,5 +83,5 @@
                         "-a 600 --from -15mins --method max",
                         "Swap Out Total",
                         occurrences=2,
-                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbook/swap-out.md',
+                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/swap-out.md'
                         ) }}

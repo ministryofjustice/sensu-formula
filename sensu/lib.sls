@@ -22,9 +22,6 @@ execute check is process exists
     - mode: 600
     - owner: sensu
     - group: sensu
-{% if playbook -%}
-    - playbook: {{playbook}}
-{% endif -%}
     - context:
         name: {{name}}
         command: {{command}}
@@ -33,6 +30,7 @@ execute check is process exists
         standalone: {{standalone}}
         subscribers: {{subscribers}}
         occurrences: {{occurrences}}
+        playbook: {{playbook}}
     - require:
       - file: sensu-confd-checks-dir
     - require_in:

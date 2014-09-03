@@ -5,6 +5,9 @@
       "command": "{{command}}",
       "interval": {{interval}},
       "occurrences": {{occurrences}},
+{% if playbook %}
+      "playbook": "{{playbook}}",
+{% endif %}
 {% if standalone %}
       "standalone": true
 {% else %}

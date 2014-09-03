@@ -50,6 +50,8 @@ sensu_plugins_remove_symlink:
       - cmd: sensu_plugins_remove_symlink
       - cmd: rest-client
       - cmd: raindrops
+    - watch_in:
+      - service: sensu-client
 
 raindrops:
   cmd.run:

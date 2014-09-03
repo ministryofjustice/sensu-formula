@@ -1,4 +1,4 @@
-{% set roles = grains['roles'] or [] %}
+{% set roles = salt['grains.get']('roles', []) -%}
 {
   "client": {
     "name": "{{grains['fqdn']}}",

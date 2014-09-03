@@ -76,6 +76,7 @@ sensu-server:
       - file: /etc/sensu/conf.d/redis.json
       - file: /etc/sensu/conf.d/rabbitmq.json
       - file: /etc/sensu/conf.d/handlers.json
+      - file: /etc/sensu/conf.d/checks/*
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-server:
   file.managed:

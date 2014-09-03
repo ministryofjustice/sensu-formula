@@ -67,6 +67,7 @@ sensu-client:
     - watch:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/*
+      - file: /etc/sensu/plugins/*
     - order: last
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-client:

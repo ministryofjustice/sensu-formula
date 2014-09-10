@@ -1,3 +1,10 @@
+include:
+  - sensu.lib
+test-check:
+  sensu.check:
+    - command: 'echo hello'
+
+
 {% from "sensu/map.jinja" import sensu with context %}
 {% from "logstash/lib.sls" import logship with context %}
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}

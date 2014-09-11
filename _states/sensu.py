@@ -1,7 +1,7 @@
 import json
 
 import salt.exceptions
-from salt.states.file import managed
+import salt.states.file
 
 def __virtual__():
     '''
@@ -18,8 +18,8 @@ def check(name, command, handlers=None, interval=60, subscribers=['all'], standa
     check_pillar = sensu_pillar['checks'].get(name, {})
 
     if handlers:
-        # then leave them alone
-    elif handlers in check_pillar
+        handlers = handlers
+    elif handlers in check_pillar:
         handlers = check_pillar['handlers']
     else:
         handlers = ['default']
@@ -38,6 +38,6 @@ def check(name, command, handlers=None, interval=60, subscribers=['all'], standa
     }
 
 
-    return managed('/etc/sensu/conf.d/checks/{0}.json'.format(name), source='salt://sensu/templates/checks.json', template='jinja', mode=600, owner='sensu', group='sensu', contents=json.dumps(check))
+    return salt.states.file.managed('/etc/sensu/conf.d/checks/{0}.json'.format(name), source='salt://sensu/templates/checks.json', template='jinja', mode=600, owner='sensu', group='sensu', contents=json.dumps(check))
 
 #def graphite_check(

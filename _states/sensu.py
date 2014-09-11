@@ -7,10 +7,7 @@ def __virtual__():
     '''
     Only run on sensu servers 
     '''
-    if __salt__['file.directory_exists']('/etc/sensu/conf.d'):
-        return 'sensu'
-    else:
-        return False
+    return 'sensu'
 
 def check(name, command, handlers=None, interval=60, subscribers=['all'], standalone=False, occurrences=1, playbook=False):
 
@@ -37,7 +34,15 @@ def check(name, command, handlers=None, interval=60, subscribers=['all'], standa
       }
     }
 
-
-    return salt.states.file.managed('/etc/sensu/conf.d/checks/{0}.json'.format(name), source='salt://sensu/templates/checks.json', template='jinja', mode=600, owner='sensu', group='sensu', contents=json.dumps(check))
+    data = {'state': 'file',
+            'fun': 'managed',
+            'name': '/etc/sensu/conf.d/checks/{0}.json'.format(name),
+            'template': 'jinja',
+            'mode': 600,
+            'owner': 'sensu',
+            'group': 'sensu',
+            'contents': json.dumps(check)}
+            
+    return __salt__['state.low'](data)
 
 #def graphite_check(

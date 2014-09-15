@@ -32,20 +32,12 @@
                         "Short Term LoadAve",
                         occurrences=2) }}
 
-# midterm - warning=2 critical=3
-{{ sensu_check_graphite("load-midterm", 
-                        "metrics.:::metric_prefix:::.load.load.midterm", 
-                        "-a 600",
-                        "Mid Term LoadAve",
-                        occurrences=2) }}
-
 # longterm - warning=2 critical=3
 {{ sensu_check_graphite("load-longterm", 
                         "metrics.:::metric_prefix:::.load.load.longterm", 
                         "-a 600",
                         "Long Term LoadAve",
                         occurrences=2) }}
-
 
 ###
 ### CHECKS --- Memory

@@ -25,14 +25,14 @@
 ### CHECKS --- Load
 ###
 
-# shortterm - warning=1 critical=2
+# shortterm - should warn of heavy burst activity
 {{ sensu_check_graphite("load-shortterm", 
                         "metrics.:::metric_prefix:::.load.load.shortterm", 
                         "-a 600",
                         "Short Term LoadAve",
                         occurrences=2) }}
 
-# longterm - warning=2 critical=3
+# longterm - should closely relate to system capacity
 {{ sensu_check_graphite("load-longterm", 
                         "metrics.:::metric_prefix:::.load.load.longterm", 
                         "-a 600",

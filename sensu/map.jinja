@@ -31,12 +31,12 @@
                 'critical': 90,
             },
             'load-shortterm': {
-                'warning': 1,
-                'critical': 2,
+                'warning': 5 * salt['grains.get']('num_cpus', 1),
+                'critical': 10 * salt['grains.get']('num_cpus', 1),
             },
             'load-longterm': {
-                'warning': 3,
-                'critical': 4,
+                'warning': 1 * salt['grains.get']('num_cpus', 1) + 0.5,
+                'critical': 2 * salt['grains.get']('num_cpus', 1) + 0.5,
             },
             'swap-used': {
                 'warning': 80,

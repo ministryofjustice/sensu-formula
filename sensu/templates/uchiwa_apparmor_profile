@@ -1,7 +1,7 @@
 # Last Modified: Mon Sep 22 10:37:46 2014
 #include <tunables/global>
 
-/opt/uchiwa/embedded/bin/node {{ salt['pillar.get']('apparmor:profiles:sensu_dashboard:enforce', 'flags=(complain)') }} {
+/opt/uchiwa/embedded/bin/node {{ salt['pillar.get']('apparmor:profiles:uchiwa:enforce', 'flags=(complain)') }} {
   #include <abstractions/base>
   #include <abstractions/nameservice>
 

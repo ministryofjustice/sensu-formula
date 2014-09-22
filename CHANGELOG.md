@@ -1,9 +1,6 @@
 ## Version 4.1.x
 
 * Pin uchiwa for Ubuntu 12.04
-
-## Version 4.1.0
-
 * Let us specify a more exact process pattern to check for
 * Allow passing through subscribers, handlers and all other parameters from
   sensu_check_graphite and sensu_check_proc down to the base sensu_check

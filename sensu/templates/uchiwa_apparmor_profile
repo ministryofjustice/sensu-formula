@@ -1,0 +1,19 @@
+# Last Modified: Mon Sep 22 10:37:46 2014
+#include <tunables/global>
+
+/opt/uchiwa/embedded/bin/node {{ salt['pillar.get']('apparmor:profiles:sensu_dashboard:enforce', 'flags=(complain)') }} {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+
+
+  / r,
+  /etc/sensu/uchiwa.json r,
+  /opt/uchiwa/embedded/bin/node mr,
+  /opt/uchiwa/usr/src/uchiwa/app.js r,
+  /opt/uchiwa/usr/src/uchiwa/bower.json r,
+  /opt/uchiwa/usr/src/uchiwa/lib/** r,
+  /opt/uchiwa/usr/src/uchiwa/node_modules/** r,
+  /opt/uchiwa/usr/src/uchiwa/public/** r,
+
+}

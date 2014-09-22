@@ -2,7 +2,7 @@
     "sensu": [
         {
             "name": "Sensu",
-            "host": "monitoring.local",
+            "host": "localhost",
             "ssl": false,
             "port": 4567,
             "user": "admin",

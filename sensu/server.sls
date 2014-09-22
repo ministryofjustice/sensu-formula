@@ -133,6 +133,14 @@ uchiwa:
     - watch:
       - service: uchiwa
 
+/etc/apparmor.d/opt.uchiwa.embedded.bin.node
+  file.managed:
+    - source: salt://sensu/templates/uchiwa_apparmor_profile
+    - template: jinja
+    - watch_in:
+       - service: uchiwa
+
+
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
 {{ logship('uchiwa.log',  '/var/log/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}

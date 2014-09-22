@@ -1,3 +1,7 @@
+## Version 4.x.x
+
+* **BREAKING** changes, see UPGRADING.md Move to sensu version 0.13.1 and uchiwa dashboard.
+
 ## Version *current*
 
 * Fixes to ensure sensu-server/sensu-client restarted on update

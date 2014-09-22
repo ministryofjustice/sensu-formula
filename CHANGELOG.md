@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Version 4.0.x
 
 * Let us specify a more exact process pattern to check for

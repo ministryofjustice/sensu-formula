@@ -1,3 +1,7 @@
+## Version 4.x.x
+
+* **BREAKING** changes, see UPGRADING.md Move to sensu version 0.13.1 and uchiwa dashboard.
+
 ## Version 3.3.1
 
 * Allow defining subscribers on graphite checks.

@@ -1,9 +1,10 @@
-## Version *current*
+## Version 3.x.0
 
 * Fixes to ensure sensu-server/sensu-client restarted on update
 * Add swap-out graphite check
 * Increase thesholds for swap-used check to reflect addition of swap-out
 * Add Playbooks for swap-used and swap-out checks
+* Add an alert on ntp clock drift to make sure time of all boxes is accurate
 
 ## Version 3.2.2
 

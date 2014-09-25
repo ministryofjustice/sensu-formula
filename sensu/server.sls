@@ -116,11 +116,26 @@ sensu_rabbitmq_vhost:
       - service: sensu-api
       - service: sensu-server
 
+/etc/init/uchiwa.conf:
+  file.managed:
+    - source: salt://sensu/files/uchiwa.conf
+    - requires:
+      - file: /etc/init.d/uchiwa
+
+/etc/init.d/uchiwa:
+  file:
+    - absent
+
 uchiwa:
+  user.present:
+    - groups: [sensu]
+    - require:
+      - pkg: uchiwa
   pkg:
     - installed
-  service:
-    - running
+  service.running:
+    - watch:
+      - file: /etc/init/uchiwa.conf
   file.managed:
     - name: /etc/sensu/uchiwa.json
     - user: uchiwa
@@ -143,7 +158,7 @@ uchiwa:
 
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
-{{ logship('uchiwa.log',  '/var/log/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}
+{{ logship('uchiwa.log',  '/var/log/upstart/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}
 
 
 /etc/nginx/conf.d/sensu.conf:

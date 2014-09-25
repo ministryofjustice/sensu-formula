@@ -1,0 +1,10 @@
+dependencies:
+- git@github.com:ministryofjustice/rabbitmq-formula.git
+- git@github.com:ministryofjustice/logstash-formula.git
+- git@github.com:ministryofjustice/redis-formula.git
+- git@github.com:ministryofjustice/nginx-formula.git
+- git@github.com:ministryofjustice/apparmor-formula.git
+
+entry:
+ - sensu.server
+ - sensu.client

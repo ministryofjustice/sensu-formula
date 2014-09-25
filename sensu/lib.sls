@@ -36,6 +36,8 @@ execute check is process exists
     - require_in:
       - file: sensu-confd-checks-clean
     - watch_in:
+        - service: sensu-server
+        - service: sensu-api
         - service: sensu-client
 
 {% endmacro %}

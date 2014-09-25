@@ -116,11 +116,26 @@ sensu_rabbitmq_vhost:
       - service: sensu-api
       - service: sensu-server
 
+/etc/init/uchiwa.conf:
+  file.managed:
+    - source: salt://sensu/files/uchiwa.conf
+    - requires:
+      - file: /etc/init.d/uchiwa
+
+/etc/init.d/uchiwa:
+  file:
+    - absent
+
 uchiwa:
+  user.present:
+    - groups: [sensu]
+    - require:
+      - pkg: uchiwa
   pkg:
     - installed
-  service:
-    - running
+  service.running:
+    - watch:
+      - file: /etc/init/uchiwa.conf
   file.managed:
     - name: /etc/sensu/uchiwa.json
     - user: uchiwa

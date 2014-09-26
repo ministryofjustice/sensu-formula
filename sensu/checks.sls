@@ -46,6 +46,16 @@
                         "Long Term LoadAve",
                         occurrences=2) }}
 
+###
+### CHECKS --- NTP
+###
+
+{{ sensu_check_graphite("ntp-offset", 
+                        "'alias(absolute(averageSeries(metrics.:::metric_prefix:::.ntpd.time_offset.*.*.*.*)),NTP-offset)'",
+                        "-a 600",
+                        "NTP offset",
+                        playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/ntp-offset.md',
+                        occurrences=2) }}
 
 ###
 ### CHECKS --- Memory

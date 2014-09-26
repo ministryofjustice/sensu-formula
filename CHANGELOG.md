@@ -1,4 +1,4 @@
-## Version 3.x.0
+## Version 3.3.0
 
 * Fixes to ensure sensu-server/sensu-client restarted on update
 * Add swap-out graphite check

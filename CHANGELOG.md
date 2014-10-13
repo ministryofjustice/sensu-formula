@@ -1,3 +1,7 @@
+## Version 3.3.x
+
+* Allow defining subscribers on graphite checks.
+
 ## Version 3.3.0
 
 * Fixes to ensure sensu-server/sensu-client restarted on update

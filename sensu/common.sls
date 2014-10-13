@@ -5,7 +5,7 @@ include:
 # temporally pinning
 sensu:
   pkg.installed:
-    - version: 0.12.6-5
+    - version: 0.13.1-1
 
 
 /etc/default/sensu:
@@ -19,7 +19,7 @@ sensu:
   file.directory:
     - user: sensu
     - group: sensu
-    - mode: 700
+    - mode: 750
     - require:
       - pkg: sensu
 

@@ -55,13 +55,6 @@ sensu_hipchat:
     - source: salt://sensu/templates/api.json
     - template: 'jinja'
 
-
-/etc/sensu/conf.d/dashboard.json:
-  file.managed:
-    - source: salt://sensu/templates/dashboard.json
-    - template: 'jinja'
-
-
 /etc/sensu/conf.d/handlers.json:
   file.managed:
     - source: salt://sensu/templates/handlers.json
@@ -101,22 +94,6 @@ sensu-api:
     - watch_in:
        - service: sensu-api
 
-
-sensu-dashboard:
-  service.running:
-    - enable: True
-    - watch:
-      - file: /etc/default/sensu
-      - file: /etc/sensu/conf.d/api.json
-      - file: /etc/sensu/conf.d/dashboard.json
-
-/etc/apparmor.d/opt.sensu.embedded.bin.sensu-dashboard:
-  file.managed:
-    - source: salt://sensu/templates/dashboard_apparmor_profile
-    - template: jinja
-    - watch_in:
-       - service: sensu-dashboard
-
 sensu_rabbitmq_user:
   rabbitmq_user.present:
     - name: {{ sensu.rabbitmq.user }}
@@ -139,9 +116,49 @@ sensu_rabbitmq_vhost:
       - service: sensu-api
       - service: sensu-server
 
+/etc/init/uchiwa.conf:
+  file.managed:
+    - source: salt://sensu/files/uchiwa.conf
+    - requires:
+      - file: /etc/init.d/uchiwa
+
+/etc/init.d/uchiwa:
+  file:
+    - absent
+
+uchiwa:
+  user.present:
+    - groups: [sensu]
+    - require:
+      - pkg: uchiwa
+  pkg:
+    - installed
+  service.running:
+    - watch:
+      - file: /etc/init/uchiwa.conf
+  file.managed:
+    - name: /etc/sensu/uchiwa.json
+    - user: uchiwa
+    - group: uchiwa
+    - template: jinja
+    - source: salt://sensu/templates/uchiwa.json
+    - require:
+      - file: /etc/sensu
+      - pkg: uchiwa
+    - watch:
+      - service: uchiwa
+
+/etc/apparmor.d/opt.uchiwa.embedded.bin.node:
+  file.managed:
+    - source: salt://sensu/templates/uchiwa_apparmor_profile
+    - template: jinja
+    - watch_in:
+       - service: uchiwa
+
+
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
-{{ logship('sensu-dashboard.log',  '/var/log/sensu/sensu-dashboard.log', 'sensu', ['sensu', 'sensu-dashboard', 'log'],  'rawjson') }}
+{{ logship('uchiwa.log',  '/var/log/upstart/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}
 
 
 /etc/nginx/conf.d/sensu.conf:
@@ -154,7 +171,7 @@ sensu_rabbitmq_vhost:
     - context:
         appslug: sensu
         server_name: sensu.*
-        proxy_to: localhost:9876
+        proxy_to: localhost:3000
         is_default: False
     - watch_in:
       - service: nginx

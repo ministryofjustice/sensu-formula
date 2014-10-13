@@ -53,7 +53,7 @@ execute check is process exists
 
 {# TODO: This would be *much* nicer as a state/module rather than a macro. Work
    out how we write and ship one #}
-{% macro sensu_check_graphite(name, metric_name, params, desc, occurrences=1, playbook=False) %}
+{% macro sensu_check_graphite(name, metric_name, params, desc, occurrences=1, playbook=False, subscribers=['all']) %}
 {% set p_data = sensu.checks.get(name, {}) %}
 {% if "warning" in p_data %}
   {% set params = params + " -w " ~ p_data.warning %}
@@ -63,5 +63,5 @@ execute check is process exists
 {% endif %}
 {% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s " + sensu.graphite.host + ":" ~ sensu.graphite.port ~ " -t "+metric_name+" -n '"+desc+"' " + params %}
 {% set standalone = kwargs.standalone|default(False) %}
-{{ sensu_check(name="graphite-"+name, command=check_cmd, standalone=standalone, occurrences=occurrences, playbook=playbook) }}
+{{ sensu_check(name="graphite-"+name, command=check_cmd, standalone=standalone, occurrences=occurrences, playbook=playbook, subscribers=subscribers) }}
 {% endmacro %}

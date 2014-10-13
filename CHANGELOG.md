@@ -1,4 +1,4 @@
-## Version 3.3.x
+## Version 3.3.1
 
 * Allow defining subscribers on graphite checks.
 

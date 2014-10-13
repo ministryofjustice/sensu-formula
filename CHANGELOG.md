@@ -1,4 +1,4 @@
-## Version 4.x.x
+## Version 4.0.0
 
 * **BREAKING** changes, see UPGRADING.md Move to sensu version 0.13.1 and uchiwa dashboard.
 

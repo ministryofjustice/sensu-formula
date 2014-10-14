@@ -20,35 +20,18 @@ include:
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
-{%- if sensu.notify.email %}
-sensu-mailutils:
+sensu-server-extra-pkgs:
   pkg.installed:
-    - name: mailutils
-    - watch_in:
-      - service: sensu-server
-{% endif %}
-
-{%- if sensu.notify.pagerduty_apikey %}
-sensu_redphone:
-  cmd.run:
-    - name: /opt/sensu/embedded/bin/gem install redphone
-    - unless: /opt/sensu/embedded/bin/gem list -i redphone
+    - pkgs:
+      - dsd-rubygem-redphone
+      - dsd-rubygem-hipchat
+      - mailutils
+    - skip_verify: True
     - require:
       - pkg: sensu
     - watch_in:
       - service: sensu-server
-{% endif %}
 
-{%- if sensu.notify.hipchat_apikey %}
-sensu_hipchat:
-  cmd.run:
-    - name: /opt/sensu/embedded/bin/gem install hipchat
-    - unless: /opt/sensu/embedded/bin/gem list -i hipchat
-    - require:
-      - pkg: sensu
-    - watch_in:
-      - service: sensu-server
-{% endif %}
 
 /etc/sensu/conf.d/api.json:
   file.managed:

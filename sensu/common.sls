@@ -6,6 +6,17 @@ include:
 sensu:
   pkg.installed:
     - version: 0.12.6-5
+    - skip_verify: True
+
+
+dsd-rubygem-raindrops:
+  pkg.installed:
+    - skip_verify: True
+
+
+dsd-rubygem-rest-client:
+  pkg.installed:
+    - skip_verify: True
 
 
 /etc/default/sensu:
@@ -35,6 +46,7 @@ sensu-confd-checks-clean:
     - require:
       - pkg: sensu
       - file: sensu-confd-checks-dir
+
 
 sensu-confd-checks-dir:
   file.directory:

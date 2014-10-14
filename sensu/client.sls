@@ -21,12 +21,13 @@ include:
 
 
 # Sensu Community Plugins
-https://github.com/sensu/sensu-community-plugins.git:
+{{ sensu.community_plugins_repo }}:
   git.latest:
     - target: /etc/sensu/community
     - rev: {{ sensu.community_plugins_rev }}
     - require:
       - pkg: sensu_deps
+
 
 sensu_plugins_remove_symlink:
   cmd.run:
@@ -35,6 +36,7 @@ sensu_plugins_remove_symlink:
     # to remove the symlink first
     - name: rm /etc/sensu/plugins
     - onlyif: '[ -L /etc/sensu/plugins ]'
+
 
 # Locally created plugins
 /etc/sensu/plugins:
@@ -48,20 +50,9 @@ sensu_plugins_remove_symlink:
     - dir_mode: 700
     - require:
       - cmd: sensu_plugins_remove_symlink
-      - cmd: rest-client
-      - cmd: raindrops
     - watch_in:
       - service: sensu-client
 
-raindrops:
-  cmd.run:
-    - name: /opt/sensu/embedded/bin/gem install raindrops --no-rdoc --no-ri
-    - unless: /opt/sensu/embedded/bin/gem which raindrops >/dev/null 2>/dev/null
-
-rest-client:
-  cmd.run:
-    - name: /opt/sensu/embedded/bin/gem install rest-client --no-rdoc --no-ri
-    - unless: /opt/sensu/embedded/bin/gem which rest-client >/dev/null 2>/dev/null
 
 sensu-client:
   service.running:
@@ -71,12 +62,14 @@ sensu-client:
       - file: /etc/sensu/conf.d/*
     - order: last
 
+
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-client:
   file.managed:
     - source: salt://sensu/templates/client_apparmor_profile
     - template: jinja
     - watch_in:
        - service: sensu-client
+
 
 # order last as a hask workaround for sensu: Client exits on failure to connect #680
 # https://github.com/sensu/sensu/issues/680

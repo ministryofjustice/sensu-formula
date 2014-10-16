@@ -1,3 +1,8 @@
+## Version 4.0.x
+
+* Let us specify a more exact process pattern to check for
+* Improve docs
+
 ## Version 4.0.0
 
 * **BREAKING** changes, see UPGRADING.md Move to sensu version 0.13.1 and uchiwa dashboard.

@@ -48,7 +48,7 @@ execute check is process exists
   {% set check_cmd = check_cmd + " -c " + kwargs.critical_over|string %}
 {% endif %}
 {% set standalone = kwargs.standalone|default(False) %}
-{{ sensu_check(name="process-"+name, command=check_cmd, standalone=standalone) }}
+{{ sensu_check(name="process-"+name, command=check_cmd, standalone=standalone, **kwargs) }}
 {% endmacro %}
 
 {# TODO: This would be *much* nicer as a state/module rather than a macro. Work

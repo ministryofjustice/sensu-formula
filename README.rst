@@ -109,6 +109,15 @@ subscribers
 
   **Default:** [``all``]
 
+occurrences
+  Number of failure occurrences before the handler should take action
+
+  **Default:** 1
+
+playbook
+  URL of a doc explaining how to deal with this alert. This will be used for
+  hipchat notifier and possibly other handler types.
+
 Example usage::
 
     include:
@@ -117,6 +126,8 @@ Example usage::
     {% from 'sensu/lib.sls' import sensu_check with context %}
     {# This check is included by default #}
     {{ sensu_check('check_swap', '/etc/sensu/plugins/system/check-swap-percentage.sh -w 5 -c 25') }}
+    {# This check is better done as the sensu_check_proc macro though#}
+    {{ sensu_check('check_swap', '/etc/sensu/community/plugins/processes/check-procs.rb -p salt-master -C 1', subscribers=['master'] }}
 
 
 
@@ -125,7 +136,7 @@ Example usage::
 
 Macro to perform a check against a graphite metric target
 
-The macro has the following arguments:
+The macro accepts the following arguments in addition to those of the ```sensu_check`` macro`_:
 
 name
   A for the check name. Must be unique on the box
@@ -179,7 +190,8 @@ With the following pillar (which is the default)::
 
 Install a sensu check to make sure that the named process exists
 
-The macro has the following arguments:
+The macro has the following arguments in addition to those of the
+```sensu_check`` macro`_:
 
 name
   The process name to check for.
@@ -210,7 +222,7 @@ Example usage::
       - sensu.server
 
     {% from 'sensu/lib.sls' import sensu_check_procs with context %}
-    {{ sensu_check_procs("salt-master") }}
+    {{ sensu_check_procs("salt-master", subscribers=["master"]) }}
     {{ sensu_check_procs("mongod", pattern="mongod$") }}
 
 

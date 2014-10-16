@@ -1,6 +1,8 @@
 ## Version 4.0.x
 
 * Let us specify a more exact process pattern to check for
+* Allow passing through subscribers, handlers and all other parameters from
+  sensu_check_graphite and sensu_check_proc down to the base sensu_check
 * Improve docs
 
 ## Version 4.0.0

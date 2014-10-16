@@ -30,8 +30,8 @@ Dependencies
    `nginx <https://github.com/ministryofjustice/nginx-formula>`_
 
 
-Available states
-================
+Available states and macros
+===========================
 
 .. contents::
     :local:
@@ -49,6 +49,36 @@ Example usage::
 
     include:
       - sensu.server
+
+``client``
+----------
+
+Install sensu client and configure it to connect to the sensu server.
+
+The client will be subscribe to checks on the 'all' channel, and to everything
+in the ``roles`` grain.
+
+Example usage::
+
+    include:
+      - sensu.client
+
+Pillar variables
+~~~~~~~~~~~~~~~~
+
+The client will connect to the sensu server via rabbit MQ, controlled by the
+following pillar values. It will default to connecting to monitoring.local on
+the default rabbitmq port.
+
+- sensu:rabbitmq:host
+
+- sensu:rabbitmq:port
+
+- sensu:rabbitmq:vhost
+
+- sensu:rabbitmq:user
+
+- sensu:rabbitmq:password
 
 ``sensu_check`` macro
 ---------------------
@@ -82,9 +112,9 @@ subscribers
 Example usage::
 
     include:
-      - sensu.client
+      - sensu.server
 
-    {% from 'sensu.sls' import sensu_check with context %}
+    {% from 'sensu/lib.sls' import sensu_check with context %}
     {# This check is included by default #}
     {{ sensu_check('check_swap', '/etc/sensu/plugins/system/check-swap-percentage.sh -w 5 -c 25') }}
 
@@ -127,9 +157,9 @@ contains ``warning`` or ``critical`` keys it will use those values and append
 Example usage::
 
     include:
-      - sensu.client
+      - sensu.server
 
-    {% from 'sensu.sls' import sensu_check_graphite with context %}
+    {% from 'sensu/lib.sls' import sensu_check_graphite with context %}
     {{ sensu_check_graphite("free-root-disk",
                         "metrics.:::metric_prefix:::.df.root.df_complex.free",
                         "--below -a 600",
@@ -155,6 +185,34 @@ name
   The process name to check for.
 
   This will form a sensu check named 'process-' + ``name``
+
+pattern
+  If the pattern you want to check for is not 'url' safe then you can
+  explicitly specify pattern to look for.
+
+  For example if you want to check for ``mongod`` but not ``mongodump`` then
+  you would specify a pattern of ``mongod$``
+
+  **Default:** the same value as the name parameter
+
+critical_under
+  Raise an critical alert when there are fewer than this many processes matched
+
+  **Default:** ``1``
+
+critical_over
+  Raise an critical alert when there are greater than this many processes
+  matched
+
+Example usage::
+
+    include:
+      - sensu.server
+
+    {% from 'sensu/lib.sls' import sensu_check_procs with context %}
+    {{ sensu_check_procs("salt-master") }}
+    {{ sensu_check_procs("mongod", pattern="mongod$") }}
+
 
 
 Notifications

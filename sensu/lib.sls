@@ -22,10 +22,6 @@ execute check is process exists
 {% else %}
   {% set handlers =  ["default"] %}
 {% endif %}
-{% if 'check-elastic' in command %}
-  {% set str_handlers = ','.join(handlers) %}
-  {% set command = command + " -l '" + str_handlers + "'" %}
-{% endif %}
 
 {# This means we can pass extra values that make sense to a subject and have
    them ignored here, rather than error. For example::
@@ -59,6 +55,30 @@ execute check is process exists
         - service: sensu-api
         - service: sensu-client
 
+{% endmacro %}
+
+{% macro sensu_check_es(name, command=None, interval=300, query='*', handlers=None, out_tag='es', output=None, subscribers=['monitoring.server']) %}
+{% set p_data = sensu.checks.get(name, {}) %}
+{% if handlers %}
+{% elif "handlers" in p_data %}
+  {% set handlers =  p_data.handlers %}
+{% else %}
+  {% set handlers =  ["default"] %}
+{% endif %}
+{% set str_handlers = ','.join(handlers) %}
+
+{% if command %}
+{% else %}
+  {% if output %}
+  {% else %}
+    {% set output = "Found results for: " + query %}
+  {% endif %}
+  {% set command = "/etc/sensu/plugins/check-elastic.rb -r " + interval|string + "s -q '" + query + "' -t " + out_tag + " -s '" + output + "'" %}
+{% endif %}
+
+{% set command = command + " -l '" + str_handlers + "'" %}
+
+{{ sensu_check(name="es-"+name, command=command, interval=interval, subscribers=subscribers, **kwargs) }}
 {% endmacro %}
 
 {% macro sensu_check_procs(name, critical_under=1) %}

@@ -1,4 +1,4 @@
-## Version 4.0.x
+## Version 4.1.0
 
 * Let us specify a more exact process pattern to check for
 * Allow passing through subscribers, handlers and all other parameters from

@@ -7,10 +7,11 @@ sensu:
   pkg.installed:
     - version: 0.13.1-1
 
+{% if 'sensu' not in salt['grains.get']('admins_extra_groups', []) %}
 sensu_admin_group_grain:
-  grains.append:
-    - key: admins_extra_groups
-    - val: sensu
+  cmd.run:
+    - name: salt-call grains.append admins_extra_groups sensu
+{% endif %}
 
 /etc/default/sensu:
   file.managed:

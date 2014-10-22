@@ -17,9 +17,9 @@ sensu:
 
 /etc/sensu:
   file.directory:
-    - user: sensu
+    - user: root
     - group: sensu
-    - mode: 750
+    - mode: 2750
     - require:
       - pkg: sensu
 
@@ -31,6 +31,9 @@ sensu:
 sensu-confd-checks-clean:
   file.directory:
     - name: /etc/sensu/conf.d/checks
+    - user: root
+    - group: sensu
+    - mode: 2750
     - clean: True
     - require:
       - pkg: sensu
@@ -39,5 +42,8 @@ sensu-confd-checks-clean:
 sensu-confd-checks-dir:
   file.directory:
     - name: /etc/sensu/conf.d/checks
+    - user: root
+    - group: sensu
+    - mode: 2750
     - require:
       - pkg: sensu

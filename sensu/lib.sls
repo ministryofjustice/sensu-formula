@@ -26,8 +26,8 @@ execute check is process exists
   file.managed:
     - source: salt://sensu/templates/checks.json
     - template: jinja
-    - mode: 600
-    - owner: sensu
+    - mode: 640
+    - owner: root
     - group: sensu
     - context:
         name: {{name}}

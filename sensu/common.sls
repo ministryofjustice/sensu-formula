@@ -7,6 +7,10 @@ sensu:
   pkg.installed:
     - version: 0.13.1-1
 
+sensu_admin_group_grain:
+  grains.append:
+    - key: admins_extra_groups
+    - val: sensu
 
 /etc/default/sensu:
   file.managed:

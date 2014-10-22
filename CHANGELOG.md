@@ -1,3 +1,8 @@
+## CURRENT
+
+* Fix up permissions so that 'sensu' user cannot write to config.
+* Add 'sensu' group to admin users to negate need for sudo to read config.
+
 ## Version 4.1.0
 
 * Let us specify a more exact process pattern to check for

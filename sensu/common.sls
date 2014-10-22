@@ -7,6 +7,11 @@ sensu:
   pkg.installed:
     - version: 0.13.1-1
 
+{% if 'sensu' not in salt['grains.get']('admins_extra_groups', []) %}
+sensu_admin_group_grain:
+  cmd.run:
+    - name: salt-call grains.append admins_extra_groups sensu
+{% endif %}
 
 /etc/default/sensu:
   file.managed:
@@ -17,9 +22,9 @@ sensu:
 
 /etc/sensu:
   file.directory:
-    - user: sensu
+    - user: root
     - group: sensu
-    - mode: 750
+    - mode: 2750
     - require:
       - pkg: sensu
 
@@ -31,6 +36,9 @@ sensu:
 sensu-confd-checks-clean:
   file.directory:
     - name: /etc/sensu/conf.d/checks
+    - user: root
+    - group: sensu
+    - mode: 2750
     - clean: True
     - require:
       - pkg: sensu
@@ -39,5 +47,8 @@ sensu-confd-checks-clean:
 sensu-confd-checks-dir:
   file.directory:
     - name: /etc/sensu/conf.d/checks
+    - user: root
+    - group: sensu
+    - mode: 2750
     - require:
       - pkg: sensu

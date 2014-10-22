@@ -17,6 +17,9 @@ include:
 
 /etc/sensu/conf.d/redis.json:
   file.managed:
+    - user: root
+    - group: sensu
+    - mode: 440
     - source: salt://sensu/templates/redis.json
     - template: 'jinja'
 
@@ -52,11 +55,17 @@ sensu_hipchat:
 
 /etc/sensu/conf.d/api.json:
   file.managed:
+    - user: root
+    - group: sensu
+    - mode: 440
     - source: salt://sensu/templates/api.json
     - template: 'jinja'
 
 /etc/sensu/conf.d/handlers.json:
   file.managed:
+    - user: root
+    - group: sensu
+    - mode: 440
     - source: salt://sensu/templates/handlers.json
     - template: 'jinja'
 

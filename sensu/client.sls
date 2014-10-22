@@ -10,14 +10,18 @@ include:
   file.managed:
     - source: salt://sensu/templates/rabbitmq.json
     - template: jinja
-    - mode: 644
+    - user: root
+    - group: sensu
+    - mode: 440
 
 
 /etc/sensu/conf.d/client.json:
   file.managed:
     - source: salt://sensu/templates/client.json
     - template: jinja
-    - mode: 644
+    - user: root
+    - group: sensu
+    - mode: 440
 
 
 # Sensu Community Plugins
@@ -42,10 +46,10 @@ sensu_plugins_remove_symlink:
     - source: salt://sensu/files/plugins
     - include_empty: True
     - clean: True
-    - user: sensu
+    - user: root
     - group: sensu
-    - file_mode: 700
-    - dir_mode: 700
+    - file_mode: 550
+    - dir_mode: 2750
     - require:
       - cmd: sensu_plugins_remove_symlink
       - cmd: rest-client

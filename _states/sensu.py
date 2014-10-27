@@ -406,7 +406,10 @@ def _default_param(arglist, param_name, pillar = {}, default = None):
 
 def _sensucheck(name, **kwargs):
 
-    pillar = kwargs.get('pillar', {})
+    pillar = {}
+    if 'pillar' in kwargs:
+        pillar = __salt__['pillar.get'](kwargs['pillar'])
+
     _default_param(kwargs, 'command',     pillar, 'mycommand')
     _default_param(kwargs, 'handlers',    pillar, [ 'default' ])
     _default_param(kwargs, 'interval',    pillar, 60)
@@ -447,7 +450,7 @@ def check_graphite(name, metric_name, params = '', desc = '', **kwargs):
 
 
 def checks_from_pillar(name, **kwargs):
-    pillar = kwargs.get('pillar', 
+    pillar = kwargs.get('pillar', 'aaa')
 
 def handler(name, **kwargs):
     kwargs['source'] = 'salt://sensu/templates/state_handlers.json'

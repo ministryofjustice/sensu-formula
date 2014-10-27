@@ -1,220 +1,4 @@
 # -*- coding: utf-8 -*-
-'''
-Operations on regular files, special files, directories, and symlinks
-=====================================================================
-
-Salt States can aggressively manipulate files on a system. There are a number
-of ways in which files can be managed.
-
-Regular files can be enforced with the ``managed`` function. This function
-downloads files from the salt master and places them on the target system.
-The downloaded files can be rendered as a jinja, mako, or wempy template,
-adding a dynamic component to file management. An example of ``file.managed``
-which makes use of the jinja templating system would look like this:
-
-.. code-block:: yaml
-
-    /etc/http/conf/http.conf:
-      file.managed:
-        - source: salt://apache/http.conf
-        - user: root
-        - group: root
-        - mode: 644
-        - template: jinja
-        - defaults:
-            custom_var: "default value"
-            other_var: 123
-    {% if grains['os'] == 'Ubuntu' %}
-        - context:
-            custom_var: "override"
-    {% endif %}
-
-.. note::
-
-    When using both the ``defaults`` and ``context`` arguments, note the extra
-    indentation (four spaces instead of the normal two). This is due to an
-    idiosyncrasy of how PyYAML loads nested dictionaries, and is explained in
-    greater detail :ref:`here <nested-dict-indentation>`.
-
-If using a template, any user-defined template variables in the file defined in
-``source`` must be passed in using the ``defaults`` and/or ``context``
-arguments. The general best practice is to place default values in
-``defaults``, with conditional overrides going into ``context``, as seen above.
-
-The ``source`` parameter can be specified as a list. If this is done, then the
-first file to be matched will be the one that is used. This allows you to have
-a default file on which to fall back if the desired file does not exist on the
-salt fileserver. Here's an example:
-
-.. code-block:: yaml
-
-    /etc/foo.conf:
-      file.managed:
-        - source:
-          - salt://foo.conf.{{ grains['fqdn'] }}
-          - salt://foo.conf.fallback
-        - user: foo
-        - group: users
-        - mode: 644
-        - backup: minion
-
-.. note::
-
-    Salt supports backing up managed files via the backup option. For more
-    details on this functionality please review the
-    :doc:`backup_mode documentation </ref/states/backup_mode>`.
-
-The ``source`` parameter can also specify a file in another Salt environment.
-In this example ``foo.conf`` in the ``dev`` environment will be used instead.
-
-.. code-block:: yaml
-
-    /etc/foo.conf:
-      file.managed:
-        - source:
-          - salt://foo.conf?saltenv=dev
-        - user: foo
-        - group: users
-        - mode: '0644'
-
-.. warning::
-
-        When using a mode that includes a leading zero you must wrap the
-        value in single quotes. If the value is not wrapped in quotes it
-        will be read by YAML as an integer and evaluated as an octal.
-
-Special files can be managed via the ``mknod`` function. This function will
-create and enforce the permissions on a special file. The function supports the
-creation of character devices, block devices, and fifo pipes. The function will
-create the directory structure up to the special file if it is needed on the
-minion. The function will not overwrite or operate on (change major/minor
-numbers) existing special files with the exception of user, group, and
-permissions. In most cases the creation of some special files require root
-permisisons on the minion. This would require that the minion to be run as the
-root user. Here is an example of a character device:
-
-.. code-block:: yaml
-
-    /var/named/chroot/dev/random:
-      file.mknod:
-        - ntype: c
-        - major: 1
-        - minor: 8
-        - user: named
-        - group: named
-        - mode: 660
-
-Here is an example of a block device:
-
-.. code-block:: yaml
-
-    /var/named/chroot/dev/loop0:
-      file.mknod:
-        - ntype: b
-        - major: 7
-        - minor: 0
-        - user: named
-        - group: named
-        - mode: 660
-
-Here is an example of a fifo pipe:
-
-.. code-block:: yaml
-
-    /var/named/chroot/var/log/logfifo:
-      file.mknod:
-        - ntype: p
-        - user: named
-        - group: named
-        - mode: 660
-
-Directories can be managed via the ``directory`` function. This function can
-create and enforce the permissions on a directory. A directory statement will
-look like this:
-
-.. code-block:: yaml
-
-    /srv/stuff/substuf:
-      file.directory:
-        - user: fred
-        - group: users
-        - mode: 755
-        - makedirs: True
-
-If you need to enforce user and/or group ownership or permissions recursively
-on the directory's contents, you can do so by adding a ``recurse`` directive:
-
-.. code-block:: yaml
-
-    /srv/stuff/substuf:
-      file.directory:
-        - user: fred
-        - group: users
-        - mode: 755
-        - makedirs: True
-        - recurse:
-          - user
-          - group
-          - mode
-
-As a default, ``mode`` will resolve to ``dir_mode`` and ``file_mode``, to
-specify both directory and file permissions, use this form:
-
-.. code-block:: yaml
-
-    /srv/stuff/substuf:
-      file.directory:
-        - user: fred
-        - group: users
-        - file_mode: 744
-        - dir_mode: 755
-        - makedirs: True
-        - recurse:
-          - user
-          - group
-          - mode
-
-Symlinks can be easily created; the symlink function is very simple and only
-takes a few arguments:
-
-.. code-block:: yaml
-
-    /etc/grub.conf:
-      file.symlink:
-        - target: /boot/grub/grub.conf
-
-Recursive directory management can also be set via the ``recurse``
-function. Recursive directory management allows for a directory on the salt
-master to be recursively copied down to the minion. This is a great tool for
-deploying large code and configuration systems. A state using ``recurse``
-would look something like this:
-
-.. code-block:: yaml
-
-    /opt/code/flask:
-      file.recurse:
-        - source: salt://code/flask
-        - include_empty: True
-
-A more complex ``recurse`` example:
-
-.. code-block:: yaml
-
-    {% set site_user = 'testuser' %}
-    {% set site_name = 'test_site' %}
-    {% set project_name = 'test_proj' %}
-    {% set sites_dir = 'test_dir' %}
-
-    django-project:
-      file.recurse:
-        - name: {{ sites_dir }}/{{ site_name }}/{{ project_name }}
-        - user: {{ site_user }}
-        - dir_mode: 2775
-        - file_mode: '0644'
-        - template: jinja
-        - source: salt://project/templates_dir
-        - include_empty: True
-'''
 
 # Import python libs
 import os
@@ -242,6 +26,13 @@ COMMENT_REGEX = r'^([[:space:]]*){0}[[:space:]]?'
 
 _ACCUMULATORS = {}
 _ACCUMULATORS_DEPS = {}
+
+
+def _error(ret, err_msg):
+    ret['result'] = False
+    ret['comment'] = err_msg
+    return ret
+
 
 def _test_owner(kwargs, user=None):
     '''
@@ -602,7 +393,24 @@ def _managed(name,
             return _error(ret, 'Unable to manage file: {0}'.format(exc))
 
 
+def _default_param(arglist, param_name, default, pillar={}):
+    if param_name in arglist:
+        return
+    arglist[param_name] = default
+
+def _sensucheck(name, **kwargs):
+    _default_param(kwargs, 'command', 'mycommand')
+    _default_param(kwargs, 'handlers', [ 'default' ])
+    _default_param(kwargs, 'interval', 60)
+    _default_param(kwargs, 'occurrences', 1)
+    _default_param(kwargs, 'playbook', None)
+    _default_param(kwargs, 'standalone', False)
+    _default_param(kwargs, 'subscribers', [ 'all' ])
+  
+    kwargs['source'] = 'salt://sensu/templates/checks.json'
+    return _managed(name, **kwargs)
+
+
 def mycheck(name, **kwargs):
-    kwargs.source = 'salt://sensu/templates/checks.json'
-    _managed(name, **kwargs)
+    return _sensucheck(name, **kwargs)
 

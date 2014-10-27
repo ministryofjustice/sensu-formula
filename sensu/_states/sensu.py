@@ -243,6 +243,23 @@ COMMENT_REGEX = r'^([[:space:]]*){0}[[:space:]]?'
 _ACCUMULATORS = {}
 _ACCUMULATORS_DEPS = {}
 
+def _test_owner(kwargs, user=None):
+    '''
+    Convert owner to user, since other config management tools use owner,
+    no need to punish people coming from other systems.
+    PLEASE DO NOT DOCUMENT THIS! WE USE USER, NOT OWNER!!!!
+    '''
+    if user:
+        return user
+    if 'owner' in kwargs:
+        log.warning(
+            'Use of argument owner found, "owner" is invalid, please '
+            'use "user"'
+        )
+        return kwargs['owner']
+
+    return user
+
 
 def mycheck(name,
             source=None,

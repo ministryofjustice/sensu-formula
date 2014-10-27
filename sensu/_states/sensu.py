@@ -276,7 +276,7 @@ def _check_user(user, group):
     return err
 
 
-def mycheck(name,
+def _managed(name,
             source=None,
             source_hash='',
             user=None,
@@ -601,4 +601,8 @@ def mycheck(name,
             log.debug(traceback.format_exc())
             return _error(ret, 'Unable to manage file: {0}'.format(exc))
 
+
+def mycheck(name, **kwargs):
+    kwargs.source = 'salt://sensu/templates/checks.json'
+    _managed(name, **kwargs)
 

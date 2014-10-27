@@ -392,6 +392,9 @@ def _managed(name,
             log.debug(traceback.format_exc())
             return _error(ret, 'Unable to manage file: {0}'.format(exc))
 
+###
+### Sensu specific internal functions
+###
 
 def _default_param(arglist, param_name, default, pillar={}):
     if param_name in arglist:
@@ -414,6 +417,10 @@ def _sensucheck(name, **kwargs):
     return _managed(pathname, **kwargs)
 
 
+###
+### Sensu usable states
+###
+
 def check(name, **kwargs):
     return _sensucheck(name, **kwargs)
 
@@ -422,13 +429,13 @@ def check_procs(name, critical_under=1, **kwargs):
     pattern = kwargs.get('pattern',name)
     kwargs['command'] = "/etc/sensu/community/plugins/processes/check-procs.rb -p {} -C {}".format(pattern, critical_under)
     
-    if critical_over in kwargs:
-        kwargs['command'] += " -c {}".format(critical_over)
+    if 'critical_over' in kwargs:
+        kwargs['command'] += " -c {}".format(kwargs['critical_over'])
 
     return _sensucheck(name, **kwargs)
 
 
-def check_graphite(name, metric_name, params = '', desc, **kwargs):
+def check_graphite(name, metric_name, params = '', desc = '', **kwargs):
     kwargs['command'] = "/etc/sensu/plugins/graphite-data.rb -t {} -n '{}' {}".format(metric_name, desc, params)
     
     return _sensucheck(name, **kwargs)

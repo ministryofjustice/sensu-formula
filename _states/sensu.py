@@ -407,8 +407,11 @@ def _sensucheck(name, **kwargs):
     _default_param(kwargs, 'standalone', False)
     _default_param(kwargs, 'subscribers', [ 'all' ])
   
-    kwargs['source'] = 'salt://sensu/templates/checks.json'
-    return _managed(name, **kwargs)
+    kwargs['source'] = 'salt://sensu/templates/state_checks.json'
+    kwargs['template'] = 'jinja'
+    kwargs['checkname'] = name
+    pathname = "/var/tmp/{}".format(name)
+    return _managed(pathname, **kwargs)
 
 
 def mycheck(name, **kwargs):

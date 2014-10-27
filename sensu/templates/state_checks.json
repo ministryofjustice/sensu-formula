@@ -1,0 +1,18 @@
+{
+  "checks": {
+    "{{checkname}}": {
+      "handlers": ["{{'", "'.join(handlers)}}"],
+      "command": "{{command}}",
+      "interval": {{interval}},
+      "occurrences": {{occurrences}},
+{% if playbook %}
+      "playbook": "{{playbook}}",
+{% endif %}
+{% if standalone %}
+      "standalone": true
+{% else %}
+      "subscribers": ["{{'", "'.join(subscribers)}}"]
+{% endif %}
+    }
+  }
+}

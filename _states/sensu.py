@@ -396,19 +396,24 @@ def _managed(name,
 ### Sensu specific internal functions
 ###
 
-def _default_param(arglist, param_name, default, pillar={}):
+def _default_param(arglist, param_name, pillar = {}, default = None):
     if param_name in arglist:
+        return
+    if pillar[param_name]:
+        arglist[param_name] = pillar[param_name]
         return
     arglist[param_name] = default
 
 def _sensucheck(name, **kwargs):
-    _default_param(kwargs, 'command', 'mycommand')
-    _default_param(kwargs, 'handlers', [ 'default' ])
-    _default_param(kwargs, 'interval', 60)
-    _default_param(kwargs, 'occurrences', 1)
-    _default_param(kwargs, 'playbook', None)
-    _default_param(kwargs, 'standalone', False)
-    _default_param(kwargs, 'subscribers', [ 'all' ])
+
+    pillar = kwargs.get('pillar', {})
+    _default_param(kwargs, 'command',     pillar, 'mycommand')
+    _default_param(kwargs, 'handlers',    pillar, [ 'default' ])
+    _default_param(kwargs, 'interval',    pillar, 60)
+    _default_param(kwargs, 'occurrences', pillar, 1)
+    _default_param(kwargs, 'playbook',    pillar, None)
+    _default_param(kwargs, 'standalone',  pillar, False)
+    _default_param(kwargs, 'subscribers', pillar, [ 'all' ])
   
     kwargs['source'] = 'salt://sensu/templates/state_checks.json'
     kwargs['template'] = 'jinja'
@@ -439,5 +444,16 @@ def check_graphite(name, metric_name, params = '', desc = '', **kwargs):
     kwargs['command'] = "/etc/sensu/plugins/graphite-data.rb -t {} -n '{}' {}".format(metric_name, desc, params)
     
     return _sensucheck(name, **kwargs)
+
+
+def checks_from_pillar(name, **kwargs):
+    pillar = kwargs.get('pillar', 
+
+def handler(name, **kwargs):
+    kwargs['source'] = 'salt://sensu/templates/state_handlers.json'
+    kwargs['template'] = 'jinja'
+    kwargs['handlername'] = name
+    pathname = "/var/tmp/{}".format(name)
+    return _managed(pathname, **kwargs)
 
 

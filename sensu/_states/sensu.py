@@ -260,6 +260,21 @@ def _test_owner(kwargs, user=None):
 
     return user
 
+def _check_user(user, group):
+    '''
+    Checks if the named user and group are present on the minion
+    '''
+    err = ''
+    if user:
+        uid = __salt__['file.user_to_uid'](user)
+        if uid == '':
+            err += 'User {0} is not available '.format(user)
+    if group:
+        gid = __salt__['file.group_to_gid'](group)
+        if gid == '':
+            err += 'Group {0} is not available'.format(group)
+    return err
+
 
 def mycheck(name,
             source=None,

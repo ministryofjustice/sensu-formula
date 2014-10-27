@@ -414,6 +414,23 @@ def _sensucheck(name, **kwargs):
     return _managed(pathname, **kwargs)
 
 
-def mycheck(name, **kwargs):
+def check(name, **kwargs):
     return _sensucheck(name, **kwargs)
+
+
+def check_procs(name, critical_under=1, **kwargs):
+    pattern = kwargs.get('pattern',name)
+    kwargs['command'] = "/etc/sensu/community/plugins/processes/check-procs.rb -p {} -C {}".format(pattern, critical_under)
+    
+    if critical_over in kwargs:
+        kwargs['command'] += " -c {}".format(critical_over)
+
+    return _sensucheck(name, **kwargs)
+
+
+def check_graphite(name, metric_name, params = '', desc, **kwargs):
+    kwargs['command'] = "/etc/sensu/plugins/graphite-data.rb -t {} -n '{}' {}".format(metric_name, desc, params)
+    
+    return _sensucheck(name, **kwargs)
+
 

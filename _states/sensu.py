@@ -399,17 +399,20 @@ def _managed(name,
 def _default_param(arglist, param_name, pillar = {}, default = None):
     if param_name in arglist:
         return
-    if pillar[param_name]:
+    if param_name in pillar:
         arglist[param_name] = pillar[param_name]
         return
     arglist[param_name] = default
 
 def _sensucheck(name, **kwargs):
 
+    # If the pillar kwarg is provided then use this to override the defaults
+    # but ensure it is removed to avoid confusing things downstream
     pillar = {}
     if 'pillar' in kwargs:
-        pillar = __salt__['pillar.get'](kwargs['pillar'])
+        pillar = kwargs.pop('pillar')
 
+    log.warning("Pillar is set to {}".format(repr(pillar)))
     _default_param(kwargs, 'command',     pillar, 'mycommand')
     _default_param(kwargs, 'handlers',    pillar, [ 'default' ])
     _default_param(kwargs, 'interval',    pillar, 60)
@@ -448,9 +451,10 @@ def check_graphite(name, metric_name, params = '', desc = '', **kwargs):
     
     return _sensucheck(name, **kwargs)
 
+def checks_by_name(name, type=None, **kwargs):
+    fn = globals()[type]    
+    fn(name, **kwargs)
 
-def checks_from_pillar(name, **kwargs):
-    pillar = kwargs.get('pillar', 'aaa')
 
 def handler(name, **kwargs):
     kwargs['source'] = 'salt://sensu/templates/state_handlers.json'

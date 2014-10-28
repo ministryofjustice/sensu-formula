@@ -451,9 +451,24 @@ def check_graphite(name, metric_name, params = '', desc = '', **kwargs):
     
     return _sensucheck(name, **kwargs)
 
-def checks_by_name(name, type=None, **kwargs):
-    fn = globals()[type]    
-    fn(name, **kwargs)
+
+def check_by_name(name, **kwargs):
+    ret = {'changes': {},
+           'comment': '',
+           'name': name,
+           'result': True}
+    pillar = kwargs.get('pillar', {})
+    if pillar == {}:
+        return _error(ret, "'pillar' not present") 
+    type = pillar.get('type', None)
+    if type == None:
+        return _error(ret, "'type' not specified in pillar") 
+    if type not in [ 'check_graphite', 'check', 'check_procs' ]:
+        return _error(ret, "Unknown 'type' specified in pillar") 
+
+    fn = globals()[type]
+    
+    return fn(name, **kwargs)
 
 
 def handler(name, **kwargs):

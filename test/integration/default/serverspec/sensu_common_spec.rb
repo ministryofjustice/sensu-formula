@@ -16,6 +16,11 @@ describe "sensu setup" do
     it {should be_installed.with_version(sensu_pkg["version"])}
   end
 
+  describe file("/opt/sensu/embedded/bin/ruby") do
+    it { should be_file }
+    it { should be_executable }
+  end
+
   describe file("/etc/default/sensu") do
     it {should be_file}
     it {should be_owned_by "root"}

@@ -3,4 +3,5 @@ sensu_deps:
     - pkgs:
       - gcc
       - git
+      - build-essential
       - bc # Needed for some of the community check plugins

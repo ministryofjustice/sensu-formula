@@ -4,10 +4,13 @@
 {% from 'logstash/lib.sls' import logship with context %}
 
 include:
+  - firewall
+  - bootstrap
   - nginx
   - redis
   - rabbitmq
   - apparmor
+  - repos
   - .client
   - .common
   - .deps

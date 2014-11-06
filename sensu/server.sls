@@ -109,12 +109,12 @@ sensu_rabbitmq_user:
       - service: sensu-server
 
 #perms are not working so we fall back to owner
-
-
 sensu_rabbitmq_vhost:
   rabbitmq_vhost.present:
     - name: {{ sensu.rabbitmq.vhost }}
     - owner: {{ sensu.rabbitmq.user }}
+    - require:
+      - rabbitmq_user: sensu_rabbitmq_user
     - require_in:
       - service: sensu-api
       - service: sensu-server
@@ -138,8 +138,11 @@ uchiwa:
     - installed
     - version: {{ sensu.uchiwa.version }}
   service.running:
+    - require:
+      - file: /etc/sensu/uchiwa.json
     - watch:
       - file: /etc/init/uchiwa.conf
+      - file: /etc/sensu/uchiwa.json
   file.managed:
     - name: /etc/sensu/uchiwa.json
     - user: uchiwa
@@ -149,8 +152,6 @@ uchiwa:
     - require:
       - file: /etc/sensu
       - pkg: uchiwa
-    - watch:
-      - service: uchiwa
 
 /etc/apparmor.d/opt.uchiwa.embedded.bin.node:
   file.managed:

@@ -424,7 +424,7 @@ def _sensucheck(name, **kwargs):
     kwargs['source'] = 'salt://sensu/templates/state_checks.json'
     kwargs['template'] = 'jinja'
     kwargs['checkname'] = name
-    pathname = "/var/tmp/{}".format(name)
+    pathname = "/etc/sensu/conf.d/checks/{}".format(name)
     return _managed(pathname, **kwargs)
 
 

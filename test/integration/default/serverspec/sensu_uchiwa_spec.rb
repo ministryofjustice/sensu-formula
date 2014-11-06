@@ -7,9 +7,13 @@ set :backend, :exec
 set :path, '/sbin:/usr/local/sbin:$PATH'
 
 describe "sensu uchiwa setup" do
-  
-  describe package("uchiwa") do
-    it {should be_installed}
+  uchiwa_pkg = {
+    "name" => "uchiwa",
+    "version" => "0.3.2-1"
+  }
+
+  describe package(uchiwa_pkg["name"]) do
+    it {should be_installed.with_version(uchiwa_pkg["version"])}
   end
 
   describe user("uchiwa") do

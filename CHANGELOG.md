@@ -1,3 +1,7 @@
+## Version 4.1.x
+
+* Pin uchiwa for Ubuntu 12.04
+
 ## Version 4.1.0
 
 * Let us specify a more exact process pattern to check for

@@ -46,6 +46,14 @@ describe "sensu uchiwa setup" do
     describe port(p) do
       it { should be_listening }
     end
+
+    describe "Uchiwa http #{p} health" do
+      uri = URI.parse("http://localhost:#{p}/health/uchiwa")
+      resp = Net::HTTP.get_response(uri)
+      it "should be healthy" do
+        resp.code == 200
+      end
+    end
   end
 
   describe file("/etc/nginx/conf.d/sensu.conf") do
@@ -54,5 +62,5 @@ describe "sensu uchiwa setup" do
     it {should be_grouped_into "root"}
     its(:content) { should match /localhost:3000/}
   end
-
+ 
 end

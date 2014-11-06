@@ -133,6 +133,7 @@ uchiwa:
       - pkg: uchiwa
   pkg:
     - installed
+    - version: {{ sensu.uchiwa.version }}
   service.running:
     - watch:
       - file: /etc/init/uchiwa.conf

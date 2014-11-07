@@ -1,5 +1,8 @@
 {% set sensu = salt['grains.filter_by']({
     'Ubuntu-12.04': {
+       'package' : {
+            'version' : '0.13.1-1'
+        },
         'rabbitmq': {
             'host': 'monitoring.local',
             'port': 5672,
@@ -60,8 +63,8 @@
             },
         },
         'uchiwa': {
-            'version': '0.2.6-1'
-        }
+            'version': '0.3.2-1'
+        },
     },
     'Unknown': {
         'rabbitmq': {

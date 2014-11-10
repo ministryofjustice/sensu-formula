@@ -53,10 +53,18 @@ sensu_plugins_remove_symlink:
     - watch_in:
       - service: sensu-client
 
+# Required for raindrops to install
+pkg_build-essential:
+  pkg:
+    - installed
+    - name: build-essential
+
 raindrops:
   cmd.run:
     - name: /opt/sensu/embedded/bin/gem install raindrops --no-rdoc --no-ri
     - unless: /opt/sensu/embedded/bin/gem which raindrops >/dev/null 2>/dev/null
+    - require:
+      - pkg: build-essential
 
 rest-client:
   cmd.run:

@@ -116,10 +116,6 @@ sensu_rabbitmq_vhost:
       - service: sensu-api
       - service: sensu-server
 
-/etc/init.d/uchiwa:
-  file:
-    - absent
-
 uchiwa:
   user.present:
     - groups: [sensu]
@@ -127,9 +123,12 @@ uchiwa:
       - pkg: uchiwa
   pkg:
     - installed
-  service.running:
-    - watch:
-      - file: /etc/init/uchiwa.conf
+  service:
+     - running
+     - enable: True
+     - reload: True
+     - watch:
+       - file: /etc/sensu/uchiwa.json
   file.managed:
     - name: /etc/sensu/uchiwa.json
     - user: uchiwa
@@ -139,8 +138,6 @@ uchiwa:
     - require:
       - file: /etc/sensu
       - pkg: uchiwa
-    - watch:
-      - service: uchiwa
 
 /etc/apparmor.d/opt.uchiwa.embedded.bin.node:
   file.managed:

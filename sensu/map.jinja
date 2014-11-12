@@ -1,19 +1,19 @@
 {% set sensu = salt['grains.filter_by']({
     'Debian': {
         'rabbitmq': {
-            'host': 'monitoring.local',
+            'host': 'localhost',
             'port': 5672,
             'user': 'sensu',
             'password': 'sensu',
             'vhost': '/sensu',
         },
         'redis': {
-            'host': 'monitoring.local',
+            'host': 'localhost',
             'port': 6379,
             'db': 1,
         },
         'graphite': {
-            'host': 'graphite.local',
+            'host': 'localhost',
             'port': 80,
         },
         'notify': {

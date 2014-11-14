@@ -11,7 +11,8 @@ sensu:
 
 /etc/default/sensu:
   file.managed:
-    - source: salt://sensu/files/default_sensu
+    - source: salt://sensu/templates/default/sensu
+    - template: jinja
     - require:
       - pkg: sensu
 

@@ -1,0 +1,3 @@
+{% from "sensu/map.jinja" import sensu with context %}
+EMBEDDED_RUBY=true
+LOG_LEVEL={{sensu.log_level}}

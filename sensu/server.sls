@@ -149,6 +149,8 @@ uchiwa:
     - require:
       - file: /etc/sensu
       - pkg: uchiwa
+    - watch_in:
+      - service: uchiwa
 
 /etc/apparmor.d/opt.uchiwa.embedded.bin.node:
   file.managed:

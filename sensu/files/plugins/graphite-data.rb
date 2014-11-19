@@ -114,12 +114,18 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     end
 
     data = retrieve_data
-    data.each_pair do |key, value|
-      @value = value
-      @data = value['data']
-      check_age || check(:critical) || check(:warning)
+    if data.empty?
+      critical "Empty dataset retrieved for target '#{formatted_target}' - is the target valid?"
+    elsif data.nil?
+      critical "Nil dataset retrieved for target '#{formatted_target}'. This is probably a bug."
+    else
+      data.each_pair do |key, value|
+        @value = value
+        @data = value['data']
+        check_age || check(:critical) || check(:warning)
+      end
+      ok("#{name} value okay (#{value_to_check(@data)})")
     end
-    ok("#{name} value okay (#{value_to_check(@data)})")
   end
 
   # name used in responses

@@ -1,3 +1,8 @@
+## Version 4.x.0
+
+* Upgrade uchiwa to 0.3.2-1
+* Upgrade sensu to 0.13.1-1
+
 ## Version 4.1.1
 
 * Pin uchiwa for Ubuntu 12.04

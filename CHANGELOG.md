@@ -1,3 +1,7 @@
+## Version 4.1.x
+
+* Prevent graphite-data.rb from throwing NilClass error on bad target/no data
+
 ## Version 4.1.1
 
 * Pin uchiwa for Ubuntu 12.04

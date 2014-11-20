@@ -1,5 +1,6 @@
-## Version 4.x.0
+## Version 4.2.x
 
+* Prevent graphite-data.rb from throwing NilClass error on bad target/no data
 * Upgrade uchiwa to 0.3.2-1
 * Upgrade sensu to 0.13.1-1
 

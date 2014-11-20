@@ -66,6 +66,75 @@
             'version': '0.3.2-1'
         },
     },
+
+    'Ubuntu-14.04': {
+       'package' : {
+            'version' : '0.13.1-1'
+        },
+        'rabbitmq': {
+            'host': 'monitoring.local',
+            'port': 5672,
+            'user': 'sensu',
+            'password': 'sensu',
+            'vhost': '/sensu',
+        },
+        'redis': {
+            'host': 'monitoring.local',
+            'port': 6379,
+            'db': 1,
+        },
+        'graphite': {
+            'host': 'graphite.local',
+            'port': 80,
+        },
+        'notify': {
+            'email': False,
+            'pagerduty_apikey': False,
+            'hipchat_apikey': False,
+            'hipchat_roomname': 'Alerts',
+            'hipchat_from': False,
+            'hipchat_apiversion': 'v1'
+        },
+        'community_plugins_rev': '474e375c3f',
+        'checks': {
+            'ntp-offset': {
+                'warning': 0.5,
+                'critical': 1,
+            },
+            'used-root-disk': {
+                'warning': 75,
+                'critical': 90,
+            },
+            'load-shortterm': {
+                'warning': 1,
+                'critical': 2,
+            },
+            'load-midterm': {
+                'warning': 2,
+                'critical': 3,
+            },
+            'load-longterm': {
+                'warning': 3,
+                'critical': 4,
+            },
+            'swap-used': {
+                'warning': 80,
+                'critical': 95,
+            },
+            'swap-out': {
+                'warning': 0,
+                'critical': 50,
+            },
+            'memory-used': {
+                'warning': 70,
+                'critical': 85,
+            },
+        },
+        'uchiwa': {
+            'version': '0.3.2-1'
+        },
+    },
+
     'Unknown': {
         'rabbitmq': {
             'host': 'monitoring.local',

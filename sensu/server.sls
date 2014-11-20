@@ -4,13 +4,13 @@
 {% from 'logstash/lib.sls' import logship with context %}
 
 include:
+  - repos
   - firewall
   - bootstrap
   - nginx
   - redis
   - rabbitmq
   - apparmor
-  - repos
   - .client
   - .common
   - .deps
@@ -166,9 +166,9 @@ uchiwa:
 {{ logship('uchiwa.log',  '/var/log/upstart/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}
 
 
-/etc/nginx/conf.d/sensu.conf:
+/etc/nginx/conf.d/uchiwa.conf:
   file.managed:
-    - source: salt://nginx/templates/vhost-proxy.conf
+    - source: salt://sensu/templates/uchiwa-proxy.conf
     - template: jinja
     - user: root
     - group: root

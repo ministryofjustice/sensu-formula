@@ -7,9 +7,9 @@
 ## Version 4.1.1
 
 * Pin uchiwa for Ubuntu 12.04
-
-## Version 4.1.0
-
+* Make it possible to specify handlers in the pillar.
+* New sensu_check_es macro
+* Set apparmor check to use default handler
 * Let us specify a more exact process pattern to check for
 * Allow passing through subscribers, handlers and all other parameters from
   sensu_check_graphite and sensu_check_proc down to the base sensu_check

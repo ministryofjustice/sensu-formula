@@ -156,6 +156,27 @@ params
   please consult the graphite check at
   ``./sensu/files/plugins/graphite-data.rb``.
 
+``sensu_check_es`` macro
+------------------------------
+
+Macro to perform a check against an elastic search query
+
+The macro accepts the following arguments in addition to those of the ```sensu_check`` macro`_:
+
+query
+  The ES query to run e.g. ``tags:rails AND @tags:exception``
+
+  **Default:** *
+
+out_tag
+  A tag which will be inclued in the notification
+
+  **Default:** es
+
+output
+  The text for the notification e.g. "Exception found in rails log!"
+
+  **Default:** "Found results for: " + query 
 
 Configuring thresholds
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -230,9 +251,22 @@ Example usage::
 Notifications
 =============
 
-By default the sensu server will only generate notifications to STDOUT and therefore they will only be
+By default the sensu server will only generate notifications to STDOUT handler and therefore they will only be
 visible in the dashboard and in sensu-server.log. To enable additional notification methods you need to 
 enable them in the pillar. You can enable as many as you like of the additional notifications.
+
+You can override the handler for the check in the pillar or the check definition. 
+
+Example::
+
+    sensu:
+      checks:
+        apparmor_check:
+          handlers:
+            - hipchat
+
+The handler specified in the check definition will take precedence over the pillar. If you don't specify the handler the default is to use all the handlers enabled (as below)
+
 
 Email
 -----

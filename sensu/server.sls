@@ -8,6 +8,7 @@ include:
   - bootstrap
   - nginx
   - redis
+  - logstash.client
   - rabbitmq
   - apparmor
   - repos

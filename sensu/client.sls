@@ -2,8 +2,11 @@
 {% from "logstash/lib.sls" import logship with context %}
 
 include:
+  - firewall
+  - bootstrap
   - apparmor
   - logstash.client
+  - repos
   - .common
 
 /etc/sensu/conf.d/rabbitmq.json:

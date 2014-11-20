@@ -1,3 +1,4 @@
+{% from "sensu/map.jinja" import sensu with context %}
 include:
   - .deps
 
@@ -5,7 +6,7 @@ include:
 # temporally pinning
 sensu:
   pkg.installed:
-    - version: 0.13.1-1
+    - version: {{ sensu.package.version }}
 
 
 /etc/default/sensu:

@@ -5,6 +5,12 @@
 ## Version 4.x.0
 
 * Upgrade uchiwa to 0.3.2-1
+
+## Version 4.2.0
+
+* Prevent graphite-data.rb from throwing NilClass error on bad target/no data
+* Uchiwa locked at 0.2.4 due to Websockets issue, but code present to upgrade to 0.3
+
 * Upgrade sensu to 0.13.1-1
 
 ## Version 4.1.1

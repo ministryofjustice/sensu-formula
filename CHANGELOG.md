@@ -12,6 +12,7 @@
 * playbook for apparmor check, resolves #42
 * fix to allow standalone checks to be used again
 * allow sensu-embedded gems to be installed
+* silence apparmor message about 'sh'
 
 ## Version 4.3.0
 

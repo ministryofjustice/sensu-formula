@@ -9,8 +9,8 @@
 
   capability sys_ptrace,
 
-
-
+  / r,
+  /bin/sh rix,
   /bin/bash rix,
   /bin/dash rix,
   /bin/grep rix,

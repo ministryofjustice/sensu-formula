@@ -43,9 +43,12 @@ execute check is process exists
     - require_in:
       - file: sensu-confd-checks-clean
     - watch_in:
+{% if standalone %}
+        - service: sensu-client
+{% else %}
         - service: sensu-server
         - service: sensu-api
-        - service: sensu-client
+{% endif %}
 
 {% endmacro %}
 

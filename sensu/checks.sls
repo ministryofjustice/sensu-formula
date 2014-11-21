@@ -62,7 +62,7 @@
 # Warning at 75% of disk in use (only 25% left free), critical at 90% in use (i.e. only 10% space
 # left unreserved)
 {{ sensu_check_graphite("used-root-disk", 
-                        "'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))'",
+                        "asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))",
                         "-a 600",
                         "Root Disk Used Percentage",
                         occurrences=2) }}
@@ -97,7 +97,7 @@
 ###
 
 {{ sensu_check_graphite("ntp-offset", 
-                        "'alias(absolute(averageSeries(metrics.:::metric_prefix:::.ntpd.time_offset.*.*.*.*)),NTP-offset)'",
+                        "alias(absolute(averageSeries(metrics.:::metric_prefix:::.ntpd.time_offset.*.*.*.*)),NTP-offset)",
                         "-a 600",
                         "NTP offset",
                         playbook='https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/ntp-offset.md',
@@ -109,7 +109,7 @@
 
 # mem-used - warning 70% critical 85%
 {{ sensu_check_graphite("memory-used",
-                        "'asPercent(metrics.:::metric_prefix:::.memory.memory.used,sum(metrics.:::metric_prefix:::.memory.memory.*))'",
+                        "asPercent(metrics.:::metric_prefix:::.memory.memory.used,sum(metrics.:::metric_prefix:::.memory.memory.*))",
                         "-a 600",
                         "Memory Used Percentage",
                         occurrences=2) }}
@@ -123,7 +123,7 @@
 # Now we have the swap-out check, this is really checking that we are not getting close to our
 # swap limit - and hence risking the OOM killer kicking in.
 {{ sensu_check_graphite("swap-used", 
-                        "'asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))'",
+                        "asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))",
                         "-a 600",
                         "Swap Used Percentage",
                         occurrences=2,
@@ -135,7 +135,7 @@
 # is resolved.
 # Report the integral -- the total amount of paging in the period.
 {{ sensu_check_graphite("swap-out",
-                        "'integral(metrics.:::metric_prefix:::.swap.swap_io.out)'",
+                        "integral(metrics.:::metric_prefix:::.swap.swap_io.out)",
                         "-a 600 --from -15mins --method max",
                         "Swap Out Total",
                         occurrences=2,

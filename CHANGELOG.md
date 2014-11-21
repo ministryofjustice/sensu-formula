@@ -1,3 +1,10 @@
+## CURRENT
+
+* sensu checks can now be provided by pillar data.
+* playbook for apparmor check, resolves #42
+* fix to allow standalone checks to be used again
+* allow sensu-embedded gems to be installed
+
 ## Version 4.2.0
 
 * Prevent graphite-data.rb from throwing NilClass error on bad target/no data

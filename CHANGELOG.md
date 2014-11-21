@@ -6,6 +6,11 @@
 
 * Upgrade uchiwa to 0.3.2-1
 
+## Version 4.3.0
+
+* Upgrade Uchiwa to 0.3 (golang version)
+* Update nginx conf to allow websockets over proxy.
+
 ## Version 4.2.0
 
 * Prevent graphite-data.rb from throwing NilClass error on bad target/no data

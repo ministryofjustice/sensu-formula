@@ -30,6 +30,56 @@ Dependencies
    `nginx <https://github.com/ministryofjustice/nginx-formula>`_
 
 
+Adding checks via pillar data
+==========
+
+It is now possible to add new checks to sensu-server via Pillar data. This is
+much quicker than adding to check.sls, as it does not require a pull request to
+enable.
+
+They can be of type 'graphite', 'procs', or 'basic': mapping to the macros sensu_check_graphite,
+sensu_check_procs, and sensu_check respectively.
+
+To do so, add a pillar under 'sensu' called check_definitions::
+
+  sensu:
+    check_definitions:
+      carbon_queue_size:
+        type: graphite
+        target: 'sumSeries(carbon.agents.*.cache.size)'
+        description: 'Graphite Carbon Cache Size'
+        playbook: 'https://gist.github.com/mikepea/fda477167608c2b93512'
+        subscribers:
+          - monitoring.server
+      logstash_redis_queue_size:
+        type: basic
+        command: '/etc/sensu/community/plugins/redis/check-redis-list-length.rb -k logstash:beaver -w 1000 -c 100000'
+        description: 'Logstash queue size'
+        playbook: 'https://gist.github.com/mikepea/dad0d07ac012cfe45855'
+        subscribers:
+          - monitoring.server
+      monitoring_server_redis_memory_size:
+        type: basic
+        command: '/etc/sensu/community/plugins/redis/check-redis-memory.rb -w 20000 -c 80000'
+        description: 'Monitoring Server Redis memory'
+        playbook: 'https://gist.github.com/mikepea/dad0d07ac012cfe45855'
+        subscribers:
+          - monitoring.server
+      exit_0_test:
+        type: basic
+        command: 'exit 0'
+        interval: 10
+        playbook: 'https://gist.github.com/mikepea/648a1e8877cf0c9955a9'
+      postgres:
+        type: procs
+        subscribers:
+          - monitoring.server
+        playbook: 'https://gist.github.com/mikepea/695d1d5d08b9106d9cf2'
+      udevd:
+        type: procs
+        playbook: 'https://gist.github.com/mikepea/1ada349535df0f2a6cb6'
+
+
 Available states and macros
 ===========================
 
@@ -301,4 +351,4 @@ Example::
 
     {% from 'sensu/lib.sls' import sensu_check with context %}
     {{ sensu_check('unix-socket-backlog', '/etc/sensu/plugins/unix-socket-backlog.rb -s /var/run/unicorn.sock -w 1 -c 5', subscribers=['www']) }}
-    
+

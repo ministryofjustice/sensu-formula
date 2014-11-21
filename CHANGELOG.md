@@ -6,6 +6,13 @@
 
 * Upgrade uchiwa to 0.3.2-1
 
+## CURRENT
+
+* sensu checks can now be provided by pillar data.
+* playbook for apparmor check, resolves #42
+* fix to allow standalone checks to be used again
+* allow sensu-embedded gems to be installed
+
 ## Version 4.3.0
 
 * Upgrade Uchiwa to 0.3 (golang version)

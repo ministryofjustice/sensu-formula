@@ -22,6 +22,12 @@ include:
     - template: jinja
     - mode: 644
 
+{% for gem_name in sensu.gems %}
+install_sensu_{{gem_name}}_gem:
+  cmd.run:
+    - name: '/opt/sensu/embedded/bin/gem install {{gem_name}}'
+    - unless: '/opt/sensu/embedded/bin/ruby -r {{gem_name}} -e exit'
+{% endfor %}
 
 # Sensu Community Plugins
 https://github.com/sensu/sensu-community-plugins.git:

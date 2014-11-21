@@ -56,7 +56,7 @@ describe "sensu uchiwa setup" do
     end
   end
 
-  describe file("/etc/nginx/conf.d/sensu.conf") do
+  describe file("/etc/nginx/conf.d/uchiwa.conf") do
     it {should be_file}
     it {should be_owned_by "root"}
     it {should be_grouped_into "root"}

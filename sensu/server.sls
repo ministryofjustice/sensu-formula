@@ -4,19 +4,18 @@
 {% from 'logstash/lib.sls' import logship with context %}
 
 include:
+  - repos
   - firewall
   - bootstrap
   - nginx
   - redis
   - rabbitmq
   - apparmor
-  - repos
   - .client
   - .common
   - .deps
   - .checks
 # for git
-
 
 /etc/sensu/conf.d/redis.json:
   file.managed:
@@ -63,7 +62,6 @@ sensu_hipchat:
     - source: salt://sensu/templates/handlers.json
     - template: 'jinja'
 
-
 sensu-server:
   service.running:
     - enable: True
@@ -80,7 +78,6 @@ sensu-server:
     - template: jinja
     - watch_in:
        - service: sensu-server
-
 
 sensu-api:
   service.running:
@@ -160,15 +157,17 @@ uchiwa:
     - watch_in:
        - service: uchiwa
 
-
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
 {{ logship('uchiwa.log',  '/var/log/upstart/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}
 
-
 /etc/nginx/conf.d/sensu.conf:
+  file:
+    - absent
+
+/etc/nginx/conf.d/uchiwa.conf:
   file.managed:
-    - source: salt://nginx/templates/vhost-proxy.conf
+    - source: salt://sensu/templates/uchiwa-proxy.conf
     - template: jinja
     - user: root
     - group: root
@@ -180,7 +179,6 @@ uchiwa:
         is_default: False
     - watch_in:
       - service: nginx
-
 
 {{ logship('sensu-access',  '/var/log/nginx/sensu.access.json', 'nginx', ['nginx', 'sensu', 'access'],  'rawjson') }}
 {{ logship('sensu-error',  '/var/log/nginx/sensu.error.json', 'nginx', ['nginx', 'sensu', 'error'],  'json') }}

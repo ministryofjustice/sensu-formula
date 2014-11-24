@@ -4,6 +4,7 @@
     "name": "{{grains['fqdn']}}",
     "address": "{{grains['fqdn_ip4']}}",
     "metric_prefix": "{{ grains['fqdn'].split('.')|reverse| join('.') }}",
-    "subscriptions": {{(roles|list + ['all']|list) |json}}
+    "subscriptions": {{(roles|list + ['all']|list) |json}},
+    "params": {{sensu.client_params|json}}
   }
 }

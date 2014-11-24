@@ -1,7 +1,9 @@
+{% from "sensu/map.jinja" import sensu with context %}
 {% set roles = salt['grains.get']('roles', []) -%}
 {
   "client": {
     "name": "{{grains['fqdn']}}",
+    "short_hostname": "{{grains['host']}}",
     "address": "{{grains['fqdn_ip4']}}",
     "metric_prefix": "{{ grains['fqdn'].split('.')|reverse| join('.') }}",
     "subscriptions": {{(roles|list + ['all']|list) |json}},

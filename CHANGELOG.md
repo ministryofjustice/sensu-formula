@@ -1,4 +1,4 @@
-## CURRENT
+## Version 4.4.0
 
 * sensu checks can now be provided by pillar data.
 * playbook for apparmor check, resolves #42

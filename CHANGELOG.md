@@ -7,6 +7,7 @@
 * Upgrade uchiwa to 0.3.2-1
 
 ## CURRENT
+## Version 4.4.0
 
 * sensu checks can now be provided by pillar data.
 * playbook for apparmor check, resolves #42

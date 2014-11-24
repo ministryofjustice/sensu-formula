@@ -43,9 +43,12 @@ execute check is process exists
     - require_in:
       - file: sensu-confd-checks-clean
     - watch_in:
+{% if standalone %}
+        - service: sensu-client
+{% else %}
         - service: sensu-server
         - service: sensu-api
-        - service: sensu-client
+{% endif %}
 
 {% endmacro %}
 
@@ -67,6 +70,6 @@ execute check is process exists
 {% if "critical" in p_data %}
   {% set params = params + " -c " ~ p_data.critical %}
 {% endif %}
-{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s " + sensu.graphite.host + ":" ~ sensu.graphite.port ~ " -t "+metric_name+" -n '"+desc+"' " + params %}
+{% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s " + sensu.graphite.host + ":" ~ sensu.graphite.port ~ " -t '"+metric_name+"' -n '"+desc+"' " + params %}
 {{ sensu_check(name="graphite-"+name, command=check_cmd, **kwargs) }}
 {% endmacro %}

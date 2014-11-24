@@ -1,5 +1,6 @@
 {% set sensu = salt['grains.filter_by']({
     'Ubuntu-12.04': {
+       'gems': [],
        'package' : {
             'version' : '0.13.1-1'
         },
@@ -28,6 +29,7 @@
             'hipchat_apiversion': 'v1'
         },
         'community_plugins_rev': '474e375c3f',
+        'check_definitions': {},
         'checks': {
             'ntp-offset': {
                 'warning': 0.5,
@@ -68,6 +70,7 @@
     },
 
     'Ubuntu-14.04': {
+       'gems': [],
        'package' : {
             'version' : '0.13.1-1'
         },
@@ -96,6 +99,7 @@
             'hipchat_apiversion': 'v1'
         },
         'community_plugins_rev': '474e375c3f',
+        'check_definitions': {},
         'checks': {
             'ntp-offset': {
                 'warning': 0.5,
@@ -136,6 +140,7 @@
     },
 
     'Unknown': {
+       'gems': [],
         'rabbitmq': {
             'host': 'monitoring.local',
             'port': 5672,
@@ -161,6 +166,7 @@
             'hipchat_apiversion': 'v1'
         },
         'community_plugins_rev': '474e375c3f',
+        'check_definitions': {},
         'checks': {
             'ntp-offset': {
                 'warning': 0.5,

@@ -1,10 +1,15 @@
+## Version 4.4.1
+
+* Sensu logging level is configurable
+* Fix uchiwa order
+
 ## Version 4.4.0
 
-* sensu checks can now be provided by pillar data.
-* playbook for apparmor check, resolves #42
-* fix to allow standalone checks to be used again
-* allow sensu-embedded gems to be installed
-* silence apparmor message about 'sh'
+* Sensu checks can now be provided by pillar data.
+* Playbook for apparmor check, resolves #42
+* Fix to allow standalone checks to be used again
+* Allow sensu-embedded gems to be installed
+* Silence apparmor message about 'sh'
 
 ## Version 4.3.0
 

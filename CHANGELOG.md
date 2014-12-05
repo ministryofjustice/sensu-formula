@@ -1,3 +1,7 @@
+## Version 4.4.2
+
+* Fix uchiwa pin for Trusty
+
 ## Version 4.4.1
 
 * Sensu logging level is configurable

@@ -47,5 +47,9 @@
   /usr/local/lib/ruby/2.0.0/** mr,
   /usr/local/lib/ruby/gems/2.0.0/** r,
   /var/log/sensu/* w,
+{% if salt['grains.get']('osfinger') == 'Ubuntu-14.04' %}
+
+  ptrace (trace),
+{% endif %}
 
 }

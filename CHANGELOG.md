@@ -1,3 +1,7 @@
+## Version 4.4.2
+
+* Quieten sensu-client apparmor on Ubuntu 14.04
+
 ## Version 4.4.1
 
 * Sensu logging level is configurable

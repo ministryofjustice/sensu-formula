@@ -2,6 +2,7 @@
 {% from "logstash/lib.sls" import logship with context %}
 {% from "sensu/lib.sls" import sensu_check,sensu_check_graphite,sensu_check_procs with context %}
 
+{{ sensu_check('ideal_postcodes', "/etc/sensu/plugins/check-elastic.rb -r 5m -k '@fields.present' -q 'tags:postcode_lookup AND @fields.timeout:true' -t postcode -s 'Timeout querying Ideal Postcodes'", subscribers=['monitoring.server'], handlers=['hipchat'], interval=300) }}
 {{ sensu_check('apparmor_check', "/etc/sensu/plugins/check-elastic.rb -r 5m -k 'apparmor_rest' -q 'tags:apparmor NOT apparmor_evt:STATUS' -t apparmor  -s 'AppArmor violation! Please check the logs'", subscribers=['monitoring.server'], handlers=['hipchat'], interval=300) }}
 {{ sensu_check('logstash_check', "/etc/sensu/plugins/redis-check.rb -w 500 -c 1000", subscribers=['monitoring.server'], handlers=['hipchat'], interval=300) }}
 {{ sensu_check_procs("cron") }}

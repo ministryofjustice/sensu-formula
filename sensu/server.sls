@@ -86,6 +86,7 @@ sensu-api:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/api.json
       - file: /etc/sensu/conf.d/redis.json
+      - sensu_checks: '*'
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-api:
   file.managed:

@@ -37,6 +37,19 @@ https://github.com/sensu/sensu-community-plugins.git:
     - require:
       - pkg: sensu_deps
 
+sensu-community-permissions:
+  file.directory:
+    - name: /etc/sensu/community
+    - user: sensu
+    - group: sensu
+    - mode: 700
+    - recurse:
+      - user
+      - group
+      - mode
+    - require:
+      - git: https://github.com/sensu/sensu-community-plugins.git
+
 sensu_plugins_remove_symlink:
   cmd.run:
     # We used to have the community plugins installed in /etc/sensu/community

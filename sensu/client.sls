@@ -41,8 +41,8 @@ sensu-community-permissions:
   file.directory:
     - name: /etc/sensu/community
     - user: sensu
-    - group: sensu
-    - mode: 700
+    - group: adm
+    - mode: 550 
     - recurse:
       - user
       - group

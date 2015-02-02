@@ -1,3 +1,7 @@
+## Version 4.4.3
+
+* Sets the correct permissions on the plugins, so that only sensu can execute.
+
 ## Version 4.4.2
 
 * Fix uchiwa pin for Trusty

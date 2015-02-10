@@ -3,21 +3,24 @@
 
 {%- if sensu.notify.hipchat_apikey %}
   "hipchat": {
-    "apikey": "{{ sensu.notify.hipchat_apikey }}",
     "room": "{{ sensu.notify.hipchat_roomname }}",
 {%-   if sensu.notify.hipchat_from %}
     "from": "{{ sensu.notify.hipchat_from }}",
 {%-   endif %}
-    "apiversion": "{{ sensu.notify.hipchat_apiversion }}"
+    "apiversion": "{{ sensu.notify.hipchat_apiversion }}",
+{%-   if sensu.notify.hipchat_grafana_base %}
+    "grafana_base": "{{ sensu.notify.hipchat_grafana_base }}",
+{%-   endif %}
+    "apikey": "{{ sensu.notify.hipchat_apikey }}"
   },
 {%- endif %}
- 
+
 {%- if sensu.notify.pagerduty_apikey %}
   "pagerduty": {
     "api_key": "{{ sensu.notify.pagerduty_apikey }}"
   },
 {%- endif %}
- 
+
   "handlers": {
     "default": {
       "type": "set",
@@ -46,7 +49,7 @@
 {%- endif %}
 {%- if sensu.notify.hipchat_apikey %}
     "hipchat": {
-      "command": "/etc/sensu/community/handlers/notification/hipchat.rb",
+      "command": "/etc/sensu/handlers/hipchat.rb",
       "type": "pipe"
     },
 {%- endif %}

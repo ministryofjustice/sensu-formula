@@ -52,6 +52,19 @@ sensu_hipchat:
       - service: sensu-server
 {% endif %}
 
+# Locally created handlers
+/etc/sensu/handlers:
+  file.recurse:
+    - source: salt://sensu/files/handlers
+    - include_empty: True
+    - clean: True
+    - user: root
+    - group: sensu
+    - file_mode: 550
+    - dir_mode: 550
+    - watch_in:
+      - service: sensu-server
+
 /etc/sensu/conf.d/api.json:
   file.managed:
     - source: salt://sensu/templates/api.json

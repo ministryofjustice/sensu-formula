@@ -6,7 +6,6 @@ git@github.com:ministryofjustice/bootstrap-formula.git==v2.1.0
 git@github.com:ministryofjustice/utils-formula.git==v1.0.1
 git@github.com:ministryofjustice/elasticsearch-formula.git==v1.3.1
 git@github.com:ministryofjustice/nginx-formula.git==v3.2.0
-git@github.com:ministryofjustice/supervisor-formula.git==v1.0.0
 git@github.com:ministryofjustice/python-formula.git==v1.0.2
 git@github.com:ministryofjustice/java-formula.git==v1.0.0
 git@github.com:ministryofjustice/apparmor-formula.git==v1.0.1

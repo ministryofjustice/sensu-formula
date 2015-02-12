@@ -52,6 +52,17 @@ sensu_hipchat:
       - service: sensu-server
 {% endif %}
 
+{%- if sensu.notify.mailer_mail_to %}
+sensu_mailer:
+  cmd.run:
+    - name: /opt/sensu/embedded/bin/gem install mail
+    - unless: /opt/sensu/embedded/bin/gem list -i mail
+    - require:
+      - pkg: sensu
+    - watch_in:
+      - service: sensu-server
+{% endif %}
+
 /etc/sensu/conf.d/api.json:
   file.managed:
     - source: salt://sensu/templates/api.json

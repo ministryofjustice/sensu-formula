@@ -1,6 +1,7 @@
 ## Current
 
 * remove supervisor dependency
+* allow to disable monitoring stack with pillar:monitoring.enabled = False
 
 ## Version 4.4.3
 

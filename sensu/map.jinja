@@ -209,3 +209,9 @@
         }
     }
 }, grain='osfinger', merge=salt['pillar.get']('sensu',{}), default='Unknown') %}
+
+{% set monitoring = salt['grains.filter_by']({
+    'Unknown': {
+       'enabled': True,
+    }
+}, grain='osfinger', merge=salt['pillar.get']('monitoring',{}), default='Unknown') %}

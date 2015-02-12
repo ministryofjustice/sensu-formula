@@ -1,5 +1,7 @@
-{% from "sensu/map.jinja" import sensu with context %}
+{% from "sensu/map.jinja" import sensu, monitoring with context %}
 {% from "logstash/lib.sls" import logship with context %}
+
+{% if monitoring.enabled %}
 
 include:
   - firewall
@@ -105,3 +107,5 @@ sensu-client:
 
 
 {{ logship('sensu-client.log',  '/var/log/sensu/sensu-client.log', 'sensu', ['sensu', 'sensu-client', 'log'],  'rawjson') }}
+
+{% endif monitoring.enabled %}

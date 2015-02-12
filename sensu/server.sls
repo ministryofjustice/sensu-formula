@@ -1,7 +1,9 @@
-{% from "sensu/map.jinja" import sensu with context %}
+{% from "sensu/map.jinja" import sensu, monitoring with context %}
 {% from "sensu/lib.sls" import sensu_check_procs with context %}
 {% from "sensu/lib.sls" import sensu_check with context %}
 {% from 'logstash/lib.sls' import logship with context %}
+
+{% if monitoring.enabled %}
 
 include:
   - repos
@@ -184,3 +186,5 @@ uchiwa:
 
 {{ logship('sensu-access',  '/var/log/nginx/sensu.access.json', 'nginx', ['nginx', 'sensu', 'access'],  'rawjson') }}
 {{ logship('sensu-error',  '/var/log/nginx/sensu.error.json', 'nginx', ['nginx', 'sensu', 'error'],  'json') }}
+
+{% endif monitoring.enabled %}

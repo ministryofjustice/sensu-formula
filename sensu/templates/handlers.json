@@ -31,6 +31,9 @@
 {%- if sensu.notify.email %}
         "email",
 {%- endif %}
+{%- if sensu.notify.mailer_mail_to %}
+        "mailer",
+{%- endif %}
         "stdout"
       ]
     },
@@ -54,6 +57,12 @@
     "email": {
       "type": "pipe",
       "command": "mail -s '[sensu] alert' {{sensu.notify.email}}"
+    },
+{%- endif %}
+{%- if sensu.notify.mailer_mail_to %}
+    "mailer": {
+      "type": "pipe",
+      "command": "/etc/sensu/community/handlers/notification/mailer.rb"
     },
 {%- endif %}
     "stdout": {

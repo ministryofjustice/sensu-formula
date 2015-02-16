@@ -287,11 +287,34 @@ enable them in the pillar. You can enable as many as you like of the additional 
 Email
 -----
 
+Basic email notification.
+
 Example::
 
     sensu:
       notify:
         email: 'alerts@mydomain.com'
+
+
+Mailer
+------
+
+Advanced email notification. Provides more insight into the issue then basic email notification.
+
+The mailer handler handler sends formatted emails via the configured SMTP server.  With the default settings
+a local MTA is required.
+
+Example::
+
+    sensu:
+      notify:
+        mailer_mail_to: 'user@host.com'
+        mailer_mail_from: 'sensu@sensu.local'
+        mailer_smtp_address: 'localhost'
+        mailer_smtp_port: '25'
+        mailer_smtp_domain: 'sensu.local'
+        mailer_admin_gui: 'http://sensu.local'
+
 
 HipChat
 -------
@@ -321,23 +344,6 @@ Example::
     sensu:
       notify:
         pagerduty_apikey: 9e880a23f5ab1103bb7279896804e8a0
-
-Mailer
-------
-
-The mailer handler handler sends formatted emails via the configured SMTP server.  With the default settings
-a local MTA is required.
-
-Example::
-
-    sensu:
-      notify:
-        mailer_mail_to: 'user@host.com'
-        mailer_mail_from: 'sensu@sensu.local'
-        mailer_smtp_address: 'localhost'
-        mailer_smtp_port: '25'
-        mailer_smtp_domain: 'sensu.local'
-        mailer_admin_gui: 'http://sensu.local'
 
 
 apparmor

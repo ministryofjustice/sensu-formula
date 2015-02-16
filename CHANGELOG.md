@@ -1,4 +1,4 @@
-## Current
+## Version 4.4.4
 
 * Remove supervisor dependency
 * Add ability to use the mailer handler from the community notification plugins.

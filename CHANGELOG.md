@@ -1,3 +1,7 @@
+## CURRENT
+
+* Add 'Graph' link to integrate Grafana with hipchat notifications
+
 ## Version 4.4.4
 
 * Remove supervisor dependency

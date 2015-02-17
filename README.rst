@@ -345,6 +345,20 @@ Example::
       notify:
         pagerduty_apikey: 9e880a23f5ab1103bb7279896804e8a0
 
+Grafana Integration
+-------------------
+
+We have customised the hipchat.rb community handler to also integrate with
+Grafana.
+
+To enable this, add the following pillar setting::
+
+    sensu:
+      notify:
+        hipchat_grafana_base: '{{grafana_http_path}/dashboard/script/custom_metrics.js?no_help&'
+
+Any metric based around the 'sensu_check_graphite' macro should then
+automatically get a link to the respective data in Grafana.
 
 apparmor
 ========

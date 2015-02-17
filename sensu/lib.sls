@@ -13,7 +13,16 @@ execute check is process exists
 
 {% from "sensu/map.jinja" import sensu with context %}
 
-{% macro sensu_check(name, command, handlers=['default'], interval=60, subscribers=['all'], standalone=False, occurrences=1, playbook=False) %}
+{% macro sensu_check(name,
+                     command,
+                     handlers=['default'],
+                     interval=60,
+                     subscribers=['all'],
+                     standalone=False,
+                     occurrences=1,
+                     playbook=False,
+                     metric_name=False
+                     ) %}
 
 {# This means we can pass extra values that make sense to a subject and have
    them ignored here, rather than error. For example::
@@ -38,6 +47,7 @@ execute check is process exists
         subscribers: {{subscribers}}
         occurrences: {{occurrences}}
         playbook: {{playbook}}
+        metric_name: {{metric_name}}
     - require:
       - file: sensu-confd-checks-dir
     - require_in:
@@ -71,5 +81,5 @@ execute check is process exists
   {% set params = params + " -c " ~ p_data.critical %}
 {% endif %}
 {% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s " + sensu.graphite.host + ":" ~ sensu.graphite.port ~ " -t '"+metric_name+"' -n '"+desc+"' " + params %}
-{{ sensu_check(name="graphite-"+name, command=check_cmd, **kwargs) }}
+{{ sensu_check(name="graphite-"+name, command=check_cmd, metric_name=metric_name, **kwargs) }}
 {% endmacro %}

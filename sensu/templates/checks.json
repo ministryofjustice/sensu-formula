@@ -8,6 +8,9 @@
 {% if playbook %}
       "playbook": "{{playbook}}",
 {% endif %}
+{% if metric_name %}
+      "metric_name": "{{metric_name}}",
+{% endif %}
 {% if standalone %}
       "standalone": true
 {% else %}

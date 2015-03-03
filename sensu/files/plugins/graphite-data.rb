@@ -43,16 +43,16 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     :required => false
 
   option :warning,
-    :description => 'Generate warning if given value is above received value',
+    :description => 'Generate warning if given value is above received value. Or comma seperated range.',
     :short => '-w VALUE',
     :long => '--warn VALUE',
-    :proc => proc{|arg| arg.to_f }
+    :proc => proc{|arg| arg.split(',').map &:to_f }
 
   option :critical,
-    :description => 'Generate critical if given value is above received value',
+    :description => 'Generate critical if given value is above received value. Or comma separated range.',
     :short => '-c VALUE',
     :long => '--critical VALUE',
-    :proc => proc{|arg| arg.to_f }
+    :proc => proc{|arg| arg.split(',').map &:to_f }
 
   option :reset_on_decrease,
     :description => 'Send OK if value has decreased on any values within END-INTERVAL to END',
@@ -192,7 +192,7 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
   # Return alert if required
   def check(type)
     if config[type]
-      send(type, "#{name} (#{value_to_check(@data)}) [#{@value['target']}]") if (below?(type) || above?(type))
+      send(type, "#{name} (#{value_to_check(@data)}) [#{@value['target']}]") if in_alert_range?(type)
     end
   end
 
@@ -204,6 +204,19 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
   # Check is value is above defined threshold
   def above?(type)
     (!config[:below]) && (value_to_check(@data) > config[type]) && (!decreased?)
+  end
+
+  def in_alert_range?(type)
+    #If warn/crit val is num then do above/below logic
+    #Else its a range.
+    if config[type].length == 1
+      config[type] = config[type][0]
+      (below?(type) || above?(type))
+    elsif config[type].length == 2
+      value_to_check(@data).between?(config[type][0], config[type][1])
+    else
+      unknown "Bad range specified for alert."
+    end
   end
 
   # Check if values have decreased within interval if given

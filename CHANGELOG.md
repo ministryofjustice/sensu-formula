@@ -1,4 +1,4 @@
-## CURRENT
+## Version 4.5.0
 
 * Add 'Graph' link to integrate Grafana with hipchat notifications
 * Can now have graphite checks which check the value is in a min/max range.

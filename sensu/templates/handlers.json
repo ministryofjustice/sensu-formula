@@ -15,6 +15,16 @@
   },
 {%- endif %}
 
+
+{%- if sensu.notify["level-2-support_url"] %}
+  "level-2-support": {
+    "url": "{{ sensu.notify["level-2-support_url"] }}",
+    "api_key": "LEVEL-2-SUPPORT-API-KEY-HERE"
+  }
+{%- endif %}
+
+  
+
 {%- if sensu.notify.pagerduty_apikey %}
   "pagerduty": {
     "api_key": "{{ sensu.notify.pagerduty_apikey }}"
@@ -71,6 +81,10 @@
     "stdout": {
       "type": "pipe",
       "command": "cat"
+    },
+    "level-2-support": {
+      "type": "pipe",
+      "command": "/etc/sensu/handlers/level-2-support.rb"
     }
   }
 }

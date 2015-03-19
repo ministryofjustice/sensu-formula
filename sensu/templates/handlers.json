@@ -18,8 +18,7 @@
 
 {%- if sensu.notify["level-2-support_url"] %}
   "level-2-support": {
-    "url": "{{ sensu.notify["level-2-support_url"] }}",
-    "api_key": "LEVEL-2-SUPPORT-API-KEY-HERE"
+    "url": "{{ sensu.notify["level-2-support_url"] }}"
   }
 {%- endif %}
 

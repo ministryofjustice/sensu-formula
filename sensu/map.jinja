@@ -36,7 +36,15 @@
             'mailer_admin_gui': 'http://sensu.local'
         },
         'community_plugins_rev': '474e375c3f',
-        'check_definitions': {},
+        'check_definitions': {
+            'used-root-disk': {
+                'type': 'graphite',
+                'target': 'asPercent(metrics.:::metric_prefix:::.df.root.df_complex.used,sum(metrics.:::metric_prefix:::.df.root.df_complex.{free,used}))',
+                'params': '-a 600',
+                'description': 'Root Disk Used Percentage',
+                'occurrences': '2'
+            }
+        },
         'log_level': 'info',
         'checks': {
             'ntp-offset': {

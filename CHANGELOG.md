@@ -1,3 +1,7 @@
+## Version 4.5.2
+
+* Move disk-space check to map.jinja so that it is overrideable in pillar.
+
 ## Version 4.5.1
 
 * Add a new handler for sending selected alerts to the 2nd line support dashboard.

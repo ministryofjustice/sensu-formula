@@ -1,5 +1,6 @@
-## Version 4.x.x
+## Version 5.0.0
 
+* Remove pagerduty from default handlers
 * Upgrade Uchiwa to 0.7.0-1
 * Move all checks to map.jinja, this makes them configurable from the pillar.
 

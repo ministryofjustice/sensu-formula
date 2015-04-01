@@ -1,9 +1,33 @@
-{% set sensu = salt['grains.filter_by']({
+{% set sensu_packages = salt['grains.filter_by']({
     'Ubuntu-12.04': {
-       'gems': [],
        'package' : {
             'version' : '0.13.1-1'
         },
+        'uchiwa': {
+            'version': '0.7.0-1'
+        },
+    },
+    'Ubuntu-14.04': {
+       'package' : {
+            'version' : '0.13.1-1'
+        },
+        'uchiwa': {
+            'version': '0.7.0-1'
+        },
+    },
+    'Unknown': {
+       'package' : {
+            'version' : '0.13.1-1'
+        },
+        'uchiwa': {
+            'version': None
+        }
+    }
+}, grain='osfinger', merge=salt['pillar.get']('sensu',{}), default='Unknown') %}
+
+{% set sensu = salt['grains.filter_by']({
+    'Debian': {
+        'gems': [],
         'rabbitmq': {
             'host': 'monitoring.local',
             'port': 5672,
@@ -43,7 +67,72 @@
                 'params': '-a 600',
                 'description': 'Root Disk Used Percentage',
                 'occurrences': '2'
-            }
+            },
+            'apparmor_check': {
+                'type': 'basic',
+                'command': "/etc/sensu/plugins/check-elastic.rb -r 5m -k 'apparmor_rest' -q 'tags:apparmor NOT apparmor_evt:STATUS' -t apparmor  -s 'AppArmor violation! Please check the logs'",
+                'handlers': ['hipchat'],
+                'interval': 300,
+                'playbook': 'https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/apparmor.md'
+            },
+            'cron': {
+                'type': 'procs'
+            },
+            'collectd': {
+                'type': 'procs'
+            },
+            'load-shortterm': {
+                'type': 'graphite',
+                'target': 'metrics.:::metric_prefix:::.load.load.shortterm',
+                'params': '-a 600',
+                'description': 'Short Term LoadAve',
+                'occurrences': '2'
+            },
+            'load-midterm': {
+                'type': 'graphite',
+                'target': 'metrics.:::metric_prefix:::.load.load.midterm',
+                'params': '-a 600',
+                'description': 'Mid Term LoadAve',
+                'occurrences': '2'
+            },
+            'load-longterm': {
+                'type': 'graphite',
+                'target': 'metrics.:::metric_prefix:::.load.load.longterm',
+                'params': '-a 600',
+                'description': 'Long Term LoadAve',
+                'occurrences': '2'
+            },
+            'ntp-offset': {
+                'type': 'graphite',
+                'target': "alias(absolute(averageSeries(metrics.:::metric_prefix:::.ntpd.time_offset.*.*.*.*)),'NTP-offset')",
+                'params': '-a 600',
+                'description': 'NTP offset',
+                'occurrences': '2',
+                'playbook': 'https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/ntp-offset.md'
+            },
+            'memory-used': {
+                'type': 'graphite',
+                'target': "asPercent(metrics.:::metric_prefix:::.memory.memory.used,sum(metrics.:::metric_prefix:::.memory.memory.*))",
+                'params': '-a 600',
+                'description': 'Memory Used Percentage',
+                'occurrences': '2'
+            },
+            'swap-used': {
+                'type': 'graphite',
+                'target': "asPercent(metrics.:::metric_prefix:::.swap.swap.used,sum(metrics.:::metric_prefix:::.swap.swap.*))",
+                'params': '-a 600',
+                'description': 'Swap Used Percentage',
+                'occurrences': '2',
+                'playbook': 'https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/swap-used.md'
+            },
+            'swap-out': {
+                'type': 'graphite',
+                'target': "integral(metrics.:::metric_prefix:::.swap.swap_io.out)",
+                'params': '-a 600 --from -15mins --method max',
+                'description': 'Swap Out Total',
+                'occurrences': '2',
+                'playbook': 'https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/swap-out.md'
+            },
         },
         'log_level': 'info',
         'checks': {
@@ -79,162 +168,6 @@
                 'warning': 70,
                 'critical': 85,
             },
-        },
-        'uchiwa': {
-            'version': '0.7.0-1'
         },
     },
-
-    'Ubuntu-14.04': {
-       'gems': [],
-       'package' : {
-            'version' : '0.13.1-1'
-        },
-        'rabbitmq': {
-            'host': 'monitoring.local',
-            'port': 5672,
-            'user': 'sensu',
-            'password': 'sensu',
-            'vhost': '/sensu',
-        },
-        'redis': {
-            'host': 'monitoring.local',
-            'port': 6379,
-            'db': 1,
-        },
-        'graphite': {
-            'host': 'graphite.local',
-            'port': 80,
-        },
-        'notify': {
-            'email': False,
-            'pagerduty_apikey': False,
-            'hipchat_apikey': False,
-            'hipchat_roomname': 'Alerts',
-            'hipchat_from': False,
-            'hipchat_apiversion': 'v1',
-            'hipchat_grafana_base': False,
-            'mailer_mail_to': False,
-            'mailer_mail_from': False,
-            'mailer_smtp_address': 'localhost',
-            'mailer_smtp_port': '25',
-            'mailer_smtp_domain': False,
-            'mailer_admin_gui': 'http://sensu.local'
-        },
-        'community_plugins_rev': '474e375c3f',
-        'check_definitions': {},
-        'log_level': 'info',
-        'checks': {
-            'ntp-offset': {
-                'warning': 0.5,
-                'critical': 1,
-            },
-            'used-root-disk': {
-                'warning': 75,
-                'critical': 90,
-            },
-            'load-shortterm': {
-                'warning': 1,
-                'critical': 2,
-            },
-            'load-midterm': {
-                'warning': 2,
-                'critical': 3,
-            },
-            'load-longterm': {
-                'warning': 3,
-                'critical': 4,
-            },
-            'swap-used': {
-                'warning': 80,
-                'critical': 95,
-            },
-            'swap-out': {
-                'warning': 0,
-                'critical': 50,
-            },
-            'memory-used': {
-                'warning': 70,
-                'critical': 85,
-            },
-        },
-        'uchiwa': {
-            'version': '0.7.0-1'
-        },
-    },
-
-    'Unknown': {
-       'gems': [],
-        'rabbitmq': {
-            'host': 'monitoring.local',
-            'port': 5672,
-            'user': 'sensu',
-            'password': 'sensu',
-            'vhost': '/sensu',
-        },
-        'redis': {
-            'host': 'monitoring.local',
-            'port': 6379,
-            'db': 1,
-        },
-        'graphite': {
-            'host': 'graphite.local',
-            'port': 80,
-        },
-        'notify': {
-            'email': False,
-            'pagerduty_apikey': False,
-            'hipchat_apikey': False,
-            'hipchat_roomname': 'Alerts',
-            'hipchat_from': False,
-            'hipchat_apiversion': 'v1',
-            'hipchat_grafana_base': False,
-            'mailer_mail_to': False,
-            'mailer_mail_from': False,
-            'mailer_smtp_address': 'localhost',
-            'mailer_smtp_port': '25',
-            'mailer_smtp_domain': False,
-            'mailer_admin_gui': 'http://sensu.local'
-        },
-        'community_plugins_rev': '474e375c3f',
-        'check_definitions': {},
-        'log_level': 'info',
-        'checks': {
-            'ntp-offset': {
-                'warning': 0.5,
-                'critical': 1,
-            },
-            'used-root-disk': {
-                'warning': 75,
-                'critical': 90,
-            },
-            'load-shortterm': {
-                'warning': 1,
-                'critical': 2,
-            },
-            'load-midterm': {
-                'warning': 2,
-                'critical': 3,
-            },
-            'load-longterm': {
-                'warning': 3,
-                'critical': 4,
-            },
-            'swap-used': {
-                'warning': 80,
-                'critical': 95,
-            },
-            'swap-out': {
-                'warning': 0,
-                'critical': 50,
-            },
-            'memory-used': {
-                'warning': 70,
-                'critical': 85,
-            }
-        },
-        'uchiwa': {
-            'version': None
-        }
-    }
-}, grain='osfinger', merge=salt['pillar.get']('sensu',{}), default='Unknown') %}
+}, merge=sensu_packages) %}

@@ -1,6 +1,15 @@
-## CURRENT
+## Version 4.5.2
+
+* Move disk-space check to map.jinja so that it is overrideable in pillar.
+
+## Version 4.5.1
+
+* Add a new handler for sending selected alerts to the 2nd line support dashboard.
+
+## Version 4.5.0
 
 * Add 'Graph' link to integrate Grafana with hipchat notifications
+* Can now have graphite checks which check the value is in a min/max range.
 
 ## Version 4.4.4
 

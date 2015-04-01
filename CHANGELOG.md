@@ -1,3 +1,7 @@
+## Version 4.5.3
+
+* Upgrade Uchiwa to 0.7.0-1
+
 ## Version 4.5.2
 
 * Move disk-space check to map.jinja so that it is overrideable in pillar.

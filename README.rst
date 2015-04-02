@@ -354,6 +354,16 @@ Example::
       notify:
         pagerduty_apikey: 9e880a23f5ab1103bb7279896804e8a0
 
+You must also activate this handler for each check.
+
+Example::
+
+    sensu:
+      check_definitions:
+        used-root-disk:
+          handlers:
+            - pagerduty
+
 Grafana Integration
 -------------------
 

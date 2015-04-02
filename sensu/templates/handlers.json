@@ -14,8 +14,6 @@
     "apikey": "{{ sensu.notify.hipchat_apikey }}"
   },
 {%- endif %}
-
-
 {%- if sensu.notify["level-2-support_url"] %}
   "level-2-support": {
     "url": "{{ sensu.notify["level-2-support_url"] }}"
@@ -36,9 +34,6 @@
       "handlers": [
 {%- if sensu.notify.hipchat_apikey %}
         "hipchat",
-{%- endif %}
-{%- if sensu.notify.pagerduty_apikey %}
-        "pagerduty",
 {%- endif %}
 {%- if sensu.notify.email %}
         "email",

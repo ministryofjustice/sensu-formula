@@ -33,9 +33,7 @@ Dependencies
 Adding checks via pillar data
 ==========
 
-It is now possible to add new checks to sensu-server via Pillar data. This is
-much quicker than adding to check.sls, as it does not require a pull request to
-enable.
+All checks are now defined in the map.jinja or in the pillar (which overrides the map.jinja).
 
 They can be of type 'graphite', 'procs', or 'basic': mapping to the macros sensu_check_graphite,
 sensu_check_procs, and sensu_check respectively.
@@ -79,6 +77,17 @@ To do so, add a pillar under 'sensu' called check_definitions::
         type: procs
         playbook: 'https://gist.github.com/mikepea/1ada349535df0f2a6cb6'
 
+Setting handlers in pillar
+==========================
+
+See below for enabling handlers. Once enabled you can specify a handler explicitly in the check definition::
+
+    sensu:
+      check_definitions:
+        used-root-disk:
+          handlers:
+            - hipchat
+            - pagerduty
 
 Available states and macros
 ===========================

@@ -1,3 +1,7 @@
+## Version 5.0.1
+
+* Fix syntax error in handlers.json
+
 ## Version 5.0.0
 
 * Remove pagerduty from default handlers

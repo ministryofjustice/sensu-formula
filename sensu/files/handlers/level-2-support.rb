@@ -16,9 +16,9 @@ class Level2SupportNotifier < Sensu::Handler
 
   def handle
     remote_url = settings["level-2-support"]["url"]
-  	@uri = URI(remote_url)
+    @uri = URI(remote_url)
     response = Net::HTTP.post_form(@uri, {'event' => @event.to_json} )
-    # need to handle  non-200 responses somehow
+    # need to handle  non-20x responses somehow
   end
 
 end

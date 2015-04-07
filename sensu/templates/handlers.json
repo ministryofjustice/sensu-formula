@@ -17,7 +17,7 @@
 {%- if sensu.notify["level-2-support_url"] %}
   "level-2-support": {
     "url": "{{ sensu.notify["level-2-support_url"] }}"
-  }
+  },
 {%- endif %}
 
   

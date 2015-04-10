@@ -25,34 +25,56 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           :default => 'tags: rails'
   option  :out_string, :short => '-s out_string', :long => '--out-string out_string'
 
+  option  :warning,
+          :description => 'Generate warning if the number of matching records is >= VALUE and < :critical',
+          :short => '-w VALUE',
+          :long => '--warn VALUE',
+          :proc => proc { |arg| arg.to_i }
+
+  option  :critical,
+          :description => 'Generate critical if the number of matching records is >= VALUE',
+          :short => '-c VALUE',
+          :long => '--critical VALUE',
+          :proc => proc { |arg| arg.to_i }
+
   DEFAULT_SIZE=1
 
-  def get_data(size=DEFAULT_SIZE)
-    today = Time.now.strftime('%Y.%m.%d')
-    resource = "logstash-#{today}/_search?pretty&size=#{size}"
+  def _query_resource(resource, query, range)
     query_data = {'query' => {
                     'filtered' => {
                       'query' => {
                         'query_string' =>  {
-                          'query' => "#{config[:query]}"
+                          'query' => "#{query}"
                         }
                       }
                     }
                   }, 'filter' => {
                       'range'=> {
                         '@timestamp' => {
-                          'gt' => "now-#{config[:range]}"
+                          'gt' => "now-#{range}"
                         }
                       }
                     }
                 }
-              
+
     url = "#{config[:es_proto]}://#{config[:es_host]}:#{config[:es_port]}/#{resource}"
-    # RestClient.log = 'stdout'
-    r = RestClient.post url, JSON.generate(query_data), 
+    r = RestClient.post url, JSON.generate(query_data),
                 {:content_type => :json, :accept => :json}
     JSON.parse(r)
   end
+
+  def get_data(size=DEFAULT_SIZE)
+    today = Time.now.strftime('%Y.%m.%d')
+    resource = "logstash-#{today}/_search?pretty&size=#{size}"
+    _query_resource(resource, config[:query], config[:range])
+  end
+
+  def get_count()
+    today = Time.now.strftime('%Y.%m.%d')
+    resource = "logstash-#{today}/_count?pretty"
+    _query_resource(resource, config[:query], config[:range])
+  end
+
 
   def submit_alert(alert_string)
     s = TCPSocket.open('localhost', 3030)
@@ -71,10 +93,43 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   end
 
   def run
+    if config[:critical] != nil || config[:warning] != nil
+      run_treshhold_check
+    else
+      run_result_check
+    end
+  end
+
+  # This will raise an alert (that closes itself) when the thresholds are back
+  # below the limit.
+  def run_threshold_check
+    data = get_count
+    count = data['count']
+
+    if config[:out_string]
+      out = config[:out_string]
+    else
+      out = "#{config[:check]} #{count} records matched"
+    end
+
+    if config[:critical] != nil && count >= config[:critical]
+      critical out
+    elsif config[:warning] != nil && count >= config[:warning]
+      warning out
+    else
+      ok out
+    end
+  end
+
+  # This will submit a check that will not every close itself. This was
+  # designed for apparmor violoation checks which run every 5 minutes and
+  # just because there were no alerts in the next 5 minutes doesn't mean the
+  # problem is solved.
+  def run_result_check
     data = get_data
     hits =  data['hits']['total']
     err = 0
-    success = 0    
+    success = 0
     if hits > 0
       if hits > DEFAULT_SIZE
         data = get_data(hits)

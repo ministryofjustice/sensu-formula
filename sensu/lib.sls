@@ -40,7 +40,8 @@ execute check is process exists
     - group: sensu
     - context:
         name: {{name}}
-        command: {{command}}
+        # {# TODO: When we upgrade to a more recent salt change this to {{command|yaml_encode}} #}
+        command: "{{command}}"
         handlers: {{handlers}}
         interval: {{interval}}
         standalone: {{standalone}}

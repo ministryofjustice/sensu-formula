@@ -1,3 +1,7 @@
+## Version 5.x.0
+
+* Extend check_elastic.rb to run count/threshold based checks too.
+
 ## Version 5.0.1
 
 * Fix syntax error in handlers.json

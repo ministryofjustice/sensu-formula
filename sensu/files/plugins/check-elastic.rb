@@ -25,6 +25,10 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
           :default => 'tags: rails'
   option  :out_string, :short => '-s out_string', :long => '--out-string out_string'
 
+  option  :name,
+          :long => '--name checkname',
+          :description => 'Override the name of this check from default of ElasticSearchCheck'
+
   option  :warning,
           :description => 'Generate warning if the number of matching records is >= VALUE and < :critical',
           :short => '-w VALUE',
@@ -119,6 +123,11 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   def run_threshold_check
     data = get_count
     count = data['count']
+
+    # Override the check name to be more specific as requested
+    if config[:name]
+      self.class.check_name(config[:name])
+    end
 
     if config[:out_string]
       out = config[:out_string]

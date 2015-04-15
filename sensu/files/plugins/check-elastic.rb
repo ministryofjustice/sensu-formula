@@ -33,8 +33,6 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   option  :handler, :short => '-l handler', :long => '--handler handler',
           :default => 'default',
           :description => 'Handler to raise alerts on a per host basis for any results found'
-  option  :result_key, :short => '-k result_key', :long => '--result-key result_key',
-          :default => 'message'
   option  :tag, :short => '-t tagname', :long => '--tag tagname',
           :default => 'apparmor',
           :description => 'Name prefix for alerts created. Will create events with this form "#{tag}_#{host}"'
@@ -174,7 +172,6 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
       end
       for result in data['hits']['hits']
         hostname = result['_source']['host']
-        details = result['_source'][config[:result_key]]
         if config[:out_string]
           out = config[:out_string]
         else

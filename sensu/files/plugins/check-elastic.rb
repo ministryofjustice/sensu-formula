@@ -33,9 +33,8 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
   option  :handler, :short => '-l handler', :long => '--handler handler',
           :default => 'default',
           :description => 'Handler to raise alerts on a per host basis for any results found'
-  option  :tag, :short => '-t tagname', :long => '--tag tagname',
-          :default => 'apparmor',
-          :description => 'Name prefix for alerts created. Will create events with this form "#{tag}_#{host}"'
+  option  :prefix, :long => '--nameprefix prefix',
+          :description => 'Name prefix for all non-threshold alerts created. Will create events with this form "#{prefix}_#{host}"'
 
   # These options apply only to run_threshold_check
   option  :name,
@@ -177,7 +176,7 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
         else
           out = "Check host for ES query string: #{config[:query]}"
         end
-        msg = JSON.generate({ 'name' => "#{config[:tag]}_#{hostname}",
+        msg = JSON.generate({ 'name' => "#{config[:prefix]}_#{hostname}",
           'status' => 2, 'output' => out,
           'handler' => config[:handler] })
         res = submit_alert(msg)

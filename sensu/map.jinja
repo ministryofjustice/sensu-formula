@@ -71,7 +71,7 @@
             },
             'apparmor_check': {
                 'type': 'basic',
-                'command': "/etc/sensu/plugins/check-elastic.rb -r 5m -q 'tags:apparmor NOT apparmor_evt:STATUS' -t apparmor  -s 'AppArmor violation! Please check the logs'",
+                'command': "/etc/sensu/plugins/check-elastic.rb -r 5m -q 'tags:apparmor NOT apparmor_evt:STATUS' --nameprefix ApparmorViolation -s 'AppArmor violation! Please check the logs'",
                 'handlers': ['hipchat'],
                 'interval': 300,
                 'playbook': 'https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/apparmor.md'

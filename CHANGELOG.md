@@ -1,4 +1,4 @@
-## Version 5.1.x
+## Version 5.1.1
 
 * Add a collectd script to graph redis process information (memory, cpu, etc)
 

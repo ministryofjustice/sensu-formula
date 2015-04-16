@@ -195,8 +195,8 @@ uchiwa:
     - group: root
     - watch_in:
       - service: collectd
-    - require:
-      - collectd-confd-clean
+    - require_in:
+      - file: collectd-confd-clean
 
 /etc/nginx/conf.d/sensu.conf:
   file:

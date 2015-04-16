@@ -1,6 +1,6 @@
-## Version 5.x.0
+## Version 5.1.0
 
-* Extend check_elastic.rb to run count/threshold based checks too.
+* Extend check-elastic.rb to run count/threshold based checks too.
 
 ## Version 5.0.1
 

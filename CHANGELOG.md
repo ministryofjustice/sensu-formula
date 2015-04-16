@@ -1,6 +1,6 @@
 ## Version 5.1.x
 
-* Add a graphite script to graph redis process information (memory, cpu, etc)
+* Add a collectd script to graph redis process information (memory, cpu, etc)
 
 ## Version 5.1.0
 

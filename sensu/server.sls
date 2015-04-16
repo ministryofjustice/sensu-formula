@@ -190,11 +190,13 @@ uchiwa:
 
 /etc/collectd/collectd.conf.d/processes-redis.conf:
   file.managed:
-    - source: salt://sensu/files/graph-redis.conf
+    - source: salt://sensu/files/collectd_conf_process_redis.conf
     - user: root
     - group: root
     - watch_in:
       - service: collectd
+    - require:
+      - collectd-confd-clean
 
 /etc/nginx/conf.d/sensu.conf:
   file:

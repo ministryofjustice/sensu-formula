@@ -193,6 +193,8 @@ uchiwa:
     - source: salt://sensu/files/graph-redis.conf
     - user: root
     - group: root
+    - watch_in:
+      - service: collectd
 
 /etc/nginx/conf.d/sensu.conf:
   file:

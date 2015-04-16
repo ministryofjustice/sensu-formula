@@ -7,23 +7,39 @@ require 'sensu-plugin/check/cli'
 require 'socket'
 
 class ElasticSearchCheck < Sensu::Plugin::Check::CLI
+
+  # These options apply to both check styles
   option  :es_proto, :short => '-o HTTP(S)', :long => '--es-proto HTTP(S)',
           :default => 'http'
   option  :es_host, :short => '-h ES_HOST', :long => '--es-host ES_HOST', 
           :default => 'localhost'
   option  :es_port, :short => '-p ES_PORT', :long => '--es-port ES_PORT',
           :default => '9200'
-  option  :tag, :short => '-t tagname', :long => '--tag tagname',
-          :default => 'apparmor'
+
   option  :range, :short => '-r range', :long => '--range range',
-          :default => '10m'
-  option  :handler, :short => '-l handler', :long => '--handler handler',
-          :default => 'default'
-  option  :result_key, :short => '-k result_key', :long => '--result-key result_key',
-          :default => 'message'
+          :default => '10m',
+          :description => 'Time range to ask Elasticsearch to return results for.'
+
   option  :query, :short => '-q query', :long => '--query query',
-          :default => 'tags: rails'
-  option  :out_string, :short => '-s out_string', :long => '--out-string out_string'
+          :default => 'tags: rails',
+          :description => 'The query_string part of the Elasticsearch query (i.e. not the full JSON, just a simple string)'
+
+  option  :out_string,
+          :short => '-s out_string',
+          :long => '--out-string out_string',
+          :description => 'Message to send along with the check'
+
+  # These optons apply only to the non-threshold based alert, see run_result_check
+  option  :handler, :short => '-l handler', :long => '--handler handler',
+          :default => 'default',
+          :description => 'Handler to raise alerts on a per host basis for any results found'
+  option  :prefix, :long => '--nameprefix prefix',
+          :description => 'Name prefix for all non-threshold alerts created. Will create events with this form "#{prefix}_#{host}"'
+
+  # These options apply only to run_threshold_check
+  option  :name,
+          :long => '--name checkname',
+          :description => 'Override the name of this check from default of ElasticSearchCheck'
 
   option  :warning,
           :description => 'Generate warning if the number of matching records is >= VALUE and < :critical',
@@ -120,6 +136,11 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
     data = get_count
     count = data['count']
 
+    # Override the check name to be more specific as requested
+    if config[:name]
+      self.class.check_name(config[:name])
+    end
+
     if config[:out_string]
       out = config[:out_string]
     else
@@ -150,13 +171,12 @@ class ElasticSearchCheck < Sensu::Plugin::Check::CLI
       end
       for result in data['hits']['hits']
         hostname = result['_source']['host']
-        details = result['_source'][config[:result_key]]
         if config[:out_string]
           out = config[:out_string]
         else
           out = "Check host for ES query string: #{config[:query]}"
         end
-        msg = JSON.generate({ 'name' => "#{config[:tag]}_#{hostname}",
+        msg = JSON.generate({ 'name' => "#{config[:prefix]}_#{hostname}",
           'status' => 2, 'output' => out,
           'handler' => config[:handler] })
         res = submit_alert(msg)

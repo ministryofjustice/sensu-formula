@@ -15,6 +15,7 @@ include:
   - .common
   - .deps
   - .checks
+  - metrics.client
 # for git
 
 /etc/sensu/conf.d/redis.json:
@@ -186,6 +187,16 @@ uchiwa:
 {{ logship('sensu-server.log',  '/var/log/sensu/sensu-server.log', 'sensu', ['sensu', 'sensu-server', 'log'],  'rawjson') }}
 {{ logship('sensu-api.log',  '/var/log/sensu/sensu-api.log', 'sensu', ['sensu', 'sensu-api', 'log'],  'rawjson') }}
 {{ logship('uchiwa.log',  '/var/log/upstart/uchiwa.log', 'sensu', ['sensu', 'sensu-dashboard', 'uchiwa', 'log'],  'rawjson') }}
+
+/etc/collectd/collectd.conf.d/processes-redis.conf:
+  file.managed:
+    - source: salt://sensu/files/collectd_conf_process_redis.conf
+    - user: root
+    - group: root
+    - watch_in:
+      - service: collectd
+    - require_in:
+      - file: collectd-confd-clean
 
 /etc/nginx/conf.d/sensu.conf:
   file:

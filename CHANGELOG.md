@@ -1,3 +1,7 @@
+## Version 5.1.x
+
+* Add a graphite script to graph redis process information (memory, cpu, etc)
+
 ## Version 5.1.0
 
 * Extend check-elastic.rb to run count/threshold based checks too.

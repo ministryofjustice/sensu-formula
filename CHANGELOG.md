@@ -1,4 +1,4 @@
-## Version 5.1.1
+## Version 5.1.2
 
 * Restart sensu-server when checks are removed as well as added
 

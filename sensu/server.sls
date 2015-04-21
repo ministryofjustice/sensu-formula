@@ -112,6 +112,8 @@ sensu-api:
       - file: /etc/default/sensu
       - file: /etc/sensu/conf.d/api.json
       - file: /etc/sensu/conf.d/redis.json
+      - file: /etc/sensu/conf.d/checks/*
+      - file: sensu-confd-checks-clean
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-api:
   file.managed:

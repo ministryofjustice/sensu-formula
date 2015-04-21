@@ -1,3 +1,7 @@
+## Version 5.1.3
+
+* Restart sensu-api as well as sensu-server when checks change
+
 ## Version 5.1.2
 
 * Restart sensu-server when checks are removed as well as added

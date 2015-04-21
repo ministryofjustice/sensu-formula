@@ -1,5 +1,9 @@
 ## Version 5.1.1
 
+* Restart sensu-server when checks are removed as well as added
+
+## Version 5.1.1
+
 * Add a collectd script to graph redis process information (memory, cpu, etc)
 
 ## Version 5.1.0

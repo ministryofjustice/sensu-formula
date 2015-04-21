@@ -96,6 +96,7 @@ sensu-server:
       - file: /etc/sensu/conf.d/rabbitmq.json
       - file: /etc/sensu/conf.d/handlers.json
       - file: /etc/sensu/conf.d/checks/*
+      - file: sensu-confd-checks-clean
 
 /etc/apparmor.d/opt.sensu.embedded.bin.sensu-server:
   file.managed:

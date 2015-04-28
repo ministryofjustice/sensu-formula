@@ -1,3 +1,8 @@
+## Version 5.1.4
+
+* Add `ps` and `sh` to sensu-client apparmor profile to silence normal
+  behavior
+
 ## Version 5.1.3
 
 * Restart sensu-api as well as sensu-server when checks change
@@ -171,7 +176,7 @@
   ruby when pagerduty/hipchat integration is enabled
 * Changed the Hipchat API to v1 to avoid the API key being associated
   with a person
-* Removed additional subscriptions based on roles. This is not used at 
+* Removed additional subscriptions based on roles. This is not used at
   present and causes a failure on machines where roles are not defined
 
 ## Version 2.1.1
@@ -181,7 +186,7 @@
 ## Version 2.1.0
 
 * Added support for email, hipchat and pagerduty notification (see README)
-* Moved notification pillar values to sensu.notify.* 
+* Moved notification pillar values to sensu.notify.*
 * Tidied up require/watch logic on server/client setup
 
 ## Version 2.0.0

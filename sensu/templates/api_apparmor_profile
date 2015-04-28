@@ -5,6 +5,8 @@
   #include <abstractions/base>
   #include <abstractions/ruby>
 
+  /bin/ps ix,
+  /bin/sh ix,
   /etc/sensu/** r,
   /opt/sensu/embedded/bin/ruby ix,
   /opt/sensu/embedded/bin/sensu-api r,

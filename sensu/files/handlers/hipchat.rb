@@ -14,7 +14,10 @@ class HipChatNotif < Sensu::Handler
   def handle
     apiversion = settings["hipchat"]["apiversion"] || 'v1'
     hipchatmsg = HipChat::Client.new(settings["hipchat"]["apikey"], :api_version => apiversion)
-    room = settings["hipchat"]["room"]
+    # Create an array of rooms form the room config entry
+    # If this is a string, we get an array of one entry,
+    # If its an array, we get that back, keeping back-compatibility
+    rooms = Array(settings["hipchat"]["room"])
     from = settings["hipchat"]["from"] || 'Sensu'
 
     grafana_base = settings["hipchat"].fetch("grafana_base", '')
@@ -49,9 +52,13 @@ class HipChatNotif < Sensu::Handler
     begin
       timeout(3) do
         if @event['action'].eql?("resolve")
-          hipchatmsg[room].send(from, "RESOLVED - [#{event_name}] - #{message}.", :color => 'green')
+          rooms.each do |tmp_room|
+            hipchatmsg[tmp_room].send(from, "RESOLVED - [#{event_name}] - #{message}.", :color => 'green')
+          end
         else
-          hipchatmsg[room].send(from, "ALERT - [#{event_name}] - #{message}.", :color => @event['check']['status'] == 1 ? 'yellow' : 'red', :notify => true)
+          rooms.each do |tmp_room|
+            hipchatmsg[tmp_room].send(from, "ALERT - [#{event_name}] - #{message}.", :color => @event['check']['status'] == 1 ? 'yellow' : 'red', :notify => true)
+          end
         end
       end
     rescue Timeout::Error

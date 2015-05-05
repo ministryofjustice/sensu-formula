@@ -106,7 +106,7 @@
             'ntp-offset': {
                 'type': 'graphite',
                 'target': "alias(absolute(averageSeries(metrics.:::metric_prefix:::.ntpd.time_offset.*.*.*.*)),'NTP-offset')",
-                'params': '-a 600',
+                'params': '-a 1200',
                 'description': 'NTP offset',
                 'occurrences': '2',
                 'playbook': 'https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/ntp-offset.md'

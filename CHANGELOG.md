@@ -1,3 +1,7 @@
+## Version 5.1.x 
+
+* Increased default ntp offset alert threshold from 10 to 20 mins, to reduce redundant alert noise
+
 ## Version 5.1.4
 
 * Add `ps` and `sh` to sensu-client apparmor profile to silence normal

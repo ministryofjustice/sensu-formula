@@ -1,6 +1,6 @@
-=======
+=====
 sensu
-=======
+=====
 
 Install and configure sensu and some simple common checks (disk, memory etc.)
 
@@ -31,7 +31,7 @@ Dependencies
 
 
 Adding checks via pillar data
-==========
+=============================
 
 All checks are now defined in the map.jinja or in the pillar (which overrides the map.jinja).
 
@@ -341,6 +341,7 @@ Example::
         hipchat_roomname: 'My Project Alerts'
         hipchat_apiversion: v1
 
+Multiple room notifications can be enabled by passing an array of room names such as ["Room1", "Room2"]
 
 Pagerduty
 ---------
@@ -399,7 +400,7 @@ deny actions that the beaver profile doesn't cover set the following pillar::
 
 
 unix-socket-backlog
-========
+===================
 
 This check will find connections to a unix socket that are still connecting.
 

@@ -1,6 +1,11 @@
-## Version 5.1.x 
+## Version 5.2.0
 
-* Increased default ntp offset alert threshold from 10 to 20 mins, to reduce redundant alert noise
+* Increased default ntp offset alert threshold from 10 to 20 mins, to reduce
+  redundant alert noise
+* Extend hipchat handler to be able to send alerts to multiple rooms at once
+
+  Simple make sensue:notify:hipchat_roomname an array and it will send it to
+  all those rooms
 
 ## Version 5.1.4
 

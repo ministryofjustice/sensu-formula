@@ -37,10 +37,10 @@ platforms:
   - name: aws-ubuntu-12.04
     driver_plugin: ec2
     driver_config:
-      aws_access_key_id: <%= ENV['AWS_ACCESS_KEY'] %>
-      aws_secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
-      aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] %>
-      ssh_key: <%= File.expand_path("~/.ssh/#{ENV['AWS_SSH_KEY_ID']}.pem") %>
+      aws_access_key_id: <%= ENV['AWS_ACCESS_KEY'] || 'dummy' %>
+      aws_secret_access_key: <%= ENV['AWS_SECRET_KEY'] || 'dummy' %>
+      aws_ssh_key_id: <%= ENV['AWS_SSH_KEY_ID'] || 'dummy' %>
+      ssh_key: <%= File.expand_path("~/.ssh/#{ENV['AWS_SSH_KEY_ID'] || 'dummy'}.pem") %>
       image_id: ami-8e987ef9
       username: ubuntu
       security_group_ids: ["sg-e932d286"]

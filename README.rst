@@ -7,12 +7,12 @@ Install and configure sensu and some simple common checks (disk, memory etc.)
 .. note::
 
     See the full `Salt Formulas installation and usage instructions
-    <http://docs.saltstack.com/topics/conventions/formulas.html>`_.
+    <http://docs.saltstack.com/topics/development/conventions/formulas.html>`_.
 
 Dependencies
 ============
 
-Playbooks for checks are available in `docs/playbooks https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/>`_
+Playbooks for checks are available in `docs/playbooks <https://github.com/ministryofjustice/sensu-formula/tree/master/docs/playbooks/>`_.
 
 Dependencies
 ============

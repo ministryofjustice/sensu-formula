@@ -3,7 +3,11 @@
 
 {%- if sensu.notify.hipchat_apikey %}
   "hipchat": {
+{%- if sensu.notify.hipchat_roomname is string %}
     "room": "{{ sensu.notify.hipchat_roomname }}",
+{%- else %}
+    "room": {{ sensu.notify.hipchat_roomname | json }},
+{%- endif %}
 {%-   if sensu.notify.hipchat_from %}
     "from": "{{ sensu.notify.hipchat_from }}",
 {%-   endif %}

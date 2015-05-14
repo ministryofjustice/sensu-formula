@@ -1,4 +1,4 @@
-## Version 5.2.x
+## Version 5.2.1
 
 * Fix sensu handlers.json template to allow multiple hipchat rooms using the 
   correct json syntax

@@ -1,3 +1,8 @@
+## Version 5.2.x
+
+* Fix sensu handlers.json template to allow multiple hipchat rooms using the 
+  correct json syntax
+
 ## Version 5.2.0
 
 * Increased default ntp offset alert threshold from 10 to 20 mins, to reduce

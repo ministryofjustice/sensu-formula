@@ -1,4 +1,4 @@
-# Version 5.2.2
+# Version 5.2.x
 
 * Fixed bug in the URL assembly for hipchat messages. 
   The Graph link in the hipchat message was broken.

@@ -45,7 +45,7 @@ class HipChatNotif < Sensu::Handler
       unless metric_name.empty?
         full_target = metric_name.sub(':::metric_prefix:::', metric_prefix)
         uri = URI.parse(grafana_base + "targets=" + URI.encode(full_target).gsub(',', '%2C'))
-        message << "  [<a href='#{uri.to_s}'>Graph</a>]"
+        message << "  [<a href=\"#{uri.to_s}\">Graph</a>]"
       end
     end
 

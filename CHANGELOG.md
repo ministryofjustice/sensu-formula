@@ -1,3 +1,12 @@
+# Version 5.2.2
+
+* Fixed bug in the URL assembly for hipchat messages. 
+  The Graph link in the hipchat message was broken.
+
+* Increased alert threshold for NTP offset empty datasets 
+  from 20 mins to 6hr, after getting spurious noisy 
+  intermittent alerts on PVB.
+
 ## Version 5.2.1
 
 * Fix sensu handlers.json template to allow multiple hipchat rooms using the 

@@ -99,6 +99,10 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     :description => 'Show this message',
     :short => '-h',
     :long => '--help'
+    
+  option :pretty,
+    :description => 'Make the output message pretty',
+    :long => '--pretty'
 
   # Run checks
   def run
@@ -192,10 +196,38 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
   # Return alert if required
   def check(type)
     if config[type]
-      send(type, "#{name} (#{value_to_check(@data)}) [#{@value['target']}]") if in_alert_range?(type)
+      if config[:pretty]
+        checked_value = prettyValue(value_to_check(@data))
+        alert_value = prettyValue(config[type][0])
+        if config[type].length == 1
+          send(type, "#{name} is above #{type} limit: #{checked_value} / #{alert_value}") if in_alert_range?(type)
+        elsif config[type].length == 2
+          alert_range_start = prettyValue(config[type][0])
+          alert_range_end = prettyValue(config[type][1])
+          send(type, "#{name} is outside of #{type} range: #{checked_value} [#{alert_range_start} -> #{alert_range_end}]") if in_alert_range?(type)
+        end
+      else
+        send(type, "#{name} (#{value_to_check(@data)}) [#{@value['target']}]") if in_alert_range?(type)
+      end
     end
   end
 
+  # Attempt to format a value into a prettified version using best guesswork
+  def prettyValue(raw_value)
+    value = raw_value
+    postfix = ''
+    target = @value['target']
+
+    if target.include?("asPercent")
+      postfix = postfix + "%"
+    end
+    if raw_value.is_a?(Float)
+      value = value.round(1)
+    end
+
+    return "#{value}#{postfix}"
+  end
+    
   # Check if value is below defined threshold
   def below?(type)
     config[:below] && value_to_check(@data) < config[type]
@@ -277,5 +309,4 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     return nil if array.empty?
     array.sort.last
   end
-
 end

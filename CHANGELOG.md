@@ -1,3 +1,7 @@
+## UNRELEASED
+
+* Add a --pretty option to the graphite plugin for simpler messages
+
 ## Version 5.2.x
 
 * Fixed bug in the URL assembly for hipchat messages. 

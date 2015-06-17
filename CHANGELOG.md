@@ -1,6 +1,7 @@
 ## UNRELEASED
 
 * Add a --pretty option to the graphite plugin for simpler messages
+* Check the ubuntu version before enabling ptrace for apparmor
 
 ## Version 5.2.x
 

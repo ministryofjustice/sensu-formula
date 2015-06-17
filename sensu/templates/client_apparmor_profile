@@ -47,8 +47,8 @@
   /usr/local/lib/ruby/2.0.0/** mr,
   /usr/local/lib/ruby/gems/2.0.0/** r,
   /var/log/sensu/* w,
-{% set kerver = salt['grains.get']('kernelrelease').split('.') %}
-{% if kerver[0]|int >= 4 or ( kerver[0]|int == 3 and kerver[1]|int >= 13 ) %}
+{% set distrib = salt['grains.get']('lsb_distrib_release').split('.') %}
+{% if distrib[0]|int >= 14 %}
 
   ptrace (read),
   ptrace (trace),

@@ -1,9 +1,9 @@
-## UNRELEASED
+## Version 5.2.3
 
 * Add a --pretty option to the graphite plugin for simpler messages
 * Check the ubuntu version before enabling ptrace for apparmor
 
-## Version 5.2.x
+## Version 5.2.2
 
 * Fixed bug in the URL assembly for hipchat messages. 
   The Graph link in the hipchat message was broken.

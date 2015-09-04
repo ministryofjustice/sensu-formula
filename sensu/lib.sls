@@ -82,5 +82,5 @@ execute check is process exists
   {% set params = params + " -c " ~ p_data.critical %}
 {% endif %}
 {% set check_cmd = "/etc/sensu/plugins/graphite-data.rb -s " + sensu.graphite.host + ":" ~ sensu.graphite.port ~ " -t '"+metric_name+"' -n '"+desc+"' " + params %}
-{{ sensu_check(name="graphite-"+name, command=check_cmd, metric_name=metric_name, **kwargs) }}
+{{ sensu_check(name="graphite-"+name, command=check_cmd, metric_name=metric_name, occurrences=occurrences, **kwargs) }}
 {% endmacro %}

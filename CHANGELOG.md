@@ -1,4 +1,4 @@
-## Version 5.2.x
+## Version 5.2.4
 
 * Fix `occurrences` for sensu_check_graphite not ending up in the file on disk
 

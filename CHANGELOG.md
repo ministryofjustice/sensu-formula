@@ -1,3 +1,7 @@
+## Version 5.2.x
+
+* Fix `occurrences` for sensu_check_graphite not ending up in the file on disk
+
 ## Version 5.2.3
 
 * Add a --pretty option to the graphite plugin for simpler messages

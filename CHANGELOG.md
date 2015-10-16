@@ -1,3 +1,7 @@
+## UNRELEASED
+
+* Updated to final sensu-community-plugins commit
+
 ## Version 5.2.4
 
 * Fix `occurrences` for sensu_check_graphite not ending up in the file on disk

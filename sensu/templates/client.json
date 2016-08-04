@@ -1,9 +1,14 @@
 {% set roles = salt['grains.get']('roles', []) -%}
+{% set custom_prefix = salt['pillar.get']('collectd:prefix', '') %}
+{% if custom_prefix[:8] == 'metrics.' %}
+{% set custom_prefix = custom_prefix[8:] %}
+{% endif %}
+
 {
   "client": {
     "name": "{{grains['fqdn']}}",
     "address": "{{grains['fqdn_ip4']}}",
-    "metric_prefix": "{{ grains['fqdn'].split('.')|reverse| join('.') }}",
+    "metric_prefix": "{{custom_prefix}}{{ grains['fqdn'].split('.')|reverse| join('.') }}",
     "subscriptions": {{(roles|list + ['all']|list) |json}}
   }
 }
